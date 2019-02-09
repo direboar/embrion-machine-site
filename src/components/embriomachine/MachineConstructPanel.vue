@@ -32,6 +32,43 @@
                 >
                   <v-toolbar-title>基本データ</v-toolbar-title>
                   <v-spacer></v-spacer>
+                  <v-toolbar
+                    floating
+                    dense
+                  >
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="saveMachine"
+                        :disabled="!editMode"
+                      >
+                        <v-icon>save</v-icon>
+                      </v-btn>
+                      <span>機体をセーブします。</span>
+                    </v-tooltip>
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="confirmDelete"
+                        :disabled="!editMode"
+                      >
+                        <v-icon>delete</v-icon>
+                      </v-btn>
+                      <span>機体を削除します。</span>
+                    </v-tooltip>
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="back"
+                      >
+                        <v-icon>fas fa-backward</v-icon>
+                      </v-btn>
+                      <span>一覧画面に戻ります。</span>
+                    </v-tooltip>
+                  </v-toolbar>
                 </v-toolbar>
                 <v-layout
                   row
@@ -446,26 +483,6 @@
           </v-layout>
         </v-flex>
       </v-layout>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="green darken-1"
-          flat
-          @click.native="saveMachine"
-          :disabled="!editMode"
-        >保存する</v-btn>
-        <v-btn
-          color="green darken-1"
-          flat
-          @click.native="confirmDelete"
-          :disabled="!editMode"
-        >削除する</v-btn>
-        <v-btn
-          color="green darken-1"
-          flat
-          @click.native="back"
-        >戻る</v-btn>
-      </v-card-actions>
       <v-card>
         <ins
           class="adsbygoogle"
@@ -492,6 +509,7 @@
     />
     <ok-ng-dialog
       :show-dialog.sync="showDeleteConfirmDialog"
+      :dialogSize="350"
       message="選択した機体を削除します。よろしいですか？"
       @callback="confirmDeleteCallback"
     >

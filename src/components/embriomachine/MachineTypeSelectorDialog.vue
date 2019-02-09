@@ -178,7 +178,6 @@ export default {
       default: null
     }
   },
-
   data() {
     return {
       selectedMachineTypeName: this.targetMachineType.name,

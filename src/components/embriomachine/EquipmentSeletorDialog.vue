@@ -78,13 +78,7 @@
           >
             <v-list :dense="isXs">
               <v-list-tile>
-                詳細
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content :class="contentClass">ランク</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content :class="contentClass">種別</v-list-tile-content>
+                <v-list-tile-content :class="contentClass">種別／ランク</v-list-tile-content>
               </v-list-tile>
               <v-divider />
               <v-list-tile>
@@ -117,10 +111,7 @@
               <v-list-tile>
               </v-list-tile>
               <v-list-tile>
-                <v-list-tile-content :class="contentClass">{{equipment.rank}}</v-list-tile-content>
-              </v-list-tile>
-              <v-list-tile>
-                <v-list-tile-content :class="contentClass">{{equipment.type}}</v-list-tile-content>
+                <v-list-tile-content :class="contentClass">{{equipment.type}}（{{equipment.rank}}）</v-list-tile-content>
               </v-list-tile>
               <v-divider />
               <v-list-tile>
@@ -148,7 +139,7 @@
           <v-flex xs12>
             <v-card-text class="body-1">
               <span
-                style="white-space: pre-wrap;display: inline-block;height:100px;"
+                style="white-space: pre-wrap;display: inline-block;height:30px;"
                 v-html="equipment.effect"
               ></span>
             </v-card-text>

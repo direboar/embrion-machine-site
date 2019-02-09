@@ -4,6 +4,38 @@
       <v-flex xs12>
         <v-card v-if="showList">
           <v-toolbar>
+            <v-tooltip top>
+              <v-btn
+                v-if="user ==null"
+                slot="activator"
+                dark
+                @click.native="login()"
+              >
+                login<v-icon
+                  right
+                  dark
+                >fab fa-twitter-square</v-icon>
+              </v-btn>
+              <span>ログインします。</span>
+            </v-tooltip>
+            <v-tooltip>
+              <v-btn
+                v-if="user !=null"
+                slot="activator"
+                dark
+                @click.native="logout()"
+              >
+                logout<v-icon
+                  right
+                  dark
+                >fab fas fa-sign-out-alt</v-icon>
+              </v-btn>
+              <span>ログアウトします。</span>
+            </v-tooltip>
+            <img
+              v-if="user != null"
+              :src="user.photoURL"
+            />
             <v-spacer></v-spacer>
             <v-tooltip>
               <v-btn
@@ -24,31 +56,6 @@
                 <v-icon>add</v-icon>
               </v-btn>
               <span>機体を追加します。</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <v-btn
-                v-if="user ==null"
-                slot="activator"
-                icon
-                @click.native="login()"
-              >
-                <v-icon>fab fa-twitter-square</v-icon>ログイン
-              </v-btn>
-              <span>ログインします。</span>
-            </v-tooltip>
-            <v-tooltip>
-              <v-btn
-                v-if="user !=null"
-                slot="activator"
-                icon
-                @click.native="logout()"
-              >
-                <img
-                  v-if="user != null"
-                  :src="user.photoURL"
-                />
-              </v-btn>
-              <span>ログアウトします。</span>
             </v-tooltip>
           </v-toolbar>
           <v-container
@@ -98,17 +105,6 @@
                     </v-btn>
                     <span>機体を参照します。</span>
                   </v-tooltip>
-                  <!-- <v-tooltip top>
-                    <v-btn
-                      slot="activator"
-                      icon
-                      ripple
-                      @click="deleteMachine(item)"
-                    >
-                      <v-icon color="grey lighten-1">delete</v-icon>
-                    </v-btn>
-                    <span>機体を削除します。（確認ダイアログは表示されません。）</span>
-                  </v-tooltip> -->
                 </v-list-tile-action>
               </v-list-tile>
               <v-divider inset></v-divider>
@@ -192,16 +188,12 @@ export default {
   },
   watch: {
     find(val) {
-      //alert(val);
       if (val === "seek") {
         this.fetchNextPageFromFirebase(this.machines[this.machines.length - 1]);
       } else if (val === "load") {
         this.loadFromFirebase();
       }
     }
-    // dialogMachine(val) {
-    //   alert("d" + val);
-    // }
   },
   computed: {},
   methods: {
@@ -215,7 +207,6 @@ export default {
       this.showList = false;
     },
     editMachine(machine) {
-      alert(machine);
       this.dialogMachine = machine;
       this.editingMachineId = machine.id;
       this.editMode = true;
