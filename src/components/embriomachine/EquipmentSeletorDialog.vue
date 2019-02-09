@@ -3,8 +3,8 @@
     <v-dialog
       v-model="showDialog"
       :persistent="editMode"
-      max-width="700"
-      :fullscreen="this.isXs"
+      max-width="800"
+      :fullscreen="isXs"
     >
       <v-card>
         <v-layout
@@ -19,6 +19,7 @@
               label="ランク"
               v-model="rank"
               :row="!isXs"
+              v-if="editMode"
             >
               <v-radio
                 v-for="rank in ranks"
@@ -39,6 +40,7 @@
               label="種類"
               v-model="type"
               :row="!isXs"
+              v-if="editMode"
               class="body-1"
             >
               <v-radio
@@ -76,9 +78,10 @@
           >
             <v-list :dense="isXs">
               <v-list-tile>
+                詳細
               </v-list-tile>
               <v-list-tile>
-                詳細
+                <v-list-tile-content :class="contentClass">ランク</v-list-tile-content>
               </v-list-tile>
               <v-list-tile>
                 <v-list-tile-content :class="contentClass">種別</v-list-tile-content>
@@ -114,6 +117,7 @@
               <v-list-tile>
               </v-list-tile>
               <v-list-tile>
+                <v-list-tile-content :class="contentClass">{{equipment.rank}}</v-list-tile-content>
               </v-list-tile>
               <v-list-tile>
                 <v-list-tile-content :class="contentClass">{{equipment.type}}</v-list-tile-content>
@@ -124,7 +128,7 @@
               </v-list-tile>
               <v-divider />
               <v-list-tile>
-                <v-list-tile-content :class="contentClass">{{this.formatDamage(equipment)}}</v-list-tile-content>
+                <v-list-tile-content :class="contentClass">{{formatDamage(equipment)}}</v-list-tile-content>
               </v-list-tile>
               <v-divider />
               <v-list-tile>
@@ -211,7 +215,6 @@ export default {
       default: true
     }
   },
-  computed: {},
 
   data() {
     return {
@@ -294,17 +297,17 @@ export default {
 
   methods: {
     closeDialog() {
-      this.$emit("update:targetEquipment", {});
+      // this.$emit("update:targetEquipment", {});
+      this.$emit("update:showDialog", false);
       this.$emit("cancel");
       this.selectedEquipmentName = "";
-      this.$emit("update:showDialog", false);
       this.itemcount = 1;
     },
     select() {
-      this.$emit("update:targetEquipment", this.equipment);
+      // this.$emit("update:targetEquipment", this.equipment);
+      this.$emit("update:showDialog", false);
       this.$emit("select", this.equipment, this.itemcount);
       this.selectedEquipmentName = "";
-      this.$emit("update:showDialog", false);
       this.itemcount = 1;
     },
     //FIXME deprecated.

@@ -79,7 +79,6 @@ export default {
   },
   watch: {
     $route(to, from) {
-      alert(to.meta.title);
       this.title = to.meta.title;
     }
   },

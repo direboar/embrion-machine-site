@@ -83,6 +83,7 @@
                             type="text"
                             v-model="machine.name"
                             required
+                            :disabled="!editMode"
                           />
                         </v-list-tile-content>
                       </v-list-tile>
@@ -94,6 +95,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="showMachineTypeDialog"
+                            :disabled="!editMode"
                           >
                             <v-icon>edit</v-icon>
                           </v-btn>
@@ -150,6 +152,7 @@
                       <v-btn
                         icon
                         @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_HEAD)"
+                        :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -178,6 +181,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteEquipment(POSITION_CONST.POSITION_HEAD,equipment)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
@@ -199,6 +203,7 @@
                       <v-btn
                         icon
                         @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_BODY)"
+                        :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -248,6 +253,7 @@
                       <v-btn
                         icon
                         @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_RIGHTARM)"
+                        :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -297,6 +303,7 @@
                       <v-btn
                         icon
                         @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_LEFTARM)"
+                        :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -347,6 +354,7 @@
                       <v-btn
                         icon
                         @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_RIGHTLEG)"
+                        :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -396,6 +404,7 @@
                       <v-btn
                         icon
                         @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_LEFTLEG)"
+                        :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
@@ -442,8 +451,15 @@
         <v-btn
           color="green darken-1"
           flat
-          @click.native="save"
+          @click.native="saveMachine"
+          :disabled="!editMode"
         >保存する</v-btn>
+        <v-btn
+          color="green darken-1"
+          flat
+          @click.native="confirmDelete"
+          :disabled="!editMode"
+        >削除する</v-btn>
         <v-btn
           color="green darken-1"
           flat
@@ -474,6 +490,12 @@
       @select="acceptSelectedEquipment"
       @cancel="cancel"
     />
+    <ok-ng-dialog
+      :show-dialog.sync="showDeleteConfirmDialog"
+      message="選択した機体を削除します。よろしいですか？"
+      @callback="confirmDeleteCallback"
+    >
+    </ok-ng-dialog>
   </div>
 </template>
 
@@ -483,6 +505,7 @@
 <script>
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
 import MachineTypeSelectorDialog from "@/components/embriomachine/MachineTypeSelectorDialog";
+import OkNgDialog from "@/components/common/OkNgDialog";
 import Machine from "@/model/embriomachine/machine";
 import MachineType from "@/model/embriomachine/machinetype";
 import Equipment from "@/model/embriomachine/equipment";
@@ -491,7 +514,8 @@ export default {
   name: "MachineConstructPanel",
   components: {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
-    MachineTypeSelectorDialog: MachineTypeSelectorDialog
+    MachineTypeSelectorDialog: MachineTypeSelectorDialog,
+    OkNgDialog: OkNgDialog
   },
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -501,6 +525,11 @@ export default {
     targetMachine: {
       type: Object,
       default: new Machine("")
+    },
+    //編集モードかどうかの指定。
+    editMode: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -514,15 +543,14 @@ export default {
       editingEquipmentPosition: {},
       editingEquipment: {},
       equipmentDialogEditMode: false,
-      POSITION_CONST: MachineType.getPositionConst()
+      POSITION_CONST: MachineType.getPositionConst(),
+
+      //削除ダイアログ
+      showDeleteConfirmDialog: false
     };
   },
 
-  watch: {
-    targetMachine: function(val) {
-      this.machine = Machine.assign(val);
-    }
-  },
+  watch: {},
 
   computed: {
     validateerror() {
@@ -566,13 +594,9 @@ export default {
     },
     acceptSelectedEquipment(equipment, count) {
       for (let i = 0; i < count; i++) {
-        this.machine.addEquipment(
-          this.editingEquipmentPosition,
-          this.dialogEquipment
-        );
+        this.machine.addEquipment(this.editingEquipmentPosition, equipment);
       }
-      this.dialogTargetPosition = null;
-      this.editingEquipmentPosition = {};
+      // this.showEquipment = false;
     },
     deleteEquipment(position, equipment) {
       this.machine.deleteEquipment(position, equipment);
@@ -589,16 +613,32 @@ export default {
       this.editingEquipmentPosition = {};
       this.dialogMachineType = {};
     },
-    save() {
-      this.$emit("update:targetMachine", this.machine);
+    saveMachine() {
+      //this.$emit("update:targetMachine", this.machine);
       this.$emit("save", this.machine);
       this.machine = new Machine("", new MachineType());
       this.dialogTargetPosition = null;
       this.editingEquipmentPosition = {};
       this.dialogMachineType = new MachineType();
     },
+    confirmDelete() {
+      this.showDeleteConfirmDialog = true;
+    },
+    confirmDeleteCallback(yes) {
+      if (yes) {
+        this.deleteMachine();
+      }
+    },
+    deleteMachine() {
+      //      this.$emit("update:targetMachine", this.machine);
+      this.$emit("delete", this.machine);
+      this.machine = new Machine("", new MachineType());
+      this.dialogTargetPosition = null;
+      this.editingEquipmentPosition = {};
+      this.dialogMachineType = new MachineType();
+    },
     back() {
-      this.$emit("update:targetMachine", this.machine);
+      //      this.$emit("update:targetMachine", this.machine);
       this.$emit("cancel");
       this.machine = new Machine("", new MachineType());
       this.dialogTargetPosition = null;

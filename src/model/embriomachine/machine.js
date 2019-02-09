@@ -49,7 +49,6 @@ export default class Machine {
     if(equipments === undefined){
       throw new Error("equipmentsが取得できない")
     }
-
     equipments.push(equipment)
   }
 

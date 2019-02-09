@@ -27,7 +27,7 @@
             </v-tooltip>
             <v-tooltip top>
               <v-btn
-                v-if="this.user ==null"
+                v-if="user ==null"
                 slot="activator"
                 icon
                 @click.native="login()"
@@ -38,14 +38,14 @@
             </v-tooltip>
             <v-tooltip>
               <v-btn
-                v-if="this.user !=null"
+                v-if="user !=null"
                 slot="activator"
                 icon
                 @click.native="logout()"
               >
                 <img
-                  v-if="this.user != null"
-                  :src="this.user.photoURL"
+                  v-if="user != null"
+                  :src="user.photoURL"
                 />
               </v-btn>
               <span>ログアウトします。</span>
@@ -81,12 +81,24 @@
                       icon
                       ripple
                       @click="editMachine(item)"
+                      :disabled="!isEditable(item)"
                     >
-                      <v-icon color="grey lighten-1">edit</v-icon>
+                      <v-icon color="green lighten-1">edit</v-icon>
                     </v-btn>
                     <span>機体を編集します。</span>
                   </v-tooltip>
                   <v-tooltip top>
+                    <v-btn
+                      slot="activator"
+                      icon
+                      ripple
+                      @click="showMachine(item)"
+                    >
+                      <v-icon color="green lighten-1">zoom_in</v-icon>
+                    </v-btn>
+                    <span>機体を参照します。</span>
+                  </v-tooltip>
+                  <!-- <v-tooltip top>
                     <v-btn
                       slot="activator"
                       icon
@@ -96,7 +108,7 @@
                       <v-icon color="grey lighten-1">delete</v-icon>
                     </v-btn>
                     <span>機体を削除します。（確認ダイアログは表示されません。）</span>
-                  </v-tooltip>
+                  </v-tooltip> -->
                 </v-list-tile-action>
               </v-list-tile>
               <v-divider inset></v-divider>
@@ -113,8 +125,10 @@
           ></ins>
         </v-card>
         <machine-construct-panel
-          :targetMachine.sync="this.dialogMachine"
+          :targetMachine.sync="dialogMachine"
+          :editMode.sync="editMode"
           @save="saveMachine"
+          @delete="deleteMachine"
           @cancel="cancel"
           v-if="!showList"
         />
@@ -123,7 +137,7 @@
           :userName.sync="userName"
           :machineName.sync="machineName"
           :showOwner.sync="showOwner"
-          :targetMachine.sync="this.dialogMachine"
+          :targetMachine.sync="dialogMachine"
           @select="searchConditionSelected"
         />
       </v-flex>
@@ -148,7 +162,6 @@ export default {
   },
   mounted() {
     //1.firebaseのデータを読み込む
-    //    this.load = true;
     this.find = "load";
     //2.google adsenceのサイズ調整
     (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -162,6 +175,7 @@ export default {
   data() {
     return {
       showList: true,
+      editMode: false,
       dialogMachine: new Machine(""),
       editingMachineId: null,
 
@@ -173,8 +187,6 @@ export default {
 
       machines: [],
       find: "",
-      // seek: false,
-      // load: false,
       user: null
     };
   },
@@ -187,15 +199,8 @@ export default {
         this.loadFromFirebase();
       }
     }
-    // seek(val) {
-    //   if (val === true) {
-    //     this.fetchNextPageFromFirebase(this.machines[this.machines.length - 1]);
-    //   }
-    // },
-    // load(val) {
-    //   if (val === true) {
-    //     this.loadFromFirebase();
-    //   }
+    // dialogMachine(val) {
+    //   alert("d" + val);
     // }
   },
   computed: {},
@@ -206,15 +211,27 @@ export default {
     //新しい機体を追加
     addMachine() {
       this.dialogMachine = new Machine("");
+      this.editMode = true;
       this.showList = false;
     },
     editMachine(machine) {
+      alert(machine);
       this.dialogMachine = machine;
       this.editingMachineId = machine.id;
+      this.editMode = true;
+      this.showList = false;
+    },
+    showMachine(machine) {
+      this.dialogMachine = machine;
+      this.editingMachineId = machine.id;
+      this.editMode = false;
       this.showList = false;
     },
     deleteMachine(machine) {
       this.deleteFromFirebase(machine);
+      this.dialogMachine = new Machine("");
+      this.showList = true;
+      this.editingMachineId = null;
     },
     //callback.
     saveMachine(machine) {
@@ -253,12 +270,6 @@ export default {
 
       query = query.limitToFirst(12);
 
-      // var query = firebase
-      //   .database()
-      //   .ref("embriomachine")
-      //   .orderByChild("orderBy")
-      //   .limitToFirst(12);
-
       query.once("value").then(snapshot => {
         snapshot.forEach(childSnapshot => {
           let key = childSnapshot.key;
@@ -268,22 +279,11 @@ export default {
           );
         });
         this.find = "";
-        // this.load = false;
       });
     },
 
     fetchNextPageFromFirebase(lastSearchedMachine) {
-      // var query = firebase
-      //   .database()
-      //   .ref("embriomachine")
-      //   .orderByChild("orderBy")
-      //   .startAt(lastSearchedMachine.orderBy, lastSearchedMachine.id)
-      //   .limitToFirst(13);
-      // alert(lastSearchedMachine.name);
-      //      alert(lastSearchedMachine.name);
       var query = firebase.database().ref("embriomachine");
-      // alert(JSON.stringify(this.user));
-      // alert(lastSearchedMachine.userId);
       if (this.userName !== "") {
         query = query
           .orderByChild("userName")
@@ -318,7 +318,6 @@ export default {
           }
         });
 
-        // this.seek = false;
         this.find = "";
       });
     },
@@ -362,12 +361,22 @@ export default {
         updatedQuery
           .update({ orderBy: Machine.getOrderBy(updated) })
           .then(() => {
-            // this.load = "true";
             this.find = "load";
           });
       });
 
       //FIXME error
+    },
+
+    isEditable(machine) {
+      if (machine.userId === undefined || machine.userId === "anonimous") {
+        return true;
+      }
+      if (this.user === null) {
+        return false;
+      } else {
+        return this.user.uid === machine.userId;
+      }
     },
 
     updateToFirebase(id, machine) {
@@ -378,7 +387,6 @@ export default {
         .set(machine.toRealtimeDatabaseObject())
         .then(() => {
           this.find = "load";
-          // this.load = true;
         });
     },
 
@@ -389,7 +397,6 @@ export default {
         .remove()
         .then(() => {
           this.find = "load";
-          // this.load = true;
         });
     },
 
@@ -399,7 +406,6 @@ export default {
         event.target.scrollHeight - 40
       ) {
         this.find = "seek";
-        // this.seek = true;
       }
     },
     login() {
