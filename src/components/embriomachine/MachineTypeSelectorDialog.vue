@@ -40,6 +40,32 @@
                   row
                   wrap
                 >
+                  <!--FIXME コンポーネント化-->
+                  <v-toolbar
+                    floating
+                    dense
+                  >
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="select"
+                      >
+                        <v-icon>fas fa-hand-pointer</v-icon>
+                      </v-btn>
+                      <span>装甲・サイズを選択します。</span>
+                    </v-tooltip>
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="closeDialog"
+                      >
+                        <v-icon>fas fa-backward</v-icon>
+                      </v-btn>
+                      <span>機体作成・編集画面に戻ります。</span>
+                    </v-tooltip>
+                  </v-toolbar>
                   <v-flex xs6>
                     <v-list dense>
                       <v-list-tile>
@@ -135,19 +161,6 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="green darken-1"
-                      flat
-                      @click.native="select"
-                    >選択する</v-btn>
-                    <v-btn
-                      color="green darken-1"
-                      flat
-                      @click.native="closeDialog"
-                    >閉じる</v-btn>
-                  </v-card-actions>
                 </v-layout>
               </v-flex>
             </v-layout>

@@ -31,6 +31,41 @@
                 color="light-green lighten-1"
               ></v-radio>
             </v-radio-group>
+            <!--FIXME コンポーネント化-->
+            <v-toolbar
+              floating
+              dense
+              v-if="isXs"
+            >
+              <v-select
+                v-if="editMode"
+                :items="itemcounts"
+                v-model="itemcount"
+                label="装備数"
+                item-value="text"
+              ></v-select>
+              <v-tooltip>
+                <v-btn
+                  slot="activator"
+                  icon
+                  @click.native="select"
+                  :disabled="!editMode"
+                >
+                  <v-icon>fas fa-hand-pointer</v-icon>
+                </v-btn>
+                <span>装備を選択します。</span>
+              </v-tooltip>
+              <v-tooltip>
+                <v-btn
+                  slot="activator"
+                  icon
+                  @click.native="closeDialog"
+                >
+                  <v-icon>fas fa-backward</v-icon>
+                </v-btn>
+                <span>機体作成・編集画面に戻ります。</span>
+              </v-tooltip>
+            </v-toolbar>
           </v-flex>
           <v-flex
             sm9
@@ -78,6 +113,9 @@
           >
             <v-list :dense="isXs">
               <v-list-tile>
+                装備：
+              </v-list-tile>
+              <v-list-tile>
                 <v-list-tile-content :class="contentClass">種別／ランク</v-list-tile-content>
               </v-list-tile>
               <v-divider />
@@ -109,6 +147,40 @@
           >
             <v-list :dense="isXs">
               <v-list-tile>
+                <v-toolbar
+                  floating
+                  dense
+                  v-if="!isXs"
+                >
+                  <v-select
+                    v-if="editMode"
+                    :items="itemcounts"
+                    v-model="itemcount"
+                    label="装備数"
+                    item-value="text"
+                  ></v-select>
+                  <v-tooltip>
+                    <v-btn
+                      slot="activator"
+                      icon
+                      @click.native="select"
+                      :disabled="!editMode"
+                    >
+                      <v-icon>fas fa-hand-pointer</v-icon>
+                    </v-btn>
+                    <span>装備を選択します。</span>
+                  </v-tooltip>
+                  <v-tooltip>
+                    <v-btn
+                      slot="activator"
+                      icon
+                      @click.native="closeDialog"
+                    >
+                      <v-icon>fas fa-backward</v-icon>
+                    </v-btn>
+                    <span>機体作成・編集画面に戻ります。</span>
+                  </v-tooltip>
+                </v-toolbar>
               </v-list-tile>
               <v-list-tile>
                 <v-list-tile-content :class="contentClass">{{equipment.type}}（{{equipment.rank}}）</v-list-tile-content>
@@ -144,7 +216,7 @@
               ></span>
             </v-card-text>
           </v-flex>
-          <v-spacer></v-spacer>
+          <!-- <v-spacer></v-spacer>
           <v-flex xs3 />
           <v-flex xs3>
             <v-select
@@ -169,7 +241,7 @@
               flat
               @click.native="closeDialog"
             >閉じる</v-btn>
-          </v-flex>
+          </v-flex> -->
         </v-layout>
       </v-card>
     </v-dialog>

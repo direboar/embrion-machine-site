@@ -269,6 +269,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteEquipment(POSITION_CONST.POSITION_BODY,equipment)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
@@ -319,6 +320,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteEquipment(POSITION_CONST.POSITION_RIGHTARM,equipment)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
@@ -369,6 +371,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteEquipment(POSITION_CONST.POSITION_LEFTARM,equipment)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
@@ -420,6 +423,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteEquipment(POSITION_CONST.POSITION_RIGHTLEG,equipment)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
@@ -470,6 +474,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteEquipment(POSITION_CONST.POSITION_LEFTLEG,equipment)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>

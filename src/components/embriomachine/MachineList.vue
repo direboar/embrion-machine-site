@@ -183,7 +183,11 @@ export default {
 
       machines: [],
       find: "",
-      user: null
+      user: null,
+
+      //db名称
+      // dbname : "embriomachine" //テスト環境用
+      dbname: "embriomachine_prod" //本番環境用
     };
   },
   watch: {
@@ -247,7 +251,7 @@ export default {
     loadFromFirebase() {
       this.machines = [];
 
-      var query = firebase.database().ref("embriomachine");
+      var query = firebase.database().ref(this.dbname);
 
       if (this.userName !== "") {
         query = query.orderByChild("userName").equalTo(this.userName);
@@ -274,7 +278,7 @@ export default {
     },
 
     fetchNextPageFromFirebase(lastSearchedMachine) {
-      var query = firebase.database().ref("embriomachine");
+      var query = firebase.database().ref(this.dbname);
       if (this.userName !== "") {
         query = query
           .orderByChild("userName")
@@ -341,7 +345,7 @@ export default {
 
       let updated = firebase
         .database()
-        .ref("embriomachine")
+        .ref(this.dbname)
         .push(machine.toRealtimeDatabaseObject());
 
       let updatedQuery = firebase.database().ref(updated);
@@ -374,7 +378,7 @@ export default {
       machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
       firebase
         .database()
-        .ref("embriomachine/" + id)
+        .ref(this.dbname + "/" + id)
         .set(machine.toRealtimeDatabaseObject())
         .then(() => {
           this.find = "load";
@@ -384,7 +388,7 @@ export default {
     deleteFromFirebase(machine) {
       firebase
         .database()
-        .ref("embriomachine/" + machine.id)
+        .ref(this.dbname + "/" + machine.id)
         .remove()
         .then(() => {
           this.find = "load";
