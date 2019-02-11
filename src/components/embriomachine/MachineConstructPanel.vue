@@ -106,6 +106,9 @@
                       <v-list-tile>
                         <v-list-tile-content>イニシアチブ</v-list-tile-content>
                       </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>突撃／被突撃ダメージ</v-list-tile-content>
+                      </v-list-tile>
                       <v-divider />
                     </v-list>
                   </v-flex>
@@ -157,6 +160,9 @@
                       <v-divider />
                       <v-list-tile>
                         <v-list-tile-content class="subheaders">{{machine.machineType.initiative}}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content class="subheaders">{{machine.machineType.chargeDamage}}／{{machine.machineType.coveredChargeDamage}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                     </v-list>

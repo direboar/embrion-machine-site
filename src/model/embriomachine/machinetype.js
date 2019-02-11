@@ -102,7 +102,25 @@ export default class MachineType {
   static getDefaultMachineType(){
     return MachineType.getMachineTypes()[0];
   }
-  
+
+  //突撃ダメージ
+  get chargeDamage(){
+    if(this.constitution === undefined || this.constitution === 0){
+      return "";
+    }else{
+      return Math.floor(this.constitution / 4);
+    }
+  }
+
+  //非突撃ダメージ
+  get coveredChargeDamage(){
+    if(this.constitution === undefined || this.constitution === 0){
+      return "";
+    }else{
+      return Math.floor(this.constitution / 10);
+    }
+  }
+
   //選択可能なマシンタイプを取得する
   static getMachineTypes(){
     let ret = []

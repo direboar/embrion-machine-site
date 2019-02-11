@@ -86,6 +86,9 @@
                       <v-list-tile>
                         <v-list-tile-content :class="contentClass">イニシアチブ</v-list-tile-content>
                       </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass">突撃／被突撃Ⅾ</v-list-tile-content>
+                      </v-list-tile>
                     </v-list>
                     <v-divider />
                   </v-flex>
@@ -108,6 +111,9 @@
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-content :class="contentClass">{{machineType.initiative}}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass">{{machineType.chargeDamage}}／{{machineType.coveredChargeDamage}}</v-list-tile-content>
                       </v-list-tile>
                     </v-list>
                     <v-divider />
