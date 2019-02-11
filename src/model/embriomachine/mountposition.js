@@ -13,6 +13,10 @@ export default class MountPosition {
   static get LEG(){
     return "脚";
   }
+  //胴
+  static get BODY(){
+    return "胴";
+  }
   //腕・脚
   static get ARM_OR_LEG(){
     return "腕・脚";
@@ -45,6 +49,9 @@ export default class MountPosition {
     }
     if(mountPosition === MountPosition.ARM){
       return [MachineType.POSITION_LEFTARM,MachineType.POSITION_RIGHTARM];
+    }
+    if(mountPosition === MountPosition.BODY){
+      return [MachineType.POSITION_BODY];
     }
     if(mountPosition === MountPosition.LEG || mountPosition === MountPosition.LEG_EACH_ONE){
       return [MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];

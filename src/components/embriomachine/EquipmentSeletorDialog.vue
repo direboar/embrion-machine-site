@@ -3,7 +3,7 @@
     <v-dialog
       v-model="showDialog"
       :persistent="editMode"
-      max-width="800"
+      max-width="850"
       :fullscreen="isXs"
     >
       <v-card>
@@ -216,32 +216,6 @@
               ></span>
             </v-card-text>
           </v-flex>
-          <!-- <v-spacer></v-spacer>
-          <v-flex xs3 />
-          <v-flex xs3>
-            <v-select
-              v-if="editMode"
-              :items="itemcounts"
-              v-model="itemcount"
-              label="追加装備数"
-              item-value="text"
-            ></v-select>
-          </v-flex>
-          <v-flex xs3>
-            <v-btn
-              v-if="editMode"
-              color="green darken-1"
-              flat
-              @click.native="select"
-            >選択する</v-btn>
-          </v-flex>
-          <v-flex xs3>
-            <v-btn
-              color="green darken-1"
-              flat
-              @click.native="closeDialog"
-            >閉じる</v-btn>
-          </v-flex> -->
         </v-layout>
       </v-card>
     </v-dialog>
@@ -282,7 +256,7 @@ export default {
   data() {
     return {
       selectedEquipmentName: this.targetEquipment.name,
-      types: ["射撃", "白兵", "機雷", "装甲", "補助", "その他"],
+      types: ["射撃", "白兵", "機雷", "装甲", "補助", "突撃", "その他"],
       type: "射撃",
       ranks: ["A", "B"],
       selectedRanks: ["B"],
