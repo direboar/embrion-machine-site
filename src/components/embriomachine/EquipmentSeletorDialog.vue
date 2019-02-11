@@ -367,6 +367,7 @@ export default {
       this.itemcount = 1;
     },
     select() {
+      // this.$emit("update:targetEquipment", {});
       // this.$emit("update:targetEquipment", this.equipment);
       this.$emit("update:showDialog", false);
       this.$emit("select", this.equipment, this.itemcount);

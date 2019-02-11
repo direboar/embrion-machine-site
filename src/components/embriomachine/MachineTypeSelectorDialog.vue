@@ -221,8 +221,6 @@ export default {
     },
     headSlot() {
       return this.machineType.headSlot;
-      //return "";
-      //return MachineType.POSITION_HEAD;
     },
     contentClass() {
       if (this.$vuetify.breakpoint.name === "xs") {
@@ -238,13 +236,13 @@ export default {
 
   methods: {
     closeDialog() {
-      this.$emit("update:targetMachineType", {});
+      // this.$emit("update:targetMachineType", {});
       this.$emit("cancel");
       this.selectedMachineTypeName = "";
       this.$emit("update:showDialog", false);
     },
     select() {
-      this.$emit("update:targetMachineType", this.machineType);
+      // this.$emit("update:targetMachineType", this.machineType);
       this.$emit("select", this.machineType);
       this.selectedMachineTypeName = "";
       this.$emit("update:showDialog", false);

@@ -498,16 +498,22 @@
         ></ins>
       </v-card>
     </v-card>
-    <machine-type-selector-dialog
+    <!-- <machine-type-selector-dialog
       :show-dialog.sync="showMachineType"
       :targetMachineType.sync="dialogMachineType"
+      @select="acceptMachineType"
+      @cancel="cancel"
+    /> -->
+    <machine-type-selector-dialog
+      :show-dialog.sync="showMachineType"
+      :targetMachineType="dialogMachineType"
       @select="acceptMachineType"
       @cancel="cancel"
     />
     <equipment-seletor-dialog
       :show-dialog.sync="showEquipment"
-      :targetEquipment.sync="dialogEquipment"
-      :targetPosition.sync="dialogTargetPosition"
+      :targetEquipment="dialogEquipment"
+      :targetPosition="dialogTargetPosition"
       :editMode.sync="equipmentDialogEditMode"
       @select="acceptSelectedEquipment"
       @cancel="cancel"
@@ -577,7 +583,10 @@ export default {
 
   computed: {
     validateerror() {
-      if (this.machine.machineType.name === undefined) {
+      if (
+        this.machine.machineType.name === undefined ||
+        this.machine.machineType.name === ""
+      ) {
         return ["機体の装甲・サイズが未選択です"];
       } else {
         return this.machine.validate();
@@ -612,14 +621,15 @@ export default {
       this.equipmentDialogEditMode = false;
       this.showEquipment = true;
     },
-    acceptMachineType() {
-      this.machine.machineType = this.dialogMachineType;
+    acceptMachineType(machineType) {
+      this.machine.machineType = machineType;
+      this.dialogMachineType = new MachineType();
     },
     acceptSelectedEquipment(equipment, count) {
       for (let i = 0; i < count; i++) {
         this.machine.addEquipment(this.editingEquipmentPosition, equipment);
       }
-      // this.showEquipment = false;
+      this.dialogEquipment = {};
     },
     deleteEquipment(position, equipment) {
       this.machine.deleteEquipment(position, equipment);
@@ -634,7 +644,10 @@ export default {
     cancel() {
       this.dialogTargetPosition = null;
       this.editingEquipmentPosition = {};
-      this.dialogMachineType = {};
+
+      //ダイアログ選択内容の初期化
+      this.dialogEquipment = {};
+      this.dialogMachineType = new MachineType();
     },
     saveMachine() {
       //this.$emit("update:targetMachine", this.machine);
