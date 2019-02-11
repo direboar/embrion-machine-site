@@ -67,8 +67,18 @@ export default class Machine {
     return new Equipment("");//dummpy
   }
 
-  //firebaseに永続化する際のオブジェクトに変換する。
-  toRealtimeDatabaseObject(){
+  //firebaseに永続化する際のヘッダーオブジェクト（一覧検索用項目）に変換する。
+  toRealtimeDatabaseHeaderObject(){
+    return {
+      name : this.name,
+      lastUpdateTime : this.lastUpdateTime,
+      userId : this.userId,
+      userName : this.userName,
+    }
+  }
+
+  //firebaseに永続化する際のDetailオブジェクトに変換する。
+  toRealtimeDatabaseDetailObject(){
     let equipments ={};
     equipments[MachineType.POSITION_HEAD] = []
     equipments[MachineType.POSITION_BODY] = []
@@ -84,14 +94,68 @@ export default class Machine {
     this.equipmentToRealtimeDatabaseObject(equipments,MachineType.POSITION_RIGHTLEG);
     this.equipmentToRealtimeDatabaseObject(equipments,MachineType.POSITION_LEFTLEG);
 
+
     return {
-      name : this.name,
       machineType : this.machineType.name,
       equipments : equipments,
-      lastUpdateTime : this.lastUpdateTime,
-      userId : this.userId,
-      userName : this.userName,
+      id : this.id //headerのID。（detailからヘッダを検索する際に使用数r）
     }
+  }
+
+  //firebaseのオブジェクトから、エンティティに変化する。（headerのID、header,detailから復元）
+  static fromRealtimeDatabaseToEntity(key,header,detail){
+    let filtered = MachineType.getMachineTypes().filter(item =>{
+      return item.name === detail.machineType
+    });
+
+    let machineType = null;
+    if(filtered.length > 0){
+      machineType = filtered[0];
+    }
+
+    let machine = new Machine(header.name,machineType);
+    machine.equipmentFromRealtimeDatabaseObject(detail,MachineType.POSITION_HEAD);
+    machine.equipmentFromRealtimeDatabaseObject(detail,MachineType.POSITION_BODY);
+    machine.equipmentFromRealtimeDatabaseObject(detail,MachineType.POSITION_RIGHTARM);
+    machine.equipmentFromRealtimeDatabaseObject(detail,MachineType.POSITION_LEFTARM);
+    machine.equipmentFromRealtimeDatabaseObject(detail,MachineType.POSITION_RIGHTLEG);
+    machine.equipmentFromRealtimeDatabaseObject(detail,MachineType.POSITION_LEFTLEG);
+
+    machine.setLastUpdateTime(new Date(header.lastUpdateTime));
+    machine.setId(key)
+    machine.setUserIdAndUserName(header.userId,header.userName)
+    return machine;
+  }
+
+  //firebaseのヘッダオブジェクトから、一覧表示用のオブジェクトに変換する。（headerのID、headerから復元）
+  static fromRealtimeDatabaseToHeader(key,header){
+    // let key = childSnapshot.key;
+    // let childData = childSnapshot.val();
+    
+    // childData.id = key;
+
+    return {
+      id : key,
+      name : header.name,
+      userName : header.userName,
+      userId : header.userId,
+      lastUpdateTime : new Date(header.lastUpdateTime)
+    } ;   
+  }
+
+  equipmentFromRealtimeDatabaseObject(firebaseObject,positon){
+    let array = [];
+    if(firebaseObject.equipments !==undefined && firebaseObject.equipments[positon] !== undefined){
+      firebaseObject.equipments[positon].forEach(item=>{
+        let filtered = Equipment.getEquipments().filter(equipment =>{
+          return item === equipment.name;
+        });
+        if(filtered.length > 0){
+          array.push(filtered[0]);
+        }
+      });
+    }
+    this.equipments[positon] = array;
   }
 
   equipmentToRealtimeDatabaseObject(equipments,positon){
@@ -109,44 +173,6 @@ export default class Machine {
      return 9999999999999 - realtimeDatabaseObject.lastUpdateTime
    }
 
-  static fromRealtimeDatabaseObject(key,data){
-    let filtered = MachineType.getMachineTypes().filter(item =>{
-      return item.name === data.machineType
-    });
-
-    let machineType = null;
-    if(filtered.length > 0){
-      machineType = filtered[0];
-    }
-
-    let machine = new Machine(data.name,machineType);
-    machine.equipmentFromRealtimeDatabaseObject(data,MachineType.POSITION_HEAD);
-    machine.equipmentFromRealtimeDatabaseObject(data,MachineType.POSITION_BODY);
-    machine.equipmentFromRealtimeDatabaseObject(data,MachineType.POSITION_RIGHTARM);
-    machine.equipmentFromRealtimeDatabaseObject(data,MachineType.POSITION_LEFTARM);
-    machine.equipmentFromRealtimeDatabaseObject(data,MachineType.POSITION_RIGHTLEG);
-    machine.equipmentFromRealtimeDatabaseObject(data,MachineType.POSITION_LEFTLEG);
-
-    machine.setLastUpdateTime(new Date(data.lastUpdateTime));
-    machine.setId(key)
-    machine.setUserIdAndUserName(data.userId,data.userName)
-    return machine;
-  }
-
-  equipmentFromRealtimeDatabaseObject(firebaseObject,positon){
-    let array = [];
-    if(firebaseObject.equipments !==undefined && firebaseObject.equipments[positon] !== undefined){
-      firebaseObject.equipments[positon].forEach(item=>{
-        let filtered = Equipment.getEquipments().filter(equipment =>{
-          return item === equipment.name;
-        });
-        if(filtered.length > 0){
-          array.push(filtered[0]);
-        }
-      });
-    }
-    this.equipments[positon] = array;
-  }
 
 // １．装備合計数チェック
 // ２．装備の種類ごとに以下のチェック

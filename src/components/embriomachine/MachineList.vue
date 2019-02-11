@@ -151,6 +151,8 @@ import MachineConstructPanel from "@/components/embriomachine/MachineConstructPa
 import Machine from "@/model/embriomachine/machine";
 import firebase from "firebase";
 
+import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
+
 export default {
   components: {
     MachineConstructPanel,
@@ -174,6 +176,7 @@ export default {
       editMode: false,
       dialogMachine: new Machine(""),
       editingMachineId: null,
+      editingMachineDetailId: null,
 
       //検索条件
       showFilterConditionDialog: false,
@@ -185,17 +188,39 @@ export default {
       find: "",
       user: null,
 
-      //db名称
-      // dbname : "embriomachine" //テスト環境用
-      dbname: "embriomachine_prod" //本番環境用
+      storage: new FirebaseStorage()
     };
   },
   watch: {
     find(val) {
       if (val === "seek") {
-        this.fetchNextPageFromFirebase(this.machines[this.machines.length - 1]);
+        this.storage.fetchNextPageFromFirebase(
+          this.machines[this.machines.length - 1],
+          this.userName,
+          this.machineName,
+          this.showOwner,
+          this.user,
+          readed => {
+            readed.forEach(item => {
+              this.machines.push(item);
+            });
+            this.find = "";
+          }
+        );
       } else if (val === "load") {
-        this.loadFromFirebase();
+        this.storage.loadFromFirebase(
+          this.userName,
+          this.machineName,
+          this.showOwner,
+          this.user,
+          readed => {
+            this.machines = [];
+            readed.forEach(item => {
+              this.machines.push(item);
+            });
+            this.find = "";
+          }
+        );
       }
     }
   },
@@ -210,35 +235,58 @@ export default {
       this.editMode = true;
       this.showList = false;
     },
-    editMachine(machine) {
-      this.dialogMachine = machine;
-      this.editingMachineId = machine.id;
-      this.editMode = true;
-      this.showList = false;
+    editMachine(header) {
+      this.storage.getMachineDetail(header, (machine, detailKey) => {
+        this.dialogMachine = machine;
+        this.editingMachineId = header.id;
+        this.editingMachineDetailId = detailKey;
+        this.editMode = true;
+        this.showList = false;
+      });
     },
-    showMachine(machine) {
-      this.dialogMachine = machine;
-      this.editingMachineId = machine.id;
-      this.editMode = false;
-      this.showList = false;
+    showMachine(header) {
+      this.storage.getMachineDetail(header, (machine, detailKey) => {
+        this.dialogMachine = machine;
+        this.editingMachineId = machine.id;
+        this.editMode = false;
+        this.showList = false;
+        this.editingMachineDetailId = detailKey;
+      });
     },
+
     deleteMachine(machine) {
-      this.deleteFromFirebase(machine);
-      this.dialogMachine = new Machine("");
-      this.showList = true;
-      this.editingMachineId = null;
+      this.storage.deleteFromFirebase(
+        machine.id,
+        this.editingMachineDetailId,
+        () => {
+          this.dialogMachine = new Machine("");
+          this.showList = true;
+          this.editingMachineId = null;
+          this.find = "load";
+        }
+      );
     },
+
     //callback.
     saveMachine(machine) {
+      let callback = () => {
+        this.dialogMachine = new Machine("");
+        this.showList = true;
+        this.editingMachineId = null;
+        this.find = "load";
+      };
       if (this.editingMachineId === null) {
-        this.saveToFirebase(machine);
+        this.storage.saveToFirebase(machine, this.user, callback);
       } else {
-        this.updateToFirebase(this.editingMachineId, machine);
+        this.storage.updateToFirebase(
+          this.editingMachineId,
+          this.editingMachineDetailId,
+          machine,
+          callback
+        );
       }
-      this.dialogMachine = new Machine("");
-      this.showList = true;
-      this.editingMachineId = null;
     },
+
     cancel() {
       this.dialogMachine = new Machine("");
       this.showList = true;
@@ -246,121 +294,6 @@ export default {
     },
     searchConditionSelected() {
       this.find = "load";
-      // this.load = true;
-    },
-    loadFromFirebase() {
-      this.machines = [];
-
-      var query = firebase.database().ref(this.dbname);
-
-      if (this.userName !== "") {
-        query = query.orderByChild("userName").equalTo(this.userName);
-      } else if (this.machineName !== "") {
-        query = query.orderByChild("name").equalTo(this.machineName);
-      } else if (this.showOwner) {
-        query = query.orderByChild("userId").equalTo(this.user.uid);
-      } else {
-        query = query.orderByChild("orderBy");
-      }
-
-      query = query.limitToFirst(12);
-
-      query.once("value").then(snapshot => {
-        snapshot.forEach(childSnapshot => {
-          let key = childSnapshot.key;
-          let childData = childSnapshot.val();
-          this.machines.push(
-            Machine.fromRealtimeDatabaseObject(key, childData)
-          );
-        });
-        this.find = "";
-      });
-    },
-
-    fetchNextPageFromFirebase(lastSearchedMachine) {
-      var query = firebase.database().ref(this.dbname);
-      if (this.userName !== "") {
-        query = query
-          .orderByChild("userName")
-          .startAt(this.userName, lastSearchedMachine.id);
-      } else if (this.machineName !== "") {
-        query = query
-          .orderByChild("name")
-          .startAt(this.machineName, lastSearchedMachine.id);
-      } else if (this.showOwner && this.user != null) {
-        query = query
-          .orderByChild("userId")
-          .startAt(this.user.uid, lastSearchedMachine.id);
-      } else {
-        query = query
-          .orderByChild("orderBy")
-          .startAt(lastSearchedMachine.orderBy, lastSearchedMachine.id);
-      }
-
-      query = query.limitToFirst(13);
-
-      query.once("value").then(snapshot => {
-        snapshot.forEach(childSnapshot => {
-          let key = childSnapshot.key;
-          let childData = childSnapshot.val();
-          //最終行のデータも取得されてしまうため、最終更新時間が同じデータは飛ばす。
-          if (key === lastSearchedMachine.id) {
-          } else {
-            let machine = Machine.fromRealtimeDatabaseObject(key, childData);
-            if (!this.filter(machine)) {
-              this.machines.push(machine);
-            }
-          }
-        });
-
-        this.find = "";
-      });
-    },
-
-    //ページングで、条件一致で検索した場合、equalTo(値、キー)で正しく実装できない。
-    //そのため＜条件で取得し、プログラム側で名称が異なる場合は再取得しない処理を実装する。
-    filter(machine) {
-      if (this.userName !== "" && this.userName !== machine.userName) {
-        return true;
-      }
-      if (this.machineName !== "" && this.name !== machine.name) {
-        return true;
-      }
-      if (
-        this.showOwner &&
-        this.user != null &&
-        this.user.uid !== machine.userId
-      ) {
-        return true;
-      }
-      return false;
-    },
-
-    saveToFirebase(machine) {
-      let userId = this.user === null ? "anonimous" : this.user.uid;
-      let userName = this.user === null ? "anonimous" : this.user.displayName;
-
-      machine.setUserIdAndUserName(userId, userName);
-      machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
-
-      let updated = firebase
-        .database()
-        .ref(this.dbname)
-        .push(machine.toRealtimeDatabaseObject());
-
-      let updatedQuery = firebase.database().ref(updated);
-
-      updatedQuery.once("value").then(snapshot => {
-        let updated = snapshot.val();
-
-        updatedQuery
-          .update({ orderBy: Machine.getOrderBy(updated) })
-          .then(() => {
-            this.find = "load";
-          });
-      });
-
-      //FIXME error
     },
 
     isEditable(machine) {
@@ -372,27 +305,6 @@ export default {
       } else {
         return this.user.uid === machine.userId;
       }
-    },
-
-    updateToFirebase(id, machine) {
-      machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
-      firebase
-        .database()
-        .ref(this.dbname + "/" + id)
-        .set(machine.toRealtimeDatabaseObject())
-        .then(() => {
-          this.find = "load";
-        });
-    },
-
-    deleteFromFirebase(machine) {
-      firebase
-        .database()
-        .ref(this.dbname + "/" + machine.id)
-        .remove()
-        .then(() => {
-          this.find = "load";
-        });
     },
 
     onScroll(event) {
@@ -408,6 +320,7 @@ export default {
       firebase.auth().languageCode = "jp";
       firebase.auth().signInWithRedirect(provider);
     },
+
     logout() {
       firebase
         .auth()
