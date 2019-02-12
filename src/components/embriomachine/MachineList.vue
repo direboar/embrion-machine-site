@@ -128,12 +128,14 @@
           @cancel="cancel"
           v-if="!showList"
         />
+        <!--FIXME machine-filter-conditin-dialogが正しいのでは？-->
         <equipment-filter-condition-dialog
           :show-dialog.sync="showFilterConditionDialog"
           :userName.sync="userName"
           :machineName.sync="machineName"
           :showOwner.sync="showOwner"
           :targetMachine.sync="dialogMachine"
+          :showOwnerEnabled.sync="this.user !== null"
           @select="searchConditionSelected"
         />
       </v-flex>
@@ -327,6 +329,16 @@ export default {
         .signOut()
         .then(() => {
           this.user = null;
+          alert(this.showOwner);
+
+          //絞込条件を初期化する
+          this.userName = "";
+          this.machineName = "";
+          this.showOwner = false;
+
+          alert(this.showOwner);
+
+          //再検索
           this.find = "load";
         });
     }

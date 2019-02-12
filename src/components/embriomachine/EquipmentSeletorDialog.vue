@@ -113,7 +113,15 @@
           >
             <v-list :dense="isXs">
               <v-list-tile>
-                装備：
+                <v-select
+                  v-if="editMode&&!isXs"
+                  :items="itemcounts"
+                  v-model="itemcount"
+                  label="装備数"
+                  item-value="text"
+                ></v-select>
+              </v-list-tile>
+              <v-list-tile>
               </v-list-tile>
               <v-list-tile>
                 <v-list-tile-content :class="contentClass">種別／ランク</v-list-tile-content>
@@ -149,16 +157,8 @@
               <v-list-tile>
                 <v-toolbar
                   floating
-                  dense
                   v-if="!isXs"
                 >
-                  <v-select
-                    v-if="editMode"
-                    :items="itemcounts"
-                    v-model="itemcount"
-                    label="装備数"
-                    item-value="text"
-                  ></v-select>
                   <v-tooltip>
                     <v-btn
                       slot="activator"
@@ -181,6 +181,8 @@
                     <span>機体作成・編集画面に戻ります。</span>
                   </v-tooltip>
                 </v-toolbar>
+              </v-list-tile>
+              <v-list-tile>
               </v-list-tile>
               <v-list-tile>
                 <v-list-tile-content :class="contentClass">{{equipment.type}}（{{equipment.rank}}）</v-list-tile-content>

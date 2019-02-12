@@ -36,6 +36,7 @@
               <v-checkbox
                 label="自分が作成したデータを参照する"
                 v-model="l_showOwner"
+                :disabled="!showOwnerEnabled"
               ></v-checkbox>
             </v-form>
           </v-flex>
@@ -92,6 +93,10 @@ export default {
     showOwner: {
       type: Boolean,
       default: false
+    },
+    showOwnerEnabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -103,7 +108,12 @@ export default {
     };
   },
 
-  watch: {},
+  watch: {
+    //親コンポーネントの値が変わったらコピーする。
+    showOwner(val) {
+      this.l_showOwner = val;
+    }
+  },
 
   computed: {
     validateerror() {

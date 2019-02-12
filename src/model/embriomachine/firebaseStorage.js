@@ -109,7 +109,6 @@ export default class FirebaseStorage {
   //ページングで、条件一致で検索した場合、equalTo(値、キー)で正しく実装できない。
   //そのため＜条件で取得し、プログラム側で名称が異なる場合は再取得しない処理を実装する。
   filter(machine,userName, machineName, showOwner, user) {
-    alert(JSON.stringify(machine))
     if (userName !== "" && userName !== machine.userName) {
       return true;
     }
