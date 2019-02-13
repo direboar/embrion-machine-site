@@ -658,7 +658,6 @@ export default {
     saveMachine() {
       //this.$emit("update:targetMachine", this.machine);
       this.$emit("save", this.machine);
-      this.machine = new Machine("", new MachineType());
       this.dialogTargetPosition = null;
       this.editingEquipmentPosition = {};
       this.dialogMachineType = new MachineType();
