@@ -329,14 +329,11 @@ export default {
         .signOut()
         .then(() => {
           this.user = null;
-          alert(this.showOwner);
 
           //絞込条件を初期化する
           this.userName = "";
           this.machineName = "";
           this.showOwner = false;
-
-          alert(this.showOwner);
 
           //再検索
           this.find = "load";

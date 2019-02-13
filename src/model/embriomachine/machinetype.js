@@ -108,7 +108,7 @@ export default class MachineType {
     if(this.constitution === undefined || this.constitution === 0){
       return "";
     }else{
-      return Math.floor(this.constitution / 4);
+      return Math.ceil(this.constitution / 4);
     }
   }
 
@@ -117,7 +117,7 @@ export default class MachineType {
     if(this.constitution === undefined || this.constitution === 0){
       return "";
     }else{
-      return Math.floor(this.constitution / 10);
+      return Math.ceil(this.constitution / 10);
     }
   }
 
