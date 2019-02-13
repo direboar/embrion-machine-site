@@ -8,6 +8,7 @@ export default class FirebaseStorage {
     this.machines = []
     this.headerdb = "embriomachine/header";
     this.detaildb = "embriomachine/detail";
+    this.pagesize = 15;
   }
 
   getMachineDetail(header, callback) {
@@ -47,7 +48,7 @@ export default class FirebaseStorage {
       query = query.orderByChild("orderBy");
     }
 
-    query = query.limitToFirst(12);
+    query = query.limitToFirst(this.pagesize);
 
     query.once("value").then(snapshot => {
       let machines = [];
@@ -61,7 +62,8 @@ export default class FirebaseStorage {
         machines.push(Machine.fromRealtimeDatabaseToHeader(key, childData));
       });
 
-      callback(machines);
+      let hasNxtPage = machines.length == this.pagesize ;
+      callback(machines,hasNxtPage);
     });
   }
 
@@ -90,7 +92,7 @@ export default class FirebaseStorage {
         .startAt(lastSearchedMachineHeader.orderBy, lastSearchedMachineHeader.id + "\uf8ff");
     }
 
-    query = query.limitToFirst(13);
+    query = query.limitToFirst(this.pagesize);
 
     query.once("value").then(snapshot => {
       let machines = [];
@@ -101,7 +103,9 @@ export default class FirebaseStorage {
         machines.push(Machine.fromRealtimeDatabaseToHeader(key, childData));
         // alert(JSON.stringify(childData))
       });
-      callback(machines);
+
+      let hasNxtPage = machines.length == this.pagesize ;
+      callback(machines,hasNxtPage);
       // this.find = "";
     });
   }

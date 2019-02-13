@@ -58,58 +58,71 @@
               <span>機体を追加します。</span>
             </v-tooltip>
           </v-toolbar>
-          <v-container
+          <!-- <v-container
             style="max-height: 800px; max-width: 100%"
             class="scroll-y"
             id="scroll-target"
             v-on:scroll="onScroll"
+          > -->
+          <v-list
+            two-line
+            subheader
           >
-            <v-list
-              two-line
-              subheader
+            <v-list-tile
+              avatar
+              v-for="(item,index) in machines"
+              :key="index"
             >
-              <v-list-tile
-                avatar
-                v-for="(item,index) in machines"
-                :key="index"
-              >
-                <v-list-tile-avatar>
-                  <v-icon class="grey lighten-1 white--text">folder</v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                  <v-list-tile-sub-title>作成者：{{item.userName}}</v-list-tile-sub-title>
-                  <v-list-tile-sub-title>最終更新日時: {{ item.lastUpdateTime }} </v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-tooltip top>
-                    <v-btn
-                      slot="activator"
-                      icon
-                      ripple
-                      @click="editMachine(item)"
-                      :disabled="!isEditable(item)"
-                    >
-                      <v-icon color="green lighten-1">edit</v-icon>
-                    </v-btn>
-                    <span>機体を編集します。</span>
-                  </v-tooltip>
-                  <v-tooltip top>
-                    <v-btn
-                      slot="activator"
-                      icon
-                      ripple
-                      @click="showMachine(item)"
-                    >
-                      <v-icon color="green lighten-1">zoom_in</v-icon>
-                    </v-btn>
-                    <span>機体を参照します。</span>
-                  </v-tooltip>
-                </v-list-tile-action>
-              </v-list-tile>
-              <v-divider inset></v-divider>
-            </v-list>
-          </v-container>
+              <v-list-tile-avatar>
+                <v-icon class="grey lighten-1 white--text">folder</v-icon>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                <v-list-tile-sub-title>作成者：{{item.userName}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>最終更新日時: {{ item.lastUpdateTime }} </v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-action>
+                <v-tooltip top>
+                  <v-btn
+                    slot="activator"
+                    icon
+                    ripple
+                    @click="editMachine(item)"
+                    :disabled="!isEditable(item)"
+                  >
+                    <v-icon color="green lighten-1">edit</v-icon>
+                  </v-btn>
+                  <span>機体を編集します。</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn
+                    slot="activator"
+                    icon
+                    ripple
+                    @click="showMachine(item)"
+                  >
+                    <v-icon color="green lighten-1">zoom_in</v-icon>
+                  </v-btn>
+                  <span>機体を参照します。</span>
+                </v-tooltip>
+              </v-list-tile-action>
+            </v-list-tile>
+            <v-divider inset></v-divider>
+          </v-list>
+          <v-card-actions class="justify-center">
+            <v-btn
+              class="text-xs-center"
+              flat
+              icon
+              color="green lighten-1"
+              @click="showNextPage()"
+              :disabled="!hasNext"
+            >
+              <v-icon>fas fa-angle-double-down</v-icon>
+              　もっと見る
+            </v-btn>
+          </v-card-actions>
+          <!-- </v-container> -->
         </v-card>
         <v-card>
           <ins
@@ -185,6 +198,7 @@ export default {
       userName: "",
       machineName: "",
       showOwner: false,
+      hasNext: false,
 
       machines: [],
       find: "",
@@ -202,10 +216,11 @@ export default {
           this.machineName,
           this.showOwner,
           this.user,
-          readed => {
+          (readed, hasNext) => {
             readed.forEach(item => {
               this.machines.push(item);
             });
+            this.hasNext = hasNext;
             this.find = "";
           }
         );
@@ -215,11 +230,12 @@ export default {
           this.machineName,
           this.showOwner,
           this.user,
-          readed => {
+          (readed, hasNext) => {
             this.machines = [];
             readed.forEach(item => {
               this.machines.push(item);
             });
+            this.hasNext = hasNext;
             this.find = "";
           }
         );
@@ -314,8 +330,11 @@ export default {
         event.target.scrollTop + event.target.offsetHeight >=
         event.target.scrollHeight - 40
       ) {
-        this.find = "seek";
+        this.showNextPage();
       }
+    },
+    showNextPage() {
+      this.find = "seek";
     },
     login() {
       var provider = new firebase.auth.TwitterAuthProvider();
