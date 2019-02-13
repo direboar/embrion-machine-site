@@ -57,6 +57,16 @@
               </v-btn>
               <span>機体を追加します。</span>
             </v-tooltip>
+            <v-tooltip>
+              <v-btn
+                slot="activator"
+                icon
+                @click.native="showHelpDialog = true"
+              >
+                <v-icon>help</v-icon>
+              </v-btn>
+              <span>ヘルプを表示します。</span>
+            </v-tooltip>
           </v-toolbar>
           <!-- <v-container
             style="max-height: 800px; max-width: 100%"
@@ -151,6 +161,7 @@
           :showOwnerEnabled.sync="this.user !== null"
           @select="searchConditionSelected"
         />
+        <help-dialog :showDialog.sync="showHelpDialog" />
       </v-flex>
     </v-layout>
 
@@ -163,6 +174,7 @@
 <script>
 import EquipmentFilterConditionDialog from "@/components/embriomachine/EquipmentFilterConditionDialog";
 import MachineConstructPanel from "@/components/embriomachine/MachineConstructPanel";
+import HelpDialog from "@/components/embriomachine/HelpDialog";
 import Machine from "@/model/embriomachine/machine";
 import firebase from "firebase";
 
@@ -171,7 +183,8 @@ import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
 export default {
   components: {
     MachineConstructPanel,
-    EquipmentFilterConditionDialog
+    EquipmentFilterConditionDialog,
+    HelpDialog: HelpDialog
   },
   mounted() {
     //1.firebaseのデータを読み込む
@@ -204,7 +217,10 @@ export default {
       find: "",
       user: null,
 
-      storage: new FirebaseStorage()
+      storage: new FirebaseStorage(),
+
+      //help
+      showHelpDialog: false
     };
   },
   watch: {
@@ -315,7 +331,7 @@ export default {
     },
 
     isEditable(machine) {
-      if (machine.userId === undefined || machine.userId === "anonimous") {
+      if (machine.userId === undefined || machine.userId === "anonymous") {
         return true;
       }
       if (this.user === null) {

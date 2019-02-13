@@ -111,8 +111,8 @@ export default class FirebaseStorage {
   }
 
   saveToFirebase(machine, user, callback) {
-    let userId = user === null ? "anonimous" : user.uid;
-    let userName = user === null ? "anonimous" : user.displayName;
+    let userId = user === null ? "anonymous" : user.uid;
+    let userName = user === null ? "anonymous" : user.displayName;
 
     machine.setUserIdAndUserName(userId, userName);
     machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
