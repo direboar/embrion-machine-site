@@ -139,7 +139,8 @@ export default class Machine {
       name : header.name,
       userName : header.userName,
       userId : header.userId,
-      lastUpdateTime : new Date(header.lastUpdateTime)
+      lastUpdateTime : new Date(header.lastUpdateTime),
+      orderBy : header.orderBy
     } ;   
   }
 
@@ -164,12 +165,12 @@ export default class Machine {
     });
   }
 
-   // //ソート用項目 更新時間の降順ソートとしたいが、realtime databaseの仕様上、降順ソートをサポートしていないための措置。
-   get orderBy(){
-      return 9999999999999 - this.lastUpdateTime;
-   }
+  //  get orderBy(){
+  //     return 9999999999999 - this.lastUpdateTime;
+  //  }
 
-   static getOrderBy(realtimeDatabaseObject){
+   // //ソート用項目 更新時間の降順ソートとしたいが、realtime databaseの仕様上、降順ソートをサポートしていないための措置。
+   static calcOrderBy(realtimeDatabaseObject){
      return 9999999999999 - realtimeDatabaseObject.lastUpdateTime
    }
 

@@ -70,19 +70,24 @@ export default class FirebaseStorage {
     if (userName !== "") {
       query = query
         .orderByChild("userName")
-        .startAt(userName, lastSearchedMachineHeader.id);
+        //検索時に、＜を実現する場合に必要。@see https://firebase.google.com/docs/database/admin/retrieve-data?hl=ja
+        .startAt(userName, lastSearchedMachineHeader.id + "\uf8ff") 
+        .endAt(userName);
     } else if (machineName !== "") {
       query = query
         .orderByChild("name")
-        .startAt(machineName, lastSearchedMachineHeader.id);
+        .startAt(machineName, lastSearchedMachineHeader.id + "\uf8ff")
+        .endAt(machineName);
     } else if (showOwner && user != null) {
       query = query
         .orderByChild("userId")
-        .startAt(user.uid, lastSearchedMachineHeader.id);
+        .startAt(user.uid, lastSearchedMachineHeader.id + "\uf8ff")
+        .endAt(user.uid);
     } else {
       query = query
         .orderByChild("orderBy")
-        .startAt(Machine.getOrderBy(lastSearchedMachineHeader), lastSearchedMachineHeader.id);
+        //検索時に、＜を実現する場合に必要。（数値型のためインクリメント。）
+        .startAt(lastSearchedMachineHeader.orderBy, lastSearchedMachineHeader.id + "\uf8ff");
     }
 
     query = query.limitToFirst(13);
@@ -92,37 +97,13 @@ export default class FirebaseStorage {
       snapshot.forEach(childSnapshot => {
         let key = childSnapshot.key;
         let childData = childSnapshot.val();
-        //最終行のデータも取得されてしまうため、最終更新時間が同じデータは飛ばす。
-        if (key === lastSearchedMachineHeader.id) {
-        } else {
-          if (!this.filter(childData,userName, machineName, showOwner, user)) {
-            childData.id = key;
-            machines.push(Machine.fromRealtimeDatabaseToHeader(key, childData));
-          }
-        }
+        childData.id = key;
+        machines.push(Machine.fromRealtimeDatabaseToHeader(key, childData));
+        // alert(JSON.stringify(childData))
       });
       callback(machines);
       // this.find = "";
     });
-  }
-
-  //ページングで、条件一致で検索した場合、equalTo(値、キー)で正しく実装できない。
-  //そのため＜条件で取得し、プログラム側で名称が異なる場合は再取得しない処理を実装する。
-  filter(machine,userName, machineName, showOwner, user) {
-    if (userName !== "" && userName !== machine.userName) {
-      return true;
-    }
-    if (machineName !== "" && name !== machine.name) {
-      return true;
-    }
-    if (
-      showOwner &&
-      user != null &&
-      user.uid !== machine.userId
-    ) {
-      return true;
-    }
-    return false;
   }
 
   saveToFirebase(machine, user, callback) {
@@ -148,7 +129,7 @@ export default class FirebaseStorage {
 
       updatedQuery
         .update({
-          orderBy: Machine.getOrderBy(updated)
+          orderBy: Machine.calcOrderBy(updated)
         })
         .then(() => {
           //3.detailsを更新する。
@@ -183,7 +164,7 @@ export default class FirebaseStorage {
 
           headerRef
             .update({
-              orderBy: Machine.getOrderBy(updated)
+              orderBy: Machine.calcOrderBy(updated)
             })
             .then(() => {
               //detailを更新する。
