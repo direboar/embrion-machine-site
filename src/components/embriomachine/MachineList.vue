@@ -68,12 +68,6 @@
               <span>ヘルプを表示します。</span>
             </v-tooltip>
           </v-toolbar>
-          <!-- <v-container
-            style="max-height: 800px; max-width: 100%"
-            class="scroll-y"
-            id="scroll-target"
-            v-on:scroll="onScroll"
-          > -->
           <v-list
             two-line
             subheader
@@ -132,7 +126,6 @@
               　もっと見る
             </v-btn>
           </v-card-actions>
-          <!-- </v-container> -->
         </v-card>
         <v-card>
           <ins
@@ -162,6 +155,10 @@
           @select="searchConditionSelected"
         />
         <help-dialog :showDialog.sync="showHelpDialog" />
+        <messge-dialog
+          :showDialog.sync="showErrorMessage"
+          :message="errorMessage"
+        />
       </v-flex>
     </v-layout>
 
@@ -175,6 +172,7 @@
 import EquipmentFilterConditionDialog from "@/components/embriomachine/EquipmentFilterConditionDialog";
 import MachineConstructPanel from "@/components/embriomachine/MachineConstructPanel";
 import HelpDialog from "@/components/embriomachine/HelpDialog";
+import MessgeDialog from "@/components/common/MessgeDialog";
 import Machine from "@/model/embriomachine/machine";
 import firebase from "firebase";
 
@@ -184,7 +182,8 @@ export default {
   components: {
     MachineConstructPanel,
     EquipmentFilterConditionDialog,
-    HelpDialog: HelpDialog
+    HelpDialog: HelpDialog,
+    MessgeDialog: MessgeDialog
   },
   mounted() {
     //1.firebaseのデータを読み込む
@@ -220,7 +219,11 @@ export default {
       storage: new FirebaseStorage(),
 
       //help
-      showHelpDialog: false
+      showHelpDialog: false,
+
+      //error
+      showErrorMessage: false,
+      errorMessage: ""
     };
   },
   watch: {
@@ -238,6 +241,10 @@ export default {
             });
             this.hasNext = hasNext;
             this.find = "";
+          },
+          errormsg => {
+            this.showErrorMessageDialog(errormsg);
+            this.find = "";
           }
         );
       } else if (val === "load") {
@@ -252,6 +259,10 @@ export default {
               this.machines.push(item);
             });
             this.hasNext = hasNext;
+            this.find = "";
+          },
+          errormsg => {
+            this.showErrorMessageDialog(errormsg);
             this.find = "";
           }
         );
@@ -270,22 +281,34 @@ export default {
       this.showList = false;
     },
     editMachine(header) {
-      this.storage.getMachineDetail(header, (machine, detailKey) => {
-        this.dialogMachine = machine;
-        this.editingMachineId = header.id;
-        this.editingMachineDetailId = detailKey;
-        this.editMode = true;
-        this.showList = false;
-      });
+      this.storage.getMachineDetail(
+        header,
+        (machine, detailKey) => {
+          this.dialogMachine = machine;
+          this.editingMachineId = header.id;
+          this.editingMachineDetailId = detailKey;
+          this.editMode = true;
+          this.showList = false;
+        },
+        errormsg => {
+          this.showErrorMessageDialog(errormsg);
+        }
+      );
     },
     showMachine(header) {
-      this.storage.getMachineDetail(header, (machine, detailKey) => {
-        this.dialogMachine = machine;
-        this.editingMachineId = machine.id;
-        this.editMode = false;
-        this.showList = false;
-        this.editingMachineDetailId = detailKey;
-      });
+      this.storage.getMachineDetail(
+        header,
+        (machine, detailKey) => {
+          this.dialogMachine = machine;
+          this.editingMachineId = machine.id;
+          this.editMode = false;
+          this.showList = false;
+          this.editingMachineDetailId = detailKey;
+        },
+        errormsg => {
+          this.showErrorMessageDialog(errormsg);
+        }
+      );
     },
 
     deleteMachine(machine) {
@@ -297,6 +320,9 @@ export default {
           this.showList = true;
           this.editingMachineId = null;
           this.find = "load";
+        },
+        errormsg => {
+          this.showErrorMessageDialog(errormsg);
         }
       );
     },
@@ -309,6 +335,9 @@ export default {
         this.editingMachineId = null;
         this.find = "load";
       };
+      let errorCallback = errormsg => {
+        this.showErrorMessageDialog(errormsg);
+      };
       if (this.editingMachineId === null) {
         this.storage.saveToFirebase(machine, this.user, callback);
       } else {
@@ -316,7 +345,8 @@ export default {
           this.editingMachineId,
           this.editingMachineDetailId,
           machine,
-          callback
+          callback,
+          errorCallback
         );
       }
     },
@@ -352,6 +382,12 @@ export default {
     showNextPage() {
       this.find = "seek";
     },
+
+    showErrorMessageDialog(errorMessage) {
+      this.errorMessage = errorMessage;
+      this.showErrorMessage = true;
+    },
+
     login() {
       var provider = new firebase.auth.TwitterAuthProvider();
       firebase.auth().languageCode = "jp";

@@ -11,7 +11,7 @@ export default class FirebaseStorage {
     this.pagesize = 15;
   }
 
-  getMachineDetail(header, callback) {
+  getMachineDetail(header, callback, error) {
     //1.編集対象のデータをdetailのDBからフェッチする。
     let query = firebase
       .database()
@@ -21,22 +21,29 @@ export default class FirebaseStorage {
       .limitToFirst(1);
 
     query.once("value").then(snapshot => {
-      //2.両方のDBのデータをマージしてモデルを復元する。
-      snapshot.forEach(childSnapshot => {
-        let detailKey = childSnapshot.key;
-        let detail = childSnapshot.val();
-        let machine = Machine.fromRealtimeDatabaseToEntity(
-          header.id,
-          header,
-          detail
-        );
-        //callbackメソッドを呼ぶ。
-        callback(machine, detailKey);
-      });
+      if (!snapshot.exists()) {
+        error("機体データが取得できません。データが破損しています。")
+        //detailがとれない。例外処理
+      } else {
+        //2.両方のDBのデータをマージしてモデルを復元する。
+        snapshot.forEach(childSnapshot => {
+          let detailKey = childSnapshot.key;
+          let detail = childSnapshot.val();
+          let machine = Machine.fromRealtimeDatabaseToEntity(
+            header.id,
+            header,
+            detail
+          );
+          //callbackメソッドを呼ぶ。
+          callback(machine, detailKey);
+        });
+      }
+    }).catch(function (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
     });
   }
 
-  loadFromFirebase(userName, machineName, showOwner, user, callback) {
+  loadFromFirebase(userName, machineName, showOwner, user, callback, error) {
     var query = firebase.database().ref(this.headerdb);
     if (userName !== "") {
       query = query.orderByChild("userName").equalTo(userName);
@@ -62,18 +69,20 @@ export default class FirebaseStorage {
         machines.push(Machine.fromRealtimeDatabaseToHeader(key, childData));
       });
 
-      let hasNxtPage = machines.length == this.pagesize ;
-      callback(machines,hasNxtPage);
+      let hasNxtPage = machines.length == this.pagesize;
+      callback(machines, hasNxtPage);
+    }).catch(function (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
     });
   }
 
-  fetchNextPageFromFirebase(lastSearchedMachineHeader, userName, machineName, showOwner, user, callback) {
+  fetchNextPageFromFirebase(lastSearchedMachineHeader, userName, machineName, showOwner, user, callback, error) {
     var query = firebase.database().ref(this.headerdb);
     if (userName !== "") {
       query = query
         .orderByChild("userName")
         //検索時に、＜を実現する場合に必要。@see https://firebase.google.com/docs/database/admin/retrieve-data?hl=ja
-        .startAt(userName, lastSearchedMachineHeader.id + "\uf8ff") 
+        .startAt(userName, lastSearchedMachineHeader.id + "\uf8ff")
         .endAt(userName);
     } else if (machineName !== "") {
       query = query
@@ -104,13 +113,15 @@ export default class FirebaseStorage {
         // alert(JSON.stringify(childData))
       });
 
-      let hasNxtPage = machines.length == this.pagesize ;
-      callback(machines,hasNxtPage);
+      let hasNxtPage = machines.length == this.pagesize;
+      callback(machines, hasNxtPage);
       // this.find = "";
+    }).catch(function (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
     });
   }
 
-  saveToFirebase(machine, user, callback) {
+  saveToFirebase(machine, user, callback, error) {
     let userId = user === null ? "anonymous" : user.uid;
     let userName = user === null ? "anonymous" : user.displayName;
 
@@ -121,35 +132,69 @@ export default class FirebaseStorage {
     let updated = firebase
       .database()
       .ref(this.headerdb)
-      .push(machine.toRealtimeDatabaseHeaderObject());
+      .push(machine.toRealtimeDatabaseHeaderObject(), (e) => {
+        if (e) {
+          error("通信エラーが発生しました。" + JSON.stringify(e))
+          return;
 
-    let updatedQuery = firebase.database().ref(updated);
+        } else {
+          let updatedQuery = firebase.database().ref(updated);
+          updatedQuery.once("value").then(snapshot => {
+            //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得し、updatedを再計算して更新する。
+            let updated = snapshot.val();
+            let key = snapshot.key;
+            machine.setId(key);
 
-    updatedQuery.once("value").then(snapshot => {
-      //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得し、updatedを再計算して更新する。
-      let updated = snapshot.val();
-      let key = snapshot.key;
-      machine.setId(key);
+            updatedQuery
+              .update({
+                orderBy: Machine.calcOrderBy(updated)
+              })
+              .then(() => {
+                //3.detailsを更新する。
+                firebase
+                  .database()
+                  .ref(this.detaildb)
+                  .push(machine.toRealtimeDatabaseDetailObject());
 
-      updatedQuery
-        .update({
-          orderBy: Machine.calcOrderBy(updated)
-        })
-        .then(() => {
-          //3.detailsを更新する。
-          firebase
-            .database()
-            .ref(this.detaildb)
-            .push(machine.toRealtimeDatabaseDetailObject());
+                callback();
+              }).catch(function (e) {
+                error("通信エラーが発生しました。" + JSON.stringify(e))
+                //FIXME rollback
+              });
+          }).catch(function (e) {
+            error("通信エラーが発生しました。" + JSON.stringify(e))
+            //FIXME rollback
+          });
+        }
+      });
 
-          callback();
-        });
-    });
+    // let updatedQuery = firebase.database().ref(updated);
 
-    //FIXME error
+    // updatedQuery.once("value").then(snapshot => {
+    //   //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得し、updatedを再計算して更新する。
+    //   let updated = snapshot.val();
+    //   let key = snapshot.key;
+    //   machine.setId(key);
+
+    //   updatedQuery
+    //     .update({
+    //       orderBy: Machine.calcOrderBy(updated)
+    //     })
+    //     .then(() => {
+    //       //3.detailsを更新する。
+    //       firebase
+    //         .database()
+    //         .ref(this.detaildb)
+    //         .push(machine.toRealtimeDatabaseDetailObject());
+
+    //       callback();
+    //     });
+    // });
+
+    // //FIXME error
   }
 
-  updateToFirebase(id, detailId, machine, callback) {
+  updateToFirebase(id, detailId, machine, callback, error) {
     machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
     //1.headerを更新する。
 
@@ -179,12 +224,18 @@ export default class FirebaseStorage {
                 .then(() => {
                   callback();
                 });
+            }).catch(function (e) {
+              error("通信エラーが発生しました。" + JSON.stringify(e))
+              //FIXME rollback
             });
+        }).catch(function (e) {
+          error("通信エラーが発生しました。" + JSON.stringify(e))
+          //FIXME rollback
         });
       });
   }
 
-  deleteFromFirebase(id, detailId, callback) {
+  deleteFromFirebase(id, detailId, callback,error) {
     firebase
       .database()
       .ref(this.headerdb + "/" + id)
@@ -196,7 +247,13 @@ export default class FirebaseStorage {
           .remove()
           .then(() => {
             callback();
+          }).catch(function (e) {
+            error("通信エラーが発生しました。" + JSON.stringify(e))
+            //FIXME rollback
           });
+      }).catch(function (e) {
+        error("通信エラーが発生しました。" + JSON.stringify(e))
+        //FIXME rollback
       });
   }
 

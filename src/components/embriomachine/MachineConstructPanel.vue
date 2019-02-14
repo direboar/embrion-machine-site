@@ -124,6 +124,7 @@
                             v-model="machine.name"
                             required
                             :disabled="!editMode"
+                            maxlength="20"
                           />
                         </v-list-tile-content>
                       </v-list-tile>
