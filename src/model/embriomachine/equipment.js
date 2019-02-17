@@ -545,6 +545,19 @@ export default class Equipment {
         "maxLimit":2
        },
        {
+        "name":"グレネードランチャー",
+        "rank":"A",
+        "type":"射撃",
+        "range":"1～5",
+        "damage":"3",
+        "damageType":"射撃・実弾兵器",
+        "mountPosition":"全部位",
+        "minLimit":2,
+        "equipSamePosition":true,
+        "effect":"森によるダメージへの修正を受けない。<br/>機体ではなくマスが対象となる。目標のマスとその四辺に隣接しているすべての機体にダメージを与える。",
+        "maxLimit":2
+       },
+       {
         "name":"ロングアンカー",
         "rank":"A",
         "type":"射撃",

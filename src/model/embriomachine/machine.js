@@ -21,6 +21,9 @@ export default class Machine {
     this.equipments[MachineType.POSITION_LEFTARM] = []
     this.equipments[MachineType.POSITION_RIGHTLEG] = []
     this.equipments[MachineType.POSITION_LEFTLEG] = []
+
+    //自由記入欄
+    this.memo = "";
   }
 
   setLastUpdateTime(lastUpdateTime){
@@ -42,6 +45,10 @@ export default class Machine {
   setUserIdAndUserName(userId,userName){
     this.userId = userId;
     this.userName = userName;
+  }
+
+  setMemo(memo){
+    this.memo = memo;
   }
 
   addEquipment(position,equipment){
@@ -94,11 +101,11 @@ export default class Machine {
     this.equipmentToRealtimeDatabaseObject(equipments,MachineType.POSITION_RIGHTLEG);
     this.equipmentToRealtimeDatabaseObject(equipments,MachineType.POSITION_LEFTLEG);
 
-
     return {
       machineType : this.machineType.name,
       equipments : equipments,
-      id : this.id //headerのID。（detailからヘッダを検索する際に使用数r）
+      id : this.id, //headerのID。（detailからヘッダを検索する際に使用数r）,
+      memo : this.memo
     }
   }
 
@@ -124,6 +131,12 @@ export default class Machine {
     machine.setLastUpdateTime(new Date(header.lastUpdateTime));
     machine.setId(key)
     machine.setUserIdAndUserName(header.userId,header.userName)
+
+    let memo = detail.memo;
+    if(memo === undefined){
+      memo = "";
+    }
+    machine.setMemo(memo);
     return machine;
   }
 

@@ -123,7 +123,7 @@
                             type="text"
                             v-model="machine.name"
                             required
-                            :disabled="!editMode"
+                            :readonly="!editMode"
                             maxlength="20"
                           />
                         </v-list-tile-content>
@@ -489,6 +489,20 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
+                  <v-toolbar
+                    color="grey darken-1"
+                    dark
+                    dense
+                  >
+                    <v-toolbar-title>自由入力欄</v-toolbar-title>
+                  </v-toolbar>
+                  <v-textarea
+                    label="機体に関するメモを記入してください（最大500文字)。"
+                    rows="10"
+                    maxlength="500"
+                    :readonly="!editMode"
+                    v-model="machine.memo"
+                  ></v-textarea>
                 </v-layout>
               </v-card>
             </v-flex>
