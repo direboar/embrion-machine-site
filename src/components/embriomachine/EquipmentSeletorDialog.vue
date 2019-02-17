@@ -285,7 +285,7 @@ export default {
       }
     },
     equipment: function(val) {
-      this.itemcount = val.minLimit;
+      this.itemcount = val.calcDefaultItemCount();
     },
     showDialog: function(val) {
       if (!val) {
@@ -314,7 +314,8 @@ export default {
     },
 
     equipment() {
-      let ret = {};
+      let ret = new Equipment();
+
       this.equipments.forEach(item => {
         if (item.name === this.selectedEquipmentName) {
           ret = item;
@@ -322,6 +323,7 @@ export default {
       });
       return ret;
     },
+
     contentClass() {
       if (this.$vuetify.breakpoint.name === "xs") {
         return "caption";

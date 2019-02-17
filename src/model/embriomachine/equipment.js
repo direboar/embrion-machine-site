@@ -47,6 +47,22 @@ export default class Equipment {
     }
   }
 
+  //画面に表示するデフォルトの装備数を算出。
+  //同じ部位に装備する必要がない場合は１とする。
+  calcDefaultItemCount(){
+    //FIXME ダミーオブジェクトの場合（minLimit定義なしで判断）はから文字を返す。
+    //いまいちなので修正したい。
+    if(this.minLimit === undefined){
+      return "";
+    }
+
+    if(this.equipSamePosition === true){
+      return this.minLimit;
+    }else{
+      return 1;
+    }
+  }
+
   //指定した部位に装備できるかを判定する。
   canEquip(equipmentPosition){
     //2-1.装備品の装備可能部位から、装備可能なポジションのリストを取得し、装備可能な位置に装備しているかをチェック。
