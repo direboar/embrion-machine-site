@@ -64,6 +64,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: config.dev.assetsSubDirectory,
         ignore: ['.*']
       }
+    ]),
+    //pdf make.
+    new CopyWebpackPlugin([
+      {
+        from: './src/assets/pdfmake',
+        to: './build/plugins/pdfmake',    
+      }
     ])
   ]
 })

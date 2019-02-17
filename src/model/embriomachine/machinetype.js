@@ -99,6 +99,14 @@ export default class MachineType {
     return this.getSlot(MachineType.POSITION_LEFTLEG)
   }
 
+  get size(){
+    return this.name.split("・")[0];
+  }
+
+  get weight(){
+    return this.name.split("・")[1].replace("サイズ","");
+  }
+
   static getDefaultMachineType(){
     return MachineType.getMachineTypes()[0];
   }
@@ -111,7 +119,7 @@ export default class MachineType {
       return Math.ceil(this.constitution / 4);
     }
   }
-
+  
   //非突撃ダメージ
   get coveredChargeDamage(){
     if(this.constitution === undefined || this.constitution === 0){
