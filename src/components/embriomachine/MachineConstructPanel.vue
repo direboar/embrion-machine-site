@@ -715,6 +715,8 @@ export default {
     },
     printPdf() {
       let machineType = this.machine.machineType;
+
+      //pdfMakeはindex.htmlで読み込み、定義されている。
       pdfMake.fonts = {
         GenShin: {
           normal: "GenShinGothic-Normal-Sub.ttf",
@@ -908,7 +910,8 @@ export default {
         }
       };
 
-      pdfMake.createPdf(docDefinition).download("sample.pdf");
+      let fileName = this.machine.name + "pdf";
+      pdfMake.createPdf(docDefinition).download(fileName);
     }
   }
 };
