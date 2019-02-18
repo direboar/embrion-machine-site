@@ -11,6 +11,23 @@ export default class FirebaseStorage {
     this.pagesize = 15;
   }
 
+  getMachineHeaderAndDetail(id,callback,error){
+    firebase.database().ref(this.headerdb +"/" + id).once('value').then((snapshot)=> {
+      if (!snapshot.exists()) {
+        error("機体データが取得できません。データが破損しています。")
+        //detailがとれない。例外処理
+      } else {
+        let childData = snapshot.val();
+        childData.id = snapshot.key;
+        let header = Machine.fromRealtimeDatabaseToHeader(snapshot.key, childData);
+        let retVal = this.getMachineDetail(header,callback,error)
+        return retVal;
+      }
+    }).catch(function (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
+    });
+  }
+
   getMachineDetail(header, callback, error) {
     //1.編集対象のデータをdetailのDBからフェッチする。
     let query = firebase

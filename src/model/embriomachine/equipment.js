@@ -583,7 +583,7 @@ export default class Equipment {
         "mountPosition":"全部位",
         "minLimit":1,
         "equipSamePosition":true,
-        "effect":"森によるダメージの修正を受けない。<br/>射撃の前に期待の向きを変更できる。<br/>対象を時期の正面に移動させる。その際、対象の向きは変わらない。",
+        "effect":"森によるダメージの修正を受けない。<br/>射撃の前に機体の向きを変更できる。<br/>対象を自機の正面に移動させる。その際、対象の向きは変わらない。",
         "maxLimit":1
        },
        {

@@ -52,7 +52,7 @@
                         slot="activator"
                         icon
                         @click.native="printPdf"
-                        :disabled="validateerror.length>0"
+                        :disabled="!canPrint"
                       >
                         <v-icon>fas fa-file-pdf</v-icon>
                       </v-btn>
@@ -90,6 +90,7 @@
                       two-line
                       subheader
                     >
+                      <v-divider />
                       <v-list-tile>
                         <v-list-tile-content>名前</v-list-tile-content>
                       </v-list-tile>
@@ -119,6 +120,9 @@
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-content>突撃／被突撃ダメージ</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content>機体へのリンク</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                     </v-list>
@@ -175,6 +179,12 @@
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-content class="subheaders">{{machine.machineType.chargeDamage}}／{{machine.machineType.coveredChargeDamage}}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-divider />
+                      <v-list-tile>
+                        <v-list-tile-content>
+                          <a :href="linkurl">{{linkurl}}</a>
+                        </v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                     </v-list>
@@ -624,6 +634,24 @@ export default {
       } else {
         return this.machine.validate();
       }
+    },
+    linkurl() {
+      if (this.machine.id === null || this.machine.id === undefined) {
+        return "";
+      } else {
+        return (
+          // "http://localhost:8080/dist/#/embrioMachine/link/" +
+          "https://direboar.github.io/embriosupport-prod-page/dist/#/embrioMachine/link/" +
+          this.machine.id
+        );
+      }
+    },
+    //FIXME リンク時にpdfMakeがundefinedとなる事象への暫定対処
+    canPrint() {
+      if (this.validateerror.length > 0) {
+        return false;
+      }
+      return true;
     }
   },
 
