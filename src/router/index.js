@@ -6,8 +6,6 @@ import MachineConstructPanel from '@/components/embriomachine/MachineConstructPa
 import MachineList from '@/components/embriomachine/MachineList'
 import EquipmentFilterConditionDialog from '@/components/embriomachine/EquipmentFilterConditionDialog'
 
-import MachineLinkPanel from '@/components/embriomachine/MachineLinkPanel'
-
 //ie11対応
 //see https://www.d-wood.com/blog/2016/04/12_7917.html
 //see https://qiita.com/terrierscript/items/d2a9d5d4daedaacff924
@@ -50,8 +48,23 @@ export default new Router({
       title: 'test',
       component: EquipmentSeletorTester
     },
-    { path: '/embrioMachine/link/:id', 
-      component: MachineLinkPanel
+    { 
+      path: '/embrioMachine/link/:id', 
+      name: 'showMachine',
+      component: MachineConstructPanel,
+      props: { editMode: false }
+    },
+    { 
+      path: '/embrioMachine/edit/:id', 
+      name: 'editMachine',
+      component: MachineConstructPanel,
+      props: { editMode: true }
+    },
+    { 
+      path: '/embrioMachine/create', 
+      name: 'createMachine',
+      component: MachineConstructPanel,
+      props: { editMode: true }
     },
   ]
 })

@@ -42,6 +42,15 @@ export default class Machine {
     return this.id;
   }
 
+  
+  setDetailId(detailId){
+    this.detailId = detailId;
+  }
+
+  getDetailId(){
+    return this.detailId;
+  }
+
   setUserIdAndUserName(userId,userName){
     this.userId = userId;
     this.userName = userName;
@@ -110,7 +119,7 @@ export default class Machine {
   }
 
   //firebaseのオブジェクトから、エンティティに変化する。（headerのID、header,detailから復元）
-  static fromRealtimeDatabaseToEntity(key,header,detail){
+  static fromRealtimeDatabaseToEntity(key,header,detailKey,detail){
     let filtered = MachineType.getMachineTypes().filter(item =>{
       return item.name === detail.machineType
     });
@@ -131,6 +140,7 @@ export default class Machine {
     machine.setLastUpdateTime(new Date(header.lastUpdateTime));
     machine.setId(key)
     machine.setUserIdAndUserName(header.userId,header.userName)
+    machine.setDetailId(detailKey)
 
     let memo = detail.memo;
     if(memo === undefined){

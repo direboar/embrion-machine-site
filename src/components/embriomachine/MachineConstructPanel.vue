@@ -540,12 +540,6 @@
         ></ins>
       </v-card>
     </v-card>
-    <!-- <machine-type-selector-dialog
-      :show-dialog.sync="showMachineType"
-      :targetMachineType.sync="dialogMachineType"
-      @select="acceptMachineType"
-      @cancel="cancel"
-    /> -->
     <machine-type-selector-dialog
       :show-dialog.sync="showMachineType"
       :targetMachineType="dialogMachineType"
@@ -567,6 +561,10 @@
       @callback="confirmDeleteCallback"
     >
     </ok-ng-dialog>
+    <messge-dialog
+      :showDialog.sync="showErrorMessage"
+      :message="errorMessage"
+    />
   </div>
 </template>
 
@@ -581,23 +579,22 @@ import Machine from "@/model/embriomachine/machine";
 import MachineType from "@/model/embriomachine/machinetype";
 import Equipment from "@/model/embriomachine/equipment";
 import CharcactersheetJpegBase64 from "@/model/embriomachine/CharcactersheetJpegBase64";
+import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
+import firebase from "firebase";
+import MessgeDialog from "@/components/common/MessgeDialog";
 
 export default {
   name: "MachineConstructPanel",
   components: {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
-    OkNgDialog: OkNgDialog
+    OkNgDialog: OkNgDialog,
+    MessgeDialog: MessgeDialog
   },
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   },
   props: {
-    //編集対象の装備データ。未選択の場合はnullを指定。
-    targetMachine: {
-      type: Object,
-      default: new Machine("")
-    },
     //編集モードかどうかの指定。
     editMode: {
       type: Boolean,
@@ -606,7 +603,8 @@ export default {
   },
   data() {
     return {
-      machine: Machine.assign(this.targetMachine),
+      id: this.$route.params["id"],
+      machine: new Machine(),
       showEquipment: false,
       showMachineType: false,
       dialogEquipment: {},
@@ -617,9 +615,42 @@ export default {
       equipmentDialogEditMode: false,
       POSITION_CONST: MachineType.getPositionConst(),
 
+      storage: new FirebaseStorage(),
+
       //削除ダイアログ
-      showDeleteConfirmDialog: false
+      showDeleteConfirmDialog: false,
+
+      //エラーダイアログ
+      showErrorMessage: false,
+      errorMessage: "",
+
+      user: null
     };
+  },
+
+  created() {
+    //machineのロード
+    if (this.id !== undefined && this.id !== null && this.id !== "") {
+      this.storage.getMachineHeaderAndDetail(
+        this.id,
+        machine => {
+          this.machine = machine;
+          // this.show = true;
+        },
+        e => {
+          this.showErrorMessageDialog(e);
+        }
+      );
+    } else {
+      // this.show = true;
+    }
+
+    //3.認証状態のフックを設定
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.user = user;
+      }
+    });
   },
 
   watch: {},
@@ -646,7 +677,7 @@ export default {
         );
       }
     },
-    //FIXME リンク時にpdfMakeがundefinedとなる事象への暫定対処
+
     canPrint() {
       if (this.validateerror.length > 0) {
         return false;
@@ -711,11 +742,26 @@ export default {
       this.dialogMachineType = new MachineType();
     },
     saveMachine() {
-      //this.$emit("update:targetMachine", this.machine);
-      this.$emit("save", this.machine);
-      this.dialogTargetPosition = null;
-      this.editingEquipmentPosition = {};
-      this.dialogMachineType = new MachineType();
+      let callback = () => {
+        this.show = false;
+        this.$router.push({ name: "MachineList" });
+      };
+      let errorCallback = errormsg => {
+        this.showErrorMessageDialog(errormsg);
+      };
+
+      if (this.machine.id === null || this.machine.id === undefined) {
+        this.storage.saveToFirebase(this.machine, this.user, callback);
+      } else {
+        //TODO
+        this.storage.updateToFirebase(
+          this.machine.id,
+          this.machine.detailId,
+          this.machine,
+          callback,
+          errorCallback
+        );
+      }
     },
     confirmDelete() {
       this.showDeleteConfirmDialog = true;
@@ -726,21 +772,28 @@ export default {
       }
     },
     deleteMachine() {
-      //      this.$emit("update:targetMachine", this.machine);
-      this.$emit("delete", this.machine);
-      this.machine = new Machine("", new MachineType());
-      this.dialogTargetPosition = null;
-      this.editingEquipmentPosition = {};
-      this.dialogMachineType = new MachineType();
+      this.storage.deleteFromFirebase(
+        this.machine.id,
+        this.machine.detailId,
+        () => {
+          this.dialogMachine = new Machine("");
+          this.show = false;
+          this.$router.push({ name: "MachineList" });
+        },
+        errormsg => {
+          this.showErrorMessageDialog(errormsg);
+        }
+      );
     },
     back() {
-      //      this.$emit("update:targetMachine", this.machine);
-      this.$emit("cancel");
-      this.machine = new Machine("", new MachineType());
-      this.dialogTargetPosition = null;
-      this.editingEquipmentPosition = {};
-      this.dialogMachineType = new MachineType();
+      this.$router.push({ name: "MachineList" });
     },
+
+    showErrorMessageDialog(errorMessage) {
+      this.errorMessage = errorMessage;
+      this.showErrorMessage = true;
+    },
+
     printPdf() {
       let machineType = this.machine.machineType;
 

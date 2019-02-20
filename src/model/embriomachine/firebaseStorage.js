@@ -11,16 +11,16 @@ export default class FirebaseStorage {
     this.pagesize = 15;
   }
 
-  getMachineHeaderAndDetail(id,callback,error){
-    firebase.database().ref(this.headerdb +"/" + id).once('value').then((snapshot)=> {
+  getMachineHeaderAndDetail(id, callback, error) {
+    firebase.database().ref(this.headerdb + "/" + id).once('value').then((snapshot) => {
       if (!snapshot.exists()) {
-        error("機体データが取得できません。データが破損しています。")
+        error("指定されたIDの機体データが取得できません。")
         //detailがとれない。例外処理
       } else {
         let childData = snapshot.val();
         childData.id = snapshot.key;
         let header = Machine.fromRealtimeDatabaseToHeader(snapshot.key, childData);
-        let retVal = this.getMachineDetail(header,callback,error)
+        let retVal = this.getMachineDetail(header, callback, error)
         return retVal;
       }
     }).catch(function (e) {
@@ -49,6 +49,7 @@ export default class FirebaseStorage {
           let machine = Machine.fromRealtimeDatabaseToEntity(
             header.id,
             header,
+            detailKey,
             detail
           );
           //callbackメソッドを呼ぶ。
@@ -184,31 +185,6 @@ export default class FirebaseStorage {
           });
         }
       });
-
-    // let updatedQuery = firebase.database().ref(updated);
-
-    // updatedQuery.once("value").then(snapshot => {
-    //   //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得し、updatedを再計算して更新する。
-    //   let updated = snapshot.val();
-    //   let key = snapshot.key;
-    //   machine.setId(key);
-
-    //   updatedQuery
-    //     .update({
-    //       orderBy: Machine.calcOrderBy(updated)
-    //     })
-    //     .then(() => {
-    //       //3.detailsを更新する。
-    //       firebase
-    //         .database()
-    //         .ref(this.detaildb)
-    //         .push(machine.toRealtimeDatabaseDetailObject());
-
-    //       callback();
-    //     });
-    // });
-
-    // //FIXME error
   }
 
   updateToFirebase(id, detailId, machine, callback, error) {
@@ -252,7 +228,7 @@ export default class FirebaseStorage {
       });
   }
 
-  deleteFromFirebase(id, detailId, callback,error) {
+  deleteFromFirebase(id, detailId, callback, error) {
     firebase
       .database()
       .ref(this.headerdb + "/" + id)
@@ -274,97 +250,4 @@ export default class FirebaseStorage {
       });
   }
 
-
-  // load(callback) {
-  //   this.machines = [];
-
-  //   var query = firebase
-  //     .database()
-  //     .ref("embriomachine")
-  //     .orderByChild("orderBy")
-  //     .limitToFirst(12);
-
-  //   query.once("value").then(snapshot => {
-  //     snapshot.forEach(childSnapshot => {
-  //       let key = childSnapshot.key;
-  //       let childData = childSnapshot.val();
-  //       this.machines.push(
-  //         Machine.fromRealtimeDatabaseObject(key, childData)
-  //       );
-  //     });
-  //     callback();
-  //     //   this.load = false;
-  //   });
-  // }
-
-  // fetch(lastSearchedMachine, callback) {
-  //   var query = firebase
-  //     .database()
-  //     .ref("embriomachine")
-  //     .orderByChild("orderBy")
-  //     .startAt(lastSearchedMachine.orderBy)
-  //     .limitToFirst(13);
-
-  //   query.once("value").then(snapshot => {
-  //     snapshot.forEach(childSnapshot => {
-  //       let key = childSnapshot.key;
-  //       let childData = childSnapshot.val();
-
-  //       //最終行のデータも取得されてしまうため、最終更新時間が同じデータは飛ばす。
-  //       if (!(childData.lastUpdateTime === lastSearchedMachine.orderBy)) {
-  //         this.machines.push(
-  //           Machine.fromRealtimeDatabaseObject(key, childData)
-  //         );
-  //       }
-  //     });
-  //     //   this.seek = false;
-  //     callback();
-  //   });
-  // }
-
-  // save(machine) {
-  //   machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
-
-  //   let updated = firebase
-  //     .database()
-  //     .ref("embriomachine")
-  //     .push(machine.toRealtimeDatabaseObject());
-
-  //   let updatedQuery = firebase.database().ref(updated);
-
-  //   updatedQuery.once("value").then(snapshot => {
-  //     let updated = snapshot.val();
-
-  //     updatedQuery
-  //       .update({
-  //         orderBy: Machine.getOrderBy(updated)
-  //       })
-  //       .then(() => {
-  //         this.load = true;
-  //       });
-  //   });
-
-  //   //FIXME error
-  // }
-
-  // update(id, machine) {
-  //   machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
-  //   firebase
-  //     .database()
-  //     .ref("embriomachine/" + id)
-  //     .set(machine.toRealtimeDatabaseObject())
-  //     .then(() => {
-  //       this.load = true;
-  //     });
-  // }
-
-  // delete(machine) {
-  //   firebase
-  //     .database()
-  //     .ref("embriomachine/" + machine.id)
-  //     .remove()
-  //     .then(() => {
-  //       this.load = true;
-  //     });
-  // }
 }

@@ -2,7 +2,7 @@
   <div>
     <v-layout row>
       <v-flex xs12>
-        <v-card v-if="showList">
+        <v-card>
           <v-toolbar>
             <v-tooltip top>
               <v-btn
@@ -136,21 +136,12 @@
             data-ad-format="auto"
           ></ins>
         </v-card>
-        <machine-construct-panel
-          :targetMachine.sync="dialogMachine"
-          :editMode.sync="editMode"
-          @save="saveMachine"
-          @delete="deleteMachine"
-          @cancel="cancel"
-          v-if="!showList"
-        />
         <!--FIXME machine-filter-conditin-dialogが正しいのでは？-->
         <equipment-filter-condition-dialog
           :show-dialog.sync="showFilterConditionDialog"
           :userName.sync="userName"
           :machineName.sync="machineName"
           :showOwner.sync="showOwner"
-          :targetMachine.sync="dialogMachine"
           :showOwnerEnabled.sync="this.user !== null"
           @select="searchConditionSelected"
         />
@@ -173,7 +164,6 @@ import EquipmentFilterConditionDialog from "@/components/embriomachine/Equipment
 import MachineConstructPanel from "@/components/embriomachine/MachineConstructPanel";
 import HelpDialog from "@/components/embriomachine/HelpDialog";
 import MessgeDialog from "@/components/common/MessgeDialog";
-import Machine from "@/model/embriomachine/machine";
 import firebase from "firebase";
 
 import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
@@ -199,12 +189,6 @@ export default {
   },
   data() {
     return {
-      showList: true,
-      editMode: false,
-      dialogMachine: new Machine(""),
-      editingMachineId: null,
-      editingMachineDetailId: null,
-
       //検索条件
       showFilterConditionDialog: false,
       userName: "",
@@ -276,86 +260,15 @@ export default {
     },
     //新しい機体を追加
     addMachine() {
-      this.dialogMachine = new Machine("");
-      this.editMode = true;
-      this.showList = false;
+      this.$router.push({ name: "createMachine" });
     },
     editMachine(header) {
-      this.storage.getMachineDetail(
-        header,
-        (machine, detailKey) => {
-          this.dialogMachine = machine;
-          this.editingMachineId = header.id;
-          this.editingMachineDetailId = detailKey;
-          this.editMode = true;
-          this.showList = false;
-        },
-        errormsg => {
-          this.showErrorMessageDialog(errormsg);
-        }
-      );
+      this.$router.push({ name: "editMachine", params: { id: header.id } });
     },
     showMachine(header) {
-      this.storage.getMachineDetail(
-        header,
-        (machine, detailKey) => {
-          this.dialogMachine = machine;
-          this.editingMachineId = machine.id;
-          this.editMode = false;
-          this.showList = false;
-          this.editingMachineDetailId = detailKey;
-        },
-        errormsg => {
-          this.showErrorMessageDialog(errormsg);
-        }
-      );
+      this.$router.push({ name: "showMachine", params: { id: header.id } });
     },
 
-    deleteMachine(machine) {
-      this.storage.deleteFromFirebase(
-        machine.id,
-        this.editingMachineDetailId,
-        () => {
-          this.dialogMachine = new Machine("");
-          this.showList = true;
-          this.editingMachineId = null;
-          this.find = "load";
-        },
-        errormsg => {
-          this.showErrorMessageDialog(errormsg);
-        }
-      );
-    },
-
-    //callback.
-    saveMachine(machine) {
-      let callback = () => {
-        this.dialogMachine = new Machine("");
-        this.showList = true;
-        this.editingMachineId = null;
-        this.find = "load";
-      };
-      let errorCallback = errormsg => {
-        this.showErrorMessageDialog(errormsg);
-      };
-      if (this.editingMachineId === null) {
-        this.storage.saveToFirebase(machine, this.user, callback);
-      } else {
-        this.storage.updateToFirebase(
-          this.editingMachineId,
-          this.editingMachineDetailId,
-          machine,
-          callback,
-          errorCallback
-        );
-      }
-    },
-
-    cancel() {
-      this.dialogMachine = new Machine("");
-      this.showList = true;
-      this.editingMachineId = null;
-    },
     searchConditionSelected() {
       this.find = "load";
     },
