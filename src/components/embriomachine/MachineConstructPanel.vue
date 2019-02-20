@@ -62,6 +62,17 @@
                       <v-btn
                         slot="activator"
                         icon
+                        @click.native="copyMachine"
+                        :disabled="editMode"
+                      >
+                        <v-icon>fas fa-copy</v-icon>
+                      </v-btn>
+                      <span>機体をコピーして作成画面に移動します（保存しないとコピーは失われます）。</span>
+                    </v-tooltip>
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
                         @click.native="confirmDelete"
                         :disabled="!editMode"
                       >
@@ -792,6 +803,14 @@ export default {
     showErrorMessageDialog(errorMessage) {
       this.errorMessage = errorMessage;
       this.showErrorMessage = true;
+    },
+
+    copyMachine() {
+      // 1. 今参照している機体のIDを削除し、編集モードに移行する
+      this.id = null;
+      this.machine.setId(null);
+      this.machine.setDetailId(null);
+      this.editMode = true;
     },
 
     printPdf() {
