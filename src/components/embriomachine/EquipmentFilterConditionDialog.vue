@@ -24,7 +24,7 @@
             </v-card-text>
           </v-flex>
           <v-flex xs12>
-            <v-form v-model="valid">
+            <v-form>
               <v-text-field
                 v-model="l_userName"
                 label="ユーザー名（完全一致）"
