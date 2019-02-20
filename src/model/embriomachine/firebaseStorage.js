@@ -6,8 +6,9 @@ import firebase from "firebase";
 export default class FirebaseStorage {
   constructor() {
     this.machines = []
-    this.headerdb = "embriomachine/header";
-    this.detaildb = "embriomachine/detail";
+    //realtime databaseのルートノード。configで設定。
+    this.headerdb = process.env.HEADER_DB;
+    this.detaildb = process.env.DETAIL_DB;
     this.pagesize = 15;
   }
 
