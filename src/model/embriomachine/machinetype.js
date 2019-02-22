@@ -100,11 +100,11 @@ export default class MachineType {
   }
 
   get size(){
-    return this.name.split("・")[0];
+    return this.name.split("・")[1].replace("サイズ","");
   }
 
   get weight(){
-    return this.name.split("・")[1].replace("サイズ","");
+    return this.name.split("・")[0];
   }
 
   static getDefaultMachineType(){

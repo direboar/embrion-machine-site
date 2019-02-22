@@ -646,14 +646,11 @@ export default {
         this.id,
         machine => {
           this.machine = machine;
-          // this.show = true;
         },
         e => {
           this.showErrorMessageDialog(e);
         }
       );
-    } else {
-      // this.show = true;
     }
 
     //3.認証状態のフックを設定
@@ -754,7 +751,6 @@ export default {
     },
     saveMachine() {
       let callback = () => {
-        this.show = false;
         this.$router.push({ name: "MachineList" });
       };
       let errorCallback = errormsg => {
@@ -788,7 +784,6 @@ export default {
         this.machine.detailId,
         () => {
           this.dialogMachine = new Machine("");
-          this.show = false;
           this.$router.push({ name: "MachineList" });
         },
         errormsg => {

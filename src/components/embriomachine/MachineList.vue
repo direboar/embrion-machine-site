@@ -284,14 +284,6 @@ export default {
       }
     },
 
-    onScroll(event) {
-      if (
-        event.target.scrollTop + event.target.offsetHeight >=
-        event.target.scrollHeight - 40
-      ) {
-        this.showNextPage();
-      }
-    },
     showNextPage() {
       this.find = "seek";
     },
