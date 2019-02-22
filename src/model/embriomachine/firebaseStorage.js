@@ -1,8 +1,6 @@
 import Machine from "@/model/embriomachine/machine";
 import firebase from "firebase";
 
-//FIXME つかってない。
-
 export default class FirebaseStorage {
   constructor() {
     this.machines = []
@@ -12,6 +10,7 @@ export default class FirebaseStorage {
     this.pagesize = 15;
   }
 
+  //FIXME 全般的にcallback、error見直したい
   getMachineHeaderAndDetail(id, callback, error) {
     firebase.database().ref(this.headerdb + "/" + id).once('value').then((snapshot) => {
       if (!snapshot.exists()) {
@@ -29,7 +28,7 @@ export default class FirebaseStorage {
     });
   }
 
-  getMachineDetail(header, callback, error) {
+  async getMachineDetail(header, callback, error) {
     //1.編集対象のデータをdetailのDBからフェッチする。
     let query = firebase
       .database()
@@ -38,7 +37,8 @@ export default class FirebaseStorage {
       .equalTo(header.id)
       .limitToFirst(1);
 
-    query.once("value").then(snapshot => {
+    try {
+      let snapshot = await query.once("value");
       if (!snapshot.exists()) {
         error("機体データが取得できません。データが破損しています。")
         //detailがとれない。例外処理
@@ -57,12 +57,12 @@ export default class FirebaseStorage {
           callback(machine, detailKey);
         });
       }
-    }).catch(function (e) {
+    } catch (e) {
       error("通信エラーが発生しました。" + JSON.stringify(e))
-    });
+    }
   }
 
-  loadFromFirebase(userName, machineName, showOwner, user, callback, error) {
+  async loadFromFirebase(userName, machineName, showOwner, user, callback, error) {
     var query = firebase.database().ref(this.headerdb);
     if (userName !== "") {
       query = query.orderByChild("userName").equalTo(userName);
@@ -76,7 +76,8 @@ export default class FirebaseStorage {
 
     query = query.limitToFirst(this.pagesize);
 
-    query.once("value").then(snapshot => {
+    try {
+      let snapshot = await query.once("value");
       let machines = [];
       snapshot.forEach(childSnapshot => {
         let key = childSnapshot.key;
@@ -86,16 +87,15 @@ export default class FirebaseStorage {
         //一覧画面には、ヘッダDBのレコードをそのまま設定する。
         //ただしキーを保持できないので、レコードの属性に生成されたキーを追加する。
         machines.push(Machine.fromRealtimeDatabaseToHeader(key, childData));
+        let hasNxtPage = machines.length == this.pagesize;
+        callback(machines, hasNxtPage);
       });
-
-      let hasNxtPage = machines.length == this.pagesize;
-      callback(machines, hasNxtPage);
-    }).catch(function (e) {
+    } catch (e) {
       error("通信エラーが発生しました。" + JSON.stringify(e))
-    });
+    }
   }
 
-  fetchNextPageFromFirebase(lastSearchedMachineHeader, userName, machineName, showOwner, user, callback, error) {
+  async fetchNextPageFromFirebase(lastSearchedMachineHeader, userName, machineName, showOwner, user, callback, error) {
     var query = firebase.database().ref(this.headerdb);
     if (userName !== "") {
       query = query
@@ -122,7 +122,8 @@ export default class FirebaseStorage {
 
     query = query.limitToFirst(this.pagesize);
 
-    query.once("value").then(snapshot => {
+    try {
+      let snapshot = await query.once("value");
       let machines = [];
       snapshot.forEach(childSnapshot => {
         let key = childSnapshot.key;
@@ -134,121 +135,112 @@ export default class FirebaseStorage {
 
       let hasNxtPage = machines.length == this.pagesize;
       callback(machines, hasNxtPage);
-      // this.find = "";
-    }).catch(function (e) {
+
+    } catch (e) {
       error("通信エラーが発生しました。" + JSON.stringify(e))
-    });
+    }
   }
 
-  saveToFirebase(machine, user, callback, error) {
+  async saveToFirebase(machine, user, callback, error) {
     let userId = user === null ? "anonymous" : user.uid;
     let userName = user === null ? "anonymous" : user.displayName;
 
     machine.setUserIdAndUserName(userId, userName);
     machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
 
-    //1.ヘッダを更新
-    let updated = firebase
-      .database()
-      .ref(this.headerdb)
-      .push(machine.toRealtimeDatabaseHeaderObject(), (e) => {
-        if (e) {
-          error("通信エラーが発生しました。" + JSON.stringify(e))
-          return;
+    try {
+      //1.ヘッダをINSERT(Push)
+      let updatedHeader = await firebase.database().ref(this.headerdb).push(machine.toRealtimeDatabaseHeaderObject());
+      //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得
+      let updatedQuery = await firebase.database().ref(updatedHeader);
+      let snapshot = await updatedQuery.once("value");
 
-        } else {
-          let updatedQuery = firebase.database().ref(updated);
-          updatedQuery.once("value").then(snapshot => {
-            //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得し、updatedを再計算して更新する。
-            let updated = snapshot.val();
-            let key = snapshot.key;
-            machine.setId(key);
+      //3.updatedを再計算してヘッダを再更新する。
+      let updated = snapshot.val();
+      let key = snapshot.key;
+      machine.setId(key);
+      await updatedQuery
+        .update({
+          orderBy: Machine.calcOrderBy(updated)
+        });
 
-            updatedQuery
-              .update({
-                orderBy: Machine.calcOrderBy(updated)
-              })
-              .then(() => {
-                //3.detailsを更新する。
-                firebase
-                  .database()
-                  .ref(this.detaildb)
-                  .push(machine.toRealtimeDatabaseDetailObject());
+      //4.detailをINSERT(Push)
+      await firebase
+        .database()
+        .ref(this.detaildb)
+        .push(machine.toRealtimeDatabaseDetailObject());
 
-                callback();
-              }).catch(function (e) {
-                error("通信エラーが発生しました。" + JSON.stringify(e))
-                //FIXME rollback
-              });
-          }).catch(function (e) {
-            error("通信エラーが発生しました。" + JSON.stringify(e))
-            //FIXME rollback
-          });
-        }
-      });
+      callback();
+
+    } catch (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
+      alert(e)
+      return;
+    }
   }
 
-  updateToFirebase(id, detailId, machine, callback, error) {
+  async updateToFirebase(machine, callback, error) {
     machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
     //1.headerを更新する。
 
-    let headerRef =
-      firebase
-      .database()
-      .ref(this.headerdb + "/" + id);
+    let id = machine.getId();
+    let detailId = machine.getDetailId();
 
-    headerRef.set(machine.toRealtimeDatabaseHeaderObject())
-      .then(() => {
-        headerRef.once("value").then(snapshot => {
-          //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得し、updatedを再計算して更新する。
-          let updated = snapshot.val();
-          let key = snapshot.key;
-          machine.setId(key);
+    try {
+      let headerRef =
+        await firebase
+        .database()
+        .ref(this.headerdb + "/" + id);
 
-          headerRef
-            .update({
-              orderBy: Machine.calcOrderBy(updated)
-            })
-            .then(() => {
-              //detailを更新する。
-              firebase
-                .database()
-                .ref(this.detaildb + "/" + detailId)
-                .set(machine.toRealtimeDatabaseDetailObject())
-                .then(() => {
-                  callback();
-                });
-            }).catch(function (e) {
-              error("通信エラーが発生しました。" + JSON.stringify(e))
-              //FIXME rollback
-            });
-        }).catch(function (e) {
-          error("通信エラーが発生しました。" + JSON.stringify(e))
-          //FIXME rollback
-        });
-      });
+      //1.headerを更新
+      await headerRef.set(machine.toRealtimeDatabaseHeaderObject());
+      //2.登録日付順でソートする項目（update）を算出するためヘッダを再取得
+      let header = await headerRef.once("value");
+      let updated = header.val();
+      let key = header.key;
+      machine.setId(key);
+      //3.updatedを再計算してヘッダを再更新する。
+      await headerRef
+        .update({
+          orderBy: Machine.calcOrderBy(updated)
+        })
+      //4.detailを更新(Push)
+      await firebase
+        .database()
+        .ref(this.detaildb + "/" + detailId)
+        .set(machine.toRealtimeDatabaseDetailObject());
+
+      callback();
+
+    } catch (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
+      return;
+      //FIXME rollback
+    }
   }
 
-  deleteFromFirebase(id, detailId, callback, error) {
-    firebase
-      .database()
-      .ref(this.headerdb + "/" + id)
-      .remove()
-      .then(() => {
-        firebase
-          .database()
-          .ref(this.detaildb + "/" + detailId)
-          .remove()
-          .then(() => {
-            callback();
-          }).catch(function (e) {
-            error("通信エラーが発生しました。" + JSON.stringify(e))
-            //FIXME rollback
-          });
-      }).catch(function (e) {
-        error("通信エラーが発生しました。" + JSON.stringify(e))
-        //FIXME rollback
-      });
+  async deleteFromFirebase(machine, callback, error) {
+    let id = machine.getId()
+    let detailId = machine.getDetailId()
+
+    try {
+      await firebase
+        .database()
+        .ref(this.headerdb + "/" + id)
+        .remove();
+
+      await firebase
+        .database()
+        .ref(this.detaildb + "/" + detailId)
+        .remove();
+
+      callback();
+
+    } catch (e) {
+      error("通信エラーが発生しました。" + JSON.stringify(e))
+      return;
+      //FIXME rollback
+    }
   }
 
 }

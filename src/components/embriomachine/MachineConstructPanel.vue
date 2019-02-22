@@ -758,16 +758,15 @@ export default {
       };
 
       if (this.machine.id === null || this.machine.id === undefined) {
-        this.storage.saveToFirebase(this.machine, this.user, callback);
-      } else {
-        //TODO
-        this.storage.updateToFirebase(
-          this.machine.id,
-          this.machine.detailId,
+        this.storage.saveToFirebase(
           this.machine,
+          this.user,
           callback,
           errorCallback
         );
+      } else {
+        //TODO
+        this.storage.updateToFirebase(this.machine, callback, errorCallback);
       }
     },
     confirmDelete() {
@@ -780,8 +779,7 @@ export default {
     },
     deleteMachine() {
       this.storage.deleteFromFirebase(
-        this.machine.id,
-        this.machine.detailId,
+        this.machine,
         () => {
           this.dialogMachine = new Machine("");
           this.$router.push({ name: "MachineList" });
