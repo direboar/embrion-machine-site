@@ -139,9 +139,9 @@
         <!--FIXME machine-filter-conditin-dialogが正しいのでは？-->
         <equipment-filter-condition-dialog
           :show-dialog.sync="showFilterConditionDialog"
-          :userName.sync="userName"
-          :machineName.sync="machineName"
-          :showOwner.sync="showOwner"
+          :userName.sync="filterCondition.userName"
+          :machineName.sync="filterCondition.machineName"
+          :showOwner.sync="filterCondition.showOwner"
           :showOwnerEnabled.sync="this.user !== null"
           @select="searchConditionSelected"
         />
@@ -175,6 +175,16 @@ export default {
     HelpDialog: HelpDialog,
     MessgeDialog: MessgeDialog
   },
+  created() {
+    //1.検索条件をセッションストレージから復元。（一覧画面に戻ってきた際のため。将来的にはvuex+session storageの連携に変えたい）
+    //what is sessionStorage? https://developer.mozilla.org/ja/docs/Web/API/Window/sessionStorage
+    let filterConditionOfThisSession = sessionStorage.getItem(
+      "embriomachine.filterCondition"
+    );
+    if (filterConditionOfThisSession != null) {
+      this.filterCondition = JSON.parse(filterConditionOfThisSession);
+    }
+  },
   mounted() {
     //1.firebaseのデータを読み込む
     this.find = "load";
@@ -191,9 +201,11 @@ export default {
     return {
       //検索条件
       showFilterConditionDialog: false,
-      userName: "",
-      machineName: "",
-      showOwner: false,
+      filterCondition: {
+        userName: "",
+        machineName: "",
+        showOwner: false
+      },
       hasNext: false,
 
       machines: [],
@@ -215,9 +227,9 @@ export default {
       if (val === "seek") {
         this.storage.fetchNextPageFromFirebase(
           this.machines[this.machines.length - 1],
-          this.userName,
-          this.machineName,
-          this.showOwner,
+          this.filterCondition.userName,
+          this.filterCondition.machineName,
+          this.filterCondition.showOwner,
           this.user,
           (readed, hasNext) => {
             readed.forEach(item => {
@@ -233,9 +245,9 @@ export default {
         );
       } else if (val === "load") {
         this.storage.loadFromFirebase(
-          this.userName,
-          this.machineName,
-          this.showOwner,
+          this.filterCondition.userName,
+          this.filterCondition.machineName,
+          this.filterCondition.showOwner,
           this.user,
           (readed, hasNext) => {
             this.machines = [];
@@ -270,6 +282,12 @@ export default {
     },
 
     searchConditionSelected() {
+      //1.検索条件をセッションストレージに保存（一覧画面に戻ってきた際のため。将来的にはvuex+session storageの連携に変えたい）
+      sessionStorage.setItem(
+        "embriomachine.filterCondition",
+        JSON.stringify(this.filterCondition)
+      );
+      //2.再検索のトリガを引く
       this.find = "load";
     },
 
