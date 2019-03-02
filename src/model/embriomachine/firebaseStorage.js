@@ -7,7 +7,9 @@ export default class FirebaseStorage {
     //realtime databaseのルートノード。configで設定。
     this.headerdb = process.env.HEADER_DB;
     this.detaildb = process.env.DETAIL_DB;
+    this.fileUploadDir = process.env.FILE_UPLOAD_DIR;
     this.pagesize = 15;
+
   }
 
   //FIXME コールバックを取るのではなく外側でハンドリングさせる
@@ -236,7 +238,7 @@ export default class FirebaseStorage {
   //id: machineのid,file:アップロードするBLOB Data
   uploadFile(id, file, callback, error) {
     let storageRef = firebase.storage().ref();
-    let imageRef = storageRef.child("images/" + id);
+    let imageRef = storageRef.child(this.fileUploadDir + "/" + id);
 
     //JavaScriptのbase64表現のヘッダを削除する。
     //https://qiita.com/weal/items/1a2af81138cd8f49937d 「data:mime/type;base64,...Base64String...という形式なのでカンマ以降を抜き出せばよい。」
@@ -257,7 +259,7 @@ export default class FirebaseStorage {
   //同期処理とする必要はないので、非同期とする。
   readFile(id, callback, error) {
     let storage = firebase.storage();
-    let pathReference = storage.ref("images/" + id);
+    let pathReference = storage.ref(this.fileUploadDir + "/" +id);
     pathReference
       .getDownloadURL()
       .then(url => {
