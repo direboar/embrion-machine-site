@@ -71,7 +71,7 @@ export default class PdfMaker {
         {
           text: machine.name,
           style: {
-            fontSize: 15
+            fontSize: machine.name.length > 20 ? 10 : 16
           },
           absolutePosition: {
             x: 460,

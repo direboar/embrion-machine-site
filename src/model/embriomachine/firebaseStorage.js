@@ -236,7 +236,7 @@ export default class FirebaseStorage {
 
   //同期処理とする必要はないので、非同期とする。
   //id: machineのid,file:アップロードするBLOB Data
-  uploadFile(id, file, callback, error) {
+  uploadFile(id, file, contentType,callback, error) {
     let storageRef = firebase.storage().ref();
     let imageRef = storageRef.child(this.fileUploadDir + "/" + id);
 
@@ -244,22 +244,22 @@ export default class FirebaseStorage {
     //https://qiita.com/weal/items/1a2af81138cd8f49937d 「data:mime/type;base64,...Base64String...という形式なのでカンマ以降を抜き出せばよい。」
     let base64 = file.replace(/data:.*\/*;base64,/, "");
     imageRef.putString(base64, "base64").then(() => {
+      let newMetadata = {
+        contentType: contentType,
+        cacheControl: 'public,max-age=300',
+      };
+      imageRef.updateMetadata(newMetadata).then(function(matadata) {}).catch((e)=>{alert(e)});
       callback()
     }).catch((e) => {
       error(e)
     })
 
-    // Create file metadata to update
-    // let newMetadata = {
-    //   contentType: "image/jpeg"
-    // };
-    // imageRef.updateMetadata(newMetadata).then(function(matadata) {});
   }
 
   //同期処理とする必要はないので、非同期とする。
   readFile(id, callback, error) {
     let storage = firebase.storage();
-    let pathReference = storage.ref(this.fileUploadDir + "/" +id);
+    let pathReference = storage.ref(this.fileUploadDir + "/" + id);
     pathReference
       .getDownloadURL()
       .then(url => {
@@ -271,8 +271,11 @@ export default class FirebaseStorage {
         xhr.onload = event => {
           let fileReader = new FileReader();
           fileReader.onload = data => {
-            let file = data.target.result;
-            callback(file);
+            // //発生しないはずだが念のため。
+            // if (xhr.status === 200) {
+              let file = data.target.result;
+              callback(file);
+            // }
           };
           fileReader.readAsDataURL(xhr.response);
         };

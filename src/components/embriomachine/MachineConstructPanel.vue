@@ -153,7 +153,7 @@
                             v-model="machine.name"
                             required
                             :readonly="!editMode"
-                            maxlength="20"
+                            maxlength="30"
                           />
                         </v-list-tile-content>
                       </v-list-tile>
@@ -618,7 +618,6 @@ import OkNgDialog from "@/components/common/OkNgDialog";
 import Machine from "@/model/embriomachine/machine";
 import MachineType from "@/model/embriomachine/machinetype";
 import Equipment from "@/model/embriomachine/equipment";
-import CharcactersheetJpegBase64 from "@/model/embriomachine/CharcactersheetJpegBase64";
 import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
 import firebase from "firebase";
 import MessgeDialog from "@/components/common/MessgeDialog";
@@ -671,6 +670,7 @@ export default {
 
       //添付ファイル
       file: "",
+      contentType: "",
       //ファイルが更新されたかどうかのフラグ。ONの場合だけ更新する。
       fileUpdated: false
     };
@@ -809,7 +809,15 @@ export default {
             updated = await this.storage.updateToFirebase(this.machine);
           }
 
-          this.storage.uploadFile(updated.id, this.file, () => {}, () => {});
+          if (this.fileUpdated && this.file !== "") {
+            this.storage.uploadFile(
+              updated.id,
+              this.file,
+              this.contentType,
+              () => {},
+              () => {}
+            );
+          }
           this.$router.push({ name: "MachineList" });
         } catch (e) {
           this.showErrorMessageDialog(e);
@@ -858,8 +866,22 @@ export default {
         let fileReader = new FileReader();
         fileReader.onload = data => {
           let file = data.target.result;
-          this.file = file;
-          this.fileUpdated = true;
+
+          //mime-typeを取得
+          let regex = /(data:)(.*\/*)(;base64,)/;
+          let matches = regex.exec(file);
+          if (matches.length == 4) {
+            let contentType = matches[2];
+            if (!contentType.startsWith("image")) {
+              this.showErrorMessageDialog(
+                "画像ファイル以外はアップロードできません"
+              );
+            } else {
+              this.file = file;
+              this.fileUpdated = true;
+              this.contentType = contentType;
+            }
+          }
         };
         fileReader.readAsDataURL(file);
       }
