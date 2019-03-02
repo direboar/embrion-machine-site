@@ -186,16 +186,20 @@ export default {
     }
   },
   mounted() {
-    //1.firebaseのデータを読み込む
-    this.find = "load";
-    //2.google adsenceのサイズ調整
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-    //3.認証状態のフックを設定
+    let user = firebase.auth().currentUser;
+    //1/認証していない場合はこの時点で、firebaseのデータを読み込む
+    if (user === null) {
+      this.load();
+    }
+    //2.認証状態のフックを設定。状態が変わったら再度読み込む。
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.user = user;
+        this.load();
       }
     });
+    //3.google adsenceのサイズ調整
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
   },
   data() {
     return {
@@ -222,53 +226,7 @@ export default {
       errorMessage: ""
     };
   },
-  watch: {
-    find(val) {
-      if (val === "seek") {
-        (async () => {
-          try {
-            let retVal = await this.storage.fetchNextPageFromFirebase(
-              this.machines[this.machines.length - 1],
-              this.filterCondition.userName,
-              this.filterCondition.machineName,
-              this.filterCondition.showOwner,
-              this.user
-            );
-            retVal.machines.forEach(item => {
-              this.machines.push(item);
-            });
-            this.hasNextPage = retVal.hasNextPage;
-            this.find = "";
-          } catch (e) {
-            this.showErrorMessageDialog(
-              "通信エラーが発生しました。" + JSON.stringify(e)
-            );
-          }
-        })();
-      } else if (val === "load") {
-        (async () => {
-          try {
-            let retVal = await this.storage.loadFromFirebase(
-              this.filterCondition.userName,
-              this.filterCondition.machineName,
-              this.filterCondition.showOwner,
-              this.user
-            );
-            this.machines = [];
-            retVal.machines.forEach(item => {
-              this.machines.push(item);
-            });
-            this.hasNextPage = retVal.hasNextPage;
-            this.find = "";
-          } catch (e) {
-            this.showErrorMessageDialog(
-              "通信エラーが発生しました。" + JSON.stringify(e)
-            );
-          }
-        })();
-      }
-    }
-  },
+  watch: {},
   computed: {},
   methods: {
     search() {
@@ -291,8 +249,8 @@ export default {
         "embriomachine.filterCondition",
         JSON.stringify(this.filterCondition)
       );
-      //2.再検索のトリガを引く
-      this.find = "load";
+      //2.再検索する
+      this.load();
     },
 
     isEditable(machine) {
@@ -307,7 +265,7 @@ export default {
     },
 
     showNextPage() {
-      this.find = "seek";
+      this.fetch();
     },
 
     showErrorMessageDialog(errorMessage) {
@@ -334,8 +292,52 @@ export default {
           this.showOwner = false;
 
           //再検索
-          this.find = "load";
+          //this.find = "load";
+          this.load();
         });
+    },
+
+    async fetch() {
+      try {
+        let retVal = await this.storage.fetchNextPageFromFirebase(
+          this.machines[this.machines.length - 1],
+          this.filterCondition.userName,
+          this.filterCondition.machineName,
+          this.filterCondition.showOwner,
+          this.user
+        );
+        retVal.machines.forEach(item => {
+          this.machines.push(item);
+        });
+        this.hasNextPage = retVal.hasNextPage;
+        this.find = "";
+      } catch (e) {
+        alert(e);
+        this.showErrorMessageDialog(
+          "通信エラーが発生しました。" + JSON.stringify(e)
+        );
+      }
+    },
+
+    async load() {
+      try {
+        let retVal = await this.storage.loadFromFirebase(
+          this.filterCondition.userName,
+          this.filterCondition.machineName,
+          this.filterCondition.showOwner,
+          this.user
+        );
+        this.machines = [];
+        retVal.machines.forEach(item => {
+          this.machines.push(item);
+        });
+        this.hasNextPage = retVal.hasNextPage;
+        this.find = "";
+      } catch (e) {
+        this.showErrorMessageDialog(
+          "通信エラーが発生しました。" + JSON.stringify(e)
+        );
+      }
     }
   }
 };
