@@ -41,7 +41,7 @@
             </v-form>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-flex xs3 />
+          <v-flex xs6 />
           <v-flex xs3>
             <v-btn
               color="green darken-1"
@@ -56,13 +56,6 @@
               flat
               @click.native="clear"
             >クリア</v-btn>
-          </v-flex>
-          <v-flex xs3>
-            <v-btn
-              color="green darken-1"
-              flat
-              @click.native="closeDialog"
-            >閉じる</v-btn>
           </v-flex>
         </v-layout>
       </v-card>

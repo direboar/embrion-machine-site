@@ -133,6 +133,9 @@
                         <v-list-tile-content>突撃／被突撃ダメージ</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
+                        <v-list-tile-content>Aランク武装の数</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
                         <v-list-tile-content>機体へのリンク</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
@@ -190,6 +193,9 @@
                       </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-content class="subheaders">{{machine.machineType.chargeDamage}}／{{machine.machineType.coveredChargeDamage}}</v-list-tile-content>
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content class="subheaders">{{machine.getEquipmentCountByRank("A")}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
@@ -521,20 +527,43 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-toolbar
-                    color="grey darken-1"
-                    dark
-                    dense
-                  >
-                    <v-toolbar-title>自由入力欄</v-toolbar-title>
-                  </v-toolbar>
-                  <v-textarea
-                    label="機体に関するメモを記入してください（最大500文字)。"
-                    rows="10"
-                    maxlength="500"
-                    :readonly="!editMode"
-                    v-model="machine.memo"
-                  ></v-textarea>
+                  <v-flex xs12>
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>自由入力欄</v-toolbar-title>
+                    </v-toolbar>
+                    <v-textarea
+                      label="機体に関するメモを記入してください（最大500文字)。"
+                      rows="10"
+                      maxlength="500"
+                      :readonly="!editMode"
+                      v-model="machine.memo"
+                    ></v-textarea>
+                  </v-flex>
+                  <v-flex xs12>
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>機体画像</v-toolbar-title>
+                      <v-spacer></v-spacer>
+                      <file-upload-icon
+                        tooltip="画像をアップロードします。"
+                        icon="fas fa-file-upload"
+                        :disabled="!editMode"
+                        @onFileRead="onFileRead"
+                      />
+                    </v-toolbar>
+                    <v-card-media
+                      :height=320
+                      :contain=true
+                      :src="this.file"
+                    />
+                  </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
@@ -593,6 +622,7 @@ import CharcactersheetJpegBase64 from "@/model/embriomachine/CharcactersheetJpeg
 import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
 import firebase from "firebase";
 import MessgeDialog from "@/components/common/MessgeDialog";
+import FileUploadIcon from "@/components/common/FileUploadIcon";
 
 export default {
   name: "MachineConstructPanel",
@@ -600,7 +630,8 @@ export default {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
     OkNgDialog: OkNgDialog,
-    MessgeDialog: MessgeDialog
+    MessgeDialog: MessgeDialog,
+    FileUploadIcon: FileUploadIcon
   },
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -635,17 +666,32 @@ export default {
       showErrorMessage: false,
       errorMessage: "",
 
-      user: null
+      user: null,
+
+      //添付ファイル
+      file: "",
+      //ファイルが更新されたかどうかのフラグ。ONの場合だけ更新する。
+      fileUpdated: false
     };
   },
 
-  created() {
+  beforeMount() {
+    // created() {
     //machineのロード
     if (this.id !== undefined && this.id !== null && this.id !== "") {
       this.storage.getMachineHeaderAndDetail(
         this.id,
         machine => {
           this.machine = machine;
+          //download image file.
+          //取得は非同期でよい。
+          this.storage.readFile(
+            this.machine.id,
+            file => {
+              this.file = file;
+            },
+            e => this.showErrorMessageDialog(e)
+          );
         },
         e => {
           this.showErrorMessageDialog(e);
@@ -750,24 +796,24 @@ export default {
       this.dialogMachineType = new MachineType();
     },
     saveMachine() {
-      let callback = () => {
-        this.$router.push({ name: "MachineList" });
-      };
-      let errorCallback = errormsg => {
-        this.showErrorMessageDialog(errormsg);
-      };
+      (async () => {
+        try {
+          let updated = null;
+          if (this.machine.id === null || this.machine.id === undefined) {
+            updated = await this.storage.saveToFirebase(
+              this.machine,
+              this.user
+            );
+          } else {
+            updated = await this.storage.updateToFirebase(this.machine);
+          }
 
-      if (this.machine.id === null || this.machine.id === undefined) {
-        this.storage.saveToFirebase(
-          this.machine,
-          this.user,
-          callback,
-          errorCallback
-        );
-      } else {
-        //TODO
-        this.storage.updateToFirebase(this.machine, callback, errorCallback);
-      }
+          this.storage.uploadFile(updated.id, this.file, () => {}, () => {});
+          this.$router.push({ name: "MachineList" });
+        } catch (e) {
+          this.showErrorMessageDialog(e);
+        }
+      })();
     },
     confirmDelete() {
       this.showDeleteConfirmDialog = true;
@@ -806,7 +852,27 @@ export default {
       this.editMode = true;
     },
 
+    onFileRead(files) {
+      for (const file of files) {
+        let fileReader = new FileReader();
+        fileReader.onload = data => {
+          let file = data.target.result;
+          this.file = file;
+          this.fileUpdated = true;
+        };
+        fileReader.readAsDataURL(file);
+      }
+    },
+
     printPdf() {
+      let imageSize = null;
+      if (this.file != "") {
+        //ファイルサイズを取得。
+        var img = document.createElement("img");
+        img.src = this.file;
+        imageSize = this.calcPdfImageSize(img.height, img.width, 340, 250);
+      }
+
       let machineType = this.machine.machineType;
 
       //pdfMakeはindex.htmlで読み込み、定義されている。
@@ -819,11 +885,12 @@ export default {
         }
       };
       const defaultStyle = "GenShin";
-      const docDefinition = {
+      let docDefinition = {
         pageSize: "A4",
         pageOrientation: "landscape",
         pageMargins: [0, 0, 0, 0],
         content: [
+          //背景画像
           {
             image: CharcactersheetJpegBase64.base64,
             width: 850
@@ -1003,8 +1070,46 @@ export default {
         }
       };
 
-      let fileName = this.machine.name + "pdf";
+      //画像を添付した場合は画像出力の定義を追加
+      if (this.file != "") {
+        alert(imageSize.witdh);
+        alert(imageSize.height);
+        docDefinition.content.push(
+          //添付画像
+          {
+            image: this.file,
+            width: imageSize.witdh,
+            height: imageSize.height,
+            //中央に出すように位置調整
+            absolutePosition: {
+              x: 300 + (250 - imageSize.witdh) / 2,
+              y: 190 + (340 - imageSize.height) / 2
+            }
+          }
+        );
+      }
+      // let fileName = this.machine.name + "pdf";
+      let fileName = this.machine.name;
       pdfMake.createPdf(docDefinition).download(fileName);
+    },
+
+    // width: 250,
+    // height: 340,
+    calcPdfImageSize(height, witdh, maxHeight, maxWitdh) {
+      let retVal = {
+        height: maxHeight,
+        witdh: maxWitdh
+      };
+
+      let imageFileMaginfication = height / witdh;
+      let maxMaginfication = maxHeight / maxWitdh;
+
+      if (imageFileMaginfication > maxMaginfication) {
+        retVal.witdh = witdh * (maxHeight / height);
+      } else {
+        retVal.height = height * (maxWitdh / witdh);
+      }
+      return retVal;
     }
   }
 };

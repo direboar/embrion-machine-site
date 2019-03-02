@@ -305,6 +305,22 @@ export default class Machine {
   getEquipmentCount(targetEquipment){
     return this.getEquipmentCountOf(MountPosition.toMachineEquipmentPosition(MountPosition.ALL),targetEquipment)
   }
+
+  getEquipmentCountByRank(rank){
+    let filtered = [];
+    //指定したランクの装備名であればfilteredに設定
+    for(let equipmentPosition in this.equipments){
+      this.equipments[equipmentPosition].filter(
+        equipments => equipments.rank === rank
+      ).forEach(e=>{
+        filtered.push(e.name);
+      });
+    }
+    //装備名の重複を削除して返却
+    //see https://qiita.com/cocottejs/items/7afe6d5f27ee7c36c61f
+
+    return filtered.filter((elem,index,array)=>array.indexOf(elem) === index).length
+  }
   
   //指定した装備個所（配列指定）の装備数を取得する。
   //第一引数：装備個所

@@ -120,7 +120,7 @@
               icon
               color="green lighten-1"
               @click="showNextPage()"
-              :disabled="!hasNext"
+              :disabled="!hasNextPage"
             >
               <v-icon>fas fa-angle-double-down</v-icon>
               　もっと見る
@@ -206,7 +206,7 @@ export default {
         machineName: "",
         showOwner: false
       },
-      hasNext: false,
+      hasNextPage: false,
 
       machines: [],
       find: "",
@@ -225,43 +225,47 @@ export default {
   watch: {
     find(val) {
       if (val === "seek") {
-        this.storage.fetchNextPageFromFirebase(
-          this.machines[this.machines.length - 1],
-          this.filterCondition.userName,
-          this.filterCondition.machineName,
-          this.filterCondition.showOwner,
-          this.user,
-          (readed, hasNext) => {
-            readed.forEach(item => {
+        (async () => {
+          try {
+            let retVal = await this.storage.fetchNextPageFromFirebase(
+              this.machines[this.machines.length - 1],
+              this.filterCondition.userName,
+              this.filterCondition.machineName,
+              this.filterCondition.showOwner,
+              this.user
+            );
+            retVal.machines.forEach(item => {
               this.machines.push(item);
             });
-            this.hasNext = hasNext;
+            this.hasNextPage = retVal.hasNextPage;
             this.find = "";
-          },
-          errormsg => {
-            this.showErrorMessageDialog(errormsg);
-            this.find = "";
+          } catch (e) {
+            this.showErrorMessageDialog(
+              "通信エラーが発生しました。" + JSON.stringify(e)
+            );
           }
-        );
+        })();
       } else if (val === "load") {
-        this.storage.loadFromFirebase(
-          this.filterCondition.userName,
-          this.filterCondition.machineName,
-          this.filterCondition.showOwner,
-          this.user,
-          (readed, hasNext) => {
+        (async () => {
+          try {
+            let retVal = await this.storage.loadFromFirebase(
+              this.filterCondition.userName,
+              this.filterCondition.machineName,
+              this.filterCondition.showOwner,
+              this.user
+            );
             this.machines = [];
-            readed.forEach(item => {
+            retVal.machines.forEach(item => {
               this.machines.push(item);
             });
-            this.hasNext = hasNext;
+            this.hasNextPage = retVal.hasNextPage;
             this.find = "";
-          },
-          errormsg => {
-            this.showErrorMessageDialog(errormsg);
-            this.find = "";
+          } catch (e) {
+            this.showErrorMessageDialog(
+              "通信エラーが発生しました。" + JSON.stringify(e)
+            );
           }
-        );
+        })();
       }
     }
   },
