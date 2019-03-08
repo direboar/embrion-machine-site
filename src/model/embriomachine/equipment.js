@@ -739,7 +739,7 @@ export default class Equipment {
         "mountPosition":"全部位",
         "minLimit":1,
         "equipSamePosition":true,
-        "effect":"そのラウンドの間、自機以外の機体は回避値が半分（切上）になる。<br/>この効果やサウンドウェーブの効果は累積しない。",
+        "effect":"次のラウンドの間、自機以外の機体は回避値が半分（切上）になる。<br/>この効果やサウンドウェーブの効果は累積しない。",
         "maxLimit":1
        },
        {
