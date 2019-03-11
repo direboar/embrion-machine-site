@@ -4,13 +4,19 @@
       v-model="showDialog"
       max-width="1400"
       :persistent="true"
+      :fullscreen="isXs"
     >
       <v-card>
         <v-layout
           row
           wrap
         >
-          <v-flex xs4>
+          <v-flex
+            xl3
+            md4
+            sm6
+            xs6
+          >
             <v-card>
               <v-toolbar
                 color="grey darken-1"
@@ -37,8 +43,9 @@
                 row
                 wrap
               >
-                <v-flex xs4>
+                <v-flex xs8>
                   <v-list
+                    :dense="isXs"
                     two-line
                     subheader
                   >
@@ -64,8 +71,9 @@
                     <v-divider />
                   </v-list>
                 </v-flex>
-                <v-flex xs8>
+                <v-flex xs4>
                   <v-list
+                    :dense="isXs"
                     two-line
                     subheader
                   >
@@ -94,7 +102,12 @@
               </v-layout>
             </v-card>
           </v-flex>
-          <v-flex xs8>
+          <v-flex
+            xl9
+            md8
+            sm6
+            xs6
+          >
             <v-card>
               <v-toolbar
                 color="grey darken-1"
@@ -111,6 +124,7 @@
                 </v-btn>
               </v-toolbar>
               <v-list
+                :dense="isXs"
                 two-line
                 subheader
               >
@@ -193,7 +207,11 @@ export default {
     }
   },
 
-  computed: {},
+  computed: {
+    isXs() {
+      return this.$vuetify.breakpoint.name === "xs";
+    }
+  },
 
   methods: {
     drowCards() {
