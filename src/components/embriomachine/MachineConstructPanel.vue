@@ -62,6 +62,17 @@
                       <v-btn
                         slot="activator"
                         icon
+                        @click.native="simulate"
+                        :disabled="!canPrint"
+                      >
+                        <v-icon>fas fa-gamepad</v-icon>
+                      </v-btn>
+                      <span>デッキをシミュレーションします</span>
+                    </v-tooltip>
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
                         @click.native="copyMachine"
                         :disabled="editMode"
                       >
@@ -605,6 +616,10 @@
       :showDialog.sync="showErrorMessage"
       :message="errorMessage"
     />
+    <card-simulation-panel
+      :showDialog.sync="showSimulation"
+      :machine="machine"
+    />
   </div>
 </template>
 
@@ -623,12 +638,14 @@ import firebase from "firebase";
 import MessgeDialog from "@/components/common/MessgeDialog";
 import FileUploadIcon from "@/components/common/FileUploadIcon";
 import PdfMaker from "@/model/embriomachine/PdfMaker";
+import CardSimulationPanel from "@/components/embriomachine/CardSimulationPanel";
 
 export default {
   name: "MachineConstructPanel",
   components: {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
+    CardSimulationPanel: CardSimulationPanel,
     OkNgDialog: OkNgDialog,
     MessgeDialog: MessgeDialog,
     FileUploadIcon: FileUploadIcon
@@ -665,6 +682,9 @@ export default {
       //エラーダイアログ
       showErrorMessage: false,
       errorMessage: "",
+
+      //シミュレーションダイアログ
+      showSimulation: false,
 
       user: null,
 
@@ -890,6 +910,9 @@ export default {
     printPdf() {
       let pdfMaker = new PdfMaker();
       pdfMaker.printPdf(this.machine, this.file);
+    },
+    simulate() {
+      this.showSimulation = true;
     }
   }
 };

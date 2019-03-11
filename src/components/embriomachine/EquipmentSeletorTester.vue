@@ -13,6 +13,11 @@
           flat
           @click.native="showMachineTypeDialog"
         >装甲・サイズ選択ダイアログ表示</v-btn>
+        <v-btn
+          color="green darken-1"
+          flat
+          @click.native="showSimulation = true;"
+        >シミュレーションダイアログ表示</v-btn>
       </v-flex>
     </v-layout>
     <equipment-seletor-dialog
@@ -28,6 +33,7 @@
       @select="acceptMachineType"
       @cancel="cancel"
     />
+    <card-simulation-panel :show-dialog.sync="showSimulation" />
   </div>
 </template>
 
@@ -37,17 +43,20 @@
 <script>
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
 import MachineTypeSelectorDialog from "@/components/embriomachine/MachineTypeSelectorDialog";
+import CardSimulationPanel from "@/components/embriomachine/CardSimulationPanel";
 
 export default {
   components: {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
-    MachineTypeSelectorDialog: MachineTypeSelectorDialog
+    MachineTypeSelectorDialog: MachineTypeSelectorDialog,
+    CardSimulationPanel: CardSimulationPanel
   },
 
   data() {
     return {
       showEquipment: false,
       showMachineType: false,
+      showSimulation: false,
       equipment: {},
       dialogEquipment: {},
       machineType: {},

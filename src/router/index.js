@@ -6,6 +6,8 @@ import MachineConstructPanel from '@/components/embriomachine/MachineConstructPa
 import MachineList from '@/components/embriomachine/MachineList'
 import EquipmentFilterConditionDialog from '@/components/embriomachine/EquipmentFilterConditionDialog'
 
+import CardSimulationPanel from '@/components/embriomachine/CardSimulationPanel'
+
 //ie11対応
 //see https://www.d-wood.com/blog/2016/04/12_7917.html
 //see https://qiita.com/terrierscript/items/d2a9d5d4daedaacff924
@@ -43,7 +45,13 @@ export default new Router({
     },
     //for temporary.
     {
-      path: '/embrioMachine/EquipmentSelector',
+      path: '/embrioMachine/CardSimulationPanel',
+      name: 'CardSimulationPanel',
+      title: 'test',
+      component: CardSimulationPanel
+    },
+    {
+      path: '/embrioMachine/EquipmentSeletorTester',
       name: 'EquipmentSeletorTester',
       title: 'test',
       component: EquipmentSeletorTester

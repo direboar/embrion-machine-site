@@ -83,6 +83,17 @@ export default class Machine {
     return new Equipment(""); //dummpy
   }
 
+  getAllEquipment() {
+    let ret = [];
+    this.equipments[MachineType.POSITION_HEAD].forEach(e=>{ret.push(e)})
+    this.equipments[MachineType.POSITION_BODY].forEach(e=>{ret.push(e)})
+    this.equipments[MachineType.POSITION_RIGHTARM].forEach(e=>{ret.push(e)})
+    this.equipments[MachineType.POSITION_LEFTARM].forEach(e=>{ret.push(e)})
+    this.equipments[MachineType.POSITION_RIGHTLEG].forEach(e=>{ret.push(e)})
+    this.equipments[MachineType.POSITION_LEFTLEG].forEach(e=>{ret.push(e)})
+    return ret;
+  }
+
   //firebaseに永続化する際のヘッダーオブジェクト（一覧検索用項目）に変換する。
   toRealtimeDatabaseHeaderObject() {
     return {
