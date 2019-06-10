@@ -31,13 +31,15 @@
             slot="items"
             slot-scope="props"
           >
-            <td class="text-xs-left">{{ props.item.name }}
+            <td class="text-xs-left weaponname">
               <v-btn
+                small
                 color="grey darken-4"
                 flat
+                right
                 @click.native="showEquipmentViewDialog(props.item)"
               >
-                <v-icon>zoom_in</v-icon>
+                <v-icon>zoom_in</v-icon>{{ props.item.name }}
               </v-btn>
             </td>
             <td :class="tableStyle(props.item.calcDamage(1))">{{ props.item.calcDamage(1) }}</td>
@@ -71,12 +73,16 @@
 td.focus {
   background-color: #e27272;
 }
-/* テーブル全体のフォントサイズ設定 */
-table.v-table tbody td {
-  font-size: 18px !important;
+/* 武器名のフォントサイズ設定 */
+td.weaponname {
+  font-size: 16px !important;
 }
+td.damage {
+  font-size: 16px !important;
+}
+/* テーブル全体のフォントサイズ設定 */
 table.v-table thead th {
-  font-size: 18px !important;
+  font-size: 16px !important;
 }
 </style>
 
@@ -144,7 +150,7 @@ export default {
       this.dialogEquipment = null;
     },
     tableStyle(damage) {
-      let retVal = ["text-xs-left"];
+      let retVal = ["text-xs-left", "damage"];
       if (damage > 0) {
         retVal.push("focus");
       }
