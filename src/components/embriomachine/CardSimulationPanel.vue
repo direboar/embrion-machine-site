@@ -164,11 +164,7 @@
 
 <script>
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
-import Machine from "@/model/embriomachine/machine";
-import MachineType from "@/model/embriomachine/machinetype";
-import Equipment from "@/model/embriomachine/equipment";
 import Deck from "@/model/embriomachine/deck";
-import Card from "@/model/embriomachine/card";
 
 export default {
   name: "CardSimulationPanel",

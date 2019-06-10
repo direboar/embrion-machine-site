@@ -8,6 +8,9 @@ import EquipmentFilterConditionDialog from '@/components/embriomachine/Equipment
 
 import CardSimulationPanel from '@/components/embriomachine/CardSimulationPanel'
 
+//for test.
+import DamageRangeAnalizePanel from '@/components/embriomachine/DamageRangeAnalizePanel'
+
 //ie11対応
 //see https://www.d-wood.com/blog/2016/04/12_7917.html
 //see https://qiita.com/terrierscript/items/d2a9d5d4daedaacff924
@@ -73,6 +76,13 @@ export default new Router({
       name: 'createMachine',
       component: MachineConstructPanel,
       props: { editMode: true }
+    },
+
+    //for test.
+    { 
+      path: '/DamageRangeAnalizePanel', 
+      name: 'DamageRangeAnalizePanel',
+      component: DamageRangeAnalizePanel
     },
   ]
 })

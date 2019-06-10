@@ -69,6 +69,18 @@
                       </v-btn>
                       <span>デッキをシミュレーションします</span>
                     </v-tooltip>
+                    <!--デスクトップ画面でのみ表示。-->
+                    <v-tooltip>
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="analizeDamageRange"
+                        :disabled="!canPrint || isXs"
+                      >
+                        <v-icon>fas fa-table</v-icon>
+                      </v-btn>
+                      <span>距離ごとのダメージ表を表示します</span>
+                    </v-tooltip>
                     <v-tooltip>
                       <v-btn
                         slot="activator"
@@ -620,6 +632,10 @@
       :showDialog.sync="showSimulation"
       :machine="machine"
     />
+    <damage-range-analize-panel
+      :show-dialog.sync="showDamageRangeAnalizeDialog"
+      :machine="machine"
+    />
   </div>
 </template>
 
@@ -639,6 +655,7 @@ import MessgeDialog from "@/components/common/MessgeDialog";
 import FileUploadIcon from "@/components/common/FileUploadIcon";
 import PdfMaker from "@/model/embriomachine/PdfMaker";
 import CardSimulationPanel from "@/components/embriomachine/CardSimulationPanel";
+import DamageRangeAnalizePanel from "@/components/embriomachine/DamageRangeAnalizePanel";
 
 export default {
   name: "MachineConstructPanel",
@@ -646,6 +663,7 @@ export default {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
     CardSimulationPanel: CardSimulationPanel,
+    DamageRangeAnalizePanel: DamageRangeAnalizePanel,
     OkNgDialog: OkNgDialog,
     MessgeDialog: MessgeDialog,
     FileUploadIcon: FileUploadIcon
@@ -685,6 +703,9 @@ export default {
 
       //シミュレーションダイアログ
       showSimulation: false,
+
+      //射程毎ダメージシミュレーションダイアログ
+      showDamageRangeAnalizeDialog: false,
 
       user: null,
 
@@ -758,6 +779,10 @@ export default {
         return false;
       }
       return true;
+    },
+    //FIXME mixin?
+    isXs() {
+      return this.$vuetify.breakpoint.name === "xs";
     }
   },
 
@@ -913,6 +938,9 @@ export default {
     },
     simulate() {
       this.showSimulation = true;
+    },
+    analizeDamageRange() {
+      this.showDamageRangeAnalizeDialog = true;
     }
   }
 };

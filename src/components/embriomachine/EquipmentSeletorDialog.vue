@@ -258,8 +258,16 @@ export default {
   data() {
     return {
       selectedEquipmentName: this.targetEquipment.name,
-      types: ["射撃", "白兵", "機雷", "装甲", "補助", "突撃", "その他"],
-      type: "射撃",
+      types: [
+        Equipment.TYPE_SHAGEKI,
+        Equipment.TYPE_HAKUHEI,
+        Equipment.TYPE_KIRAI,
+        Equipment.TYPE_SOUKOU,
+        Equipment.TYPE_HOJO,
+        Equipment.TYPE_TOTSUGEKI,
+        Equipment.TYPE_SONOTA
+      ],
+      type: Equipment.TYPE_SHAGEKI,
       ranks: ["A", "B"],
       selectedRanks: ["B"],
       rank: "B",

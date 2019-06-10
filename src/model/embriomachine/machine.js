@@ -42,7 +42,6 @@ export default class Machine {
     return this.id;
   }
 
-
   setDetailId(detailId) {
     this.detailId = detailId;
   }
@@ -91,6 +90,15 @@ export default class Machine {
     this.equipments[MachineType.POSITION_LEFTARM].forEach(e=>{ret.push(e)})
     this.equipments[MachineType.POSITION_RIGHTLEG].forEach(e=>{ret.push(e)})
     this.equipments[MachineType.POSITION_LEFTLEG].forEach(e=>{ret.push(e)})
+    return ret;
+  }
+
+  //武装種類で絞り込む
+  getAllEquipmentOf(types) {
+    let ret = this.getAllEquipment();
+    ret = ret.filter(item => {
+      return types.indexOf(item.type) >= 0;
+    });
     return ret;
   }
 

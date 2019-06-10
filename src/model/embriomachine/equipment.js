@@ -1,17 +1,59 @@
 // import abilityType from './abilityType'
 import MountPosition from '@/model/embriomachine/mountposition'
+// import { isRegExp } from 'util';
 
 export default class Equipment {
+  //射程の定義（p.9)
+  //有効射程（記載された射程内にしかダメージが入らない）
+  static get RANGE_NORMAL(){
+    return "N";
+  }
+  //最適射程A（➀など。１マス離れるたびに-1ダメージ）
+  static get RANGE_OPTIMISTATION_A(){
+    return "A";
+  }
+  //最適射程B（❶など。１マス離れるたびに-2ダメージ）
+  static get RANGE_OPTIMISTATION_B(){
+    return "B";
+  }
 
-  constructor(name,rank,type,range,damage,damageType,mountPosition,minLimit,equipSamePosition,effect,maxLimit) {
+  //種別
+  static get TYPE_SHAGEKI(){
+    return "射撃";
+  }
+  static get TYPE_HAKUHEI(){
+    return "白兵";
+  }
+  static get TYPE_KIRAI(){
+    return "機雷";
+  }
+  static get TYPE_SOUKOU(){
+    return "装甲";
+  }
+  static get TYPE_HOJO(){
+    return "補助";
+  }
+  static get TYPE_TOTSUGEKI(){
+    return "突撃";
+  }
+  static get TYPE_SONOTA(){
+    return "その他";
+  }
+
+  constructor(name,rank,type,range,minRange,maxRange,rangeType,damage,damageType,mountPosition,minLimit,equipSamePosition,effect,maxLimit) {
     // 名前
     this.name = name
     // ランク A,B
     this.rank = rank
     // 種別 射撃、白兵、機雷、その他、補助
     this.type = type
-    // 射程 1,3～4,➀～➁,➍～➏
-    this.range = range
+    // // 射程 1,3～4,➀～➁,➍～➏
+    this.range = range;
+    // 計算用に持つ最小・最大射程
+    this.minRange = minRange;
+    this.maxRange = maxRange;
+    // 射程タイプ（有効射程、最適射程A、最適射程B)
+    this.rangeType = rangeType
     // ダメージ
     this.damage = damage
     // ダメージタイプ
@@ -73,11 +115,37 @@ export default class Equipment {
     return true;
   }
   
+  //指定したRangeにおけるダメージを算出する
+  calcDamage(range){
+    if(this.minRange === 0 || this.maxRange === 0){
+      return 0;
+    }else{
+      if(this.minRange <= range && range <= this.maxRange){
+        return this.damage;
+      }else{
+        if(this.rangeType === Equipment.RANGE_NORMAL){
+          return 0;
+        }else{
+          let diffMinRange =  Math.abs(this.minRange - range);
+          let diffMaxRange =  Math.abs(this.maxRange - range);
+          let maxDiff = Math.min(diffMinRange,diffMaxRange);
+
+          let retVal ;
+          if(this.rangeType === Equipment.RANGE_OPTIMISTATION_A){
+            retVal = this.damage - maxDiff;
+          }else{
+            retVal = this.damage - maxDiff*2;
+          }
+          return retVal > 0 ? retVal : 0;
+        }
+      }
+    }
+  }
+
   //選択可能な装備を取得する
   static getEquipments(){
     return Equipment.assigns(Equipment.json());
   }
-
 
   static assigns(array){
     var retVal = [];
@@ -97,6 +165,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"②～③",
+        "minRange" : "2",
+        "maxRange" : "3",
+        "rangeType":"A",
         "damage":"2",
         "damageType":"射撃・レーザー",
         "mountPosition":"全部位",
@@ -110,6 +181,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"③～④",
+        "minRange" : "3",
+        "maxRange" : "4",
+        "rangeType":"A",
         "damage":"3",
         "damageType":"射撃・レーザー",
         "mountPosition":"頭×",
@@ -123,6 +197,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"④～⑤",
+        "minRange" : "4",
+        "maxRange" : "5",
+        "rangeType":"A",
         "damage":"3",
         "damageType":"射撃・レーザー",
         "mountPosition":"頭×",
@@ -136,6 +213,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"②",
+        "minRange" : "2",
+        "maxRange" : "2",
+        "rangeType":"A",
         "damage":"2",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -149,6 +229,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"②～④",
+        "minRange" : "2",
+        "maxRange" : "4",
+        "rangeType":"A",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -162,6 +245,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"③～⑤",
+        "minRange" : "3",
+        "maxRange" : "5",
+        "rangeType":"A",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -175,6 +261,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"⑨～⑪",
+        "minRange" : "9",
+        "maxRange" : "11",
+        "rangeType":"A",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -188,6 +277,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"❺～❻",
+        "minRange" : "5",
+        "maxRange" : "6",
+        "rangeType":"B",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -201,6 +293,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"❽～❾",
+        "minRange" : "8",
+        "maxRange" : "9",
+        "rangeType":"B",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -214,6 +309,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"6～8",
+        "minRange" : "6",
+        "maxRange" : "8",
+        "rangeType":"N",
         "damage":"4",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -227,6 +325,9 @@ export default class Equipment {
         "rank":"B",
         "type":"射撃",
         "range":"1～3",
+        "minRange" : "1",
+        "maxRange" : "3",
+        "rangeType":"N",
         "damage":"0",
         "damageType":"射撃",
         "mountPosition":"全部位",
@@ -240,6 +341,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"2",
         "damageType":"白兵",
         "mountPosition":"腕・脚",
@@ -253,6 +357,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"1～2",
+        "minRange" : "1",
+        "maxRange" : "2",
+        "rangeType":"N",
         "damage":"3",
         "damageType":"白兵",
         "mountPosition":"全部位",
@@ -266,6 +373,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"2～3",
+        "minRange" : "2",
+        "maxRange" : "3",
+        "rangeType":"N",
         "damage":"3",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -279,6 +389,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"2",
+        "minRange" : "2",
+        "maxRange" : "2",
+        "rangeType":"N",
         "damage":"4",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -292,6 +405,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"4",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -305,6 +421,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"1～2",
+        "minRange" : "1",
+        "maxRange" : "2",
+        "rangeType":"N",
         "damage":"3",
         "damageType":"白兵",
         "mountPosition":"全部位",
@@ -318,6 +437,9 @@ export default class Equipment {
         "rank":"B",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"6",
         "damageType":"白兵・実弾兵器",
         "mountPosition":"全部位",
@@ -331,6 +453,9 @@ export default class Equipment {
         "rank":"B",
         "type":"機雷",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"N",
         "damage":"3",
         "damageType":"白兵・実弾兵器",
         "mountPosition":"全部位",
@@ -344,6 +469,9 @@ export default class Equipment {
         "rank":"B",
         "type":"突撃",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"X",
         "damageType":"白兵",
         "mountPosition":"全部位",
@@ -357,6 +485,9 @@ export default class Equipment {
         "rank":"B",
         "type":"装甲",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"全部位",
@@ -370,6 +501,9 @@ export default class Equipment {
         "rank":"B",
         "type":"補助",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"胴２ or 脚各１",
@@ -383,6 +517,9 @@ export default class Equipment {
         "rank":"B",
         "type":"補助",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"脚各１",
@@ -396,6 +533,9 @@ export default class Equipment {
         "rank":"B",
         "type":"補助",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"脚各１",
@@ -409,6 +549,9 @@ export default class Equipment {
         "rank":"B",
         "type":"補助",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"頭１＆胴１",
@@ -422,6 +565,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"③～⑤",
+        "minRange" : "3",
+        "maxRange" : "5",
+        "rangeType":"A",
         "damage":"2",
         "damageType":"射撃・レーザー",
         "mountPosition":"全部位",
@@ -435,6 +581,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"④～⑤",
+        "minRange" : "4",
+        "maxRange" : "5",
+        "rangeType":"A",
         "damage":"4",
         "damageType":"射撃・レーザー",
         "mountPosition":"頭×",
@@ -448,6 +597,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"②～③",
+        "minRange" : "2",
+        "maxRange" : "3",
+        "rangeType":"A",
         "damage":"2",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -461,6 +613,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"3～4",
+        "minRange" : "3",
+        "maxRange" : "4",
+        "rangeType":"N",
         "damage":"0",
         "damageType":"射撃・レーザー",
         "mountPosition":"全部位",
@@ -474,6 +629,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"③～⑤",
+        "minRange" : "3",
+        "maxRange" : "5",
+        "rangeType":"A",
         "damage":"4",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -487,6 +645,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"①～③",
+        "minRange" : "1",
+        "maxRange" : "3",
+        "rangeType":"A",
         "damage":"4",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -500,6 +661,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"⑨～⑪",
+        "minRange" : "9",
+        "maxRange" : "11",
+        "rangeType":"A",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -513,6 +677,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"❻～❽",
+        "minRange" : "6",
+        "maxRange" : "8",
+        "rangeType":"B",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -526,6 +693,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"❺～❻",
+        "minRange" : "5",
+        "maxRange" : "6",
+        "rangeType":"B",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -539,6 +709,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"6～8",
+        "minRange" : "6",
+        "maxRange" : "8",
+        "rangeType":"N",
         "damage":"4",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -552,6 +725,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"6～8",
+        "minRange" : "6",
+        "maxRange" : "8",
+        "rangeType":"N",
         "damage":"5",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -565,6 +741,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"1～5",
+        "minRange" : "1",
+        "maxRange" : "5",
+        "rangeType":"N",
         "damage":"3",
         "damageType":"射撃・実弾兵器",
         "mountPosition":"全部位",
@@ -578,6 +757,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"1～4",
+        "minRange" : "1",
+        "maxRange" : "4",
+        "rangeType":"N",
         "damage":"1",
         "damageType":"射撃",
         "mountPosition":"全部位",
@@ -591,6 +773,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"1～4",
+        "minRange" : "1",
+        "maxRange" : "4",
+        "rangeType":"N",
         "damage":"0",
         "damageType":"射撃",
         "mountPosition":"全部位",
@@ -604,6 +789,9 @@ export default class Equipment {
         "rank":"A",
         "type":"射撃",
         "range":"1～5",
+        "minRange" : "1",
+        "maxRange" : "5",
+        "rangeType":"N",
         "damage":"0",
         "damageType":"射撃",
         "mountPosition":"全部位",
@@ -617,6 +805,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"2",
         "damageType":"白兵・レーザー",
         "mountPosition":"腕・脚",
@@ -630,6 +821,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"1～2",
+        "minRange" : "1",
+        "maxRange" : "2",
+        "rangeType":"N",
         "damage":"4",
         "damageType":"白兵",
         "mountPosition":"全部位",
@@ -643,6 +837,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"2～3",
+        "minRange" : "2",
+        "maxRange" : "3",
+        "rangeType":"N",
         "damage":"4",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -656,6 +853,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"2",
+        "minRange" : "2",
+        "maxRange" : "2",
+        "rangeType":"N",
         "damage":"5",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -669,6 +869,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"5",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -682,6 +885,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"1",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -695,6 +901,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"2",
+        "minRange" : "2",
+        "maxRange" : "2",
+        "rangeType":"N",
         "damage":"1",
         "damageType":"白兵",
         "mountPosition":"腕",
@@ -708,6 +917,9 @@ export default class Equipment {
         "rank":"A",
         "type":"白兵",
         "range":"1",
+        "minRange" : "1",
+        "maxRange" : "1",
+        "rangeType":"N",
         "damage":"6",
         "damageType":"白兵",
         "mountPosition":"全部位",
@@ -721,6 +933,9 @@ export default class Equipment {
         "rank":"A",
         "type":"機雷",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"5",
         "damageType":"白兵・実弾兵器",
         "mountPosition":"全部位",
@@ -734,6 +949,9 @@ export default class Equipment {
         "rank":"A",
         "type":"その他",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"全部位",
@@ -747,6 +965,9 @@ export default class Equipment {
         "rank":"A",
         "type":"その他",
         "range":"",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"X",
         "damageType":"白兵・実弾兵器",
         "mountPosition":"全部位",
@@ -760,6 +981,9 @@ export default class Equipment {
         "rank":"A",
         "type":"その他",
         "range":"0～5",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"全部位",
@@ -773,6 +997,9 @@ export default class Equipment {
         "rank":"A",
         "type":"補助",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"脚各１",
@@ -786,6 +1013,9 @@ export default class Equipment {
         "rank":"A",
         "type":"補助",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"胴",
@@ -799,6 +1029,9 @@ export default class Equipment {
         "rank":"A",
         "type":"装甲",
         "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
         "damage":"-",
         "damageType":"-",
         "mountPosition":"胴",

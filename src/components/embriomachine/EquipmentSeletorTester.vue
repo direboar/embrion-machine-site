@@ -18,6 +18,11 @@
           flat
           @click.native="showSimulation = true;"
         >シミュレーションダイアログ表示</v-btn>
+        <v-btn
+          color="green darken-1"
+          flat
+          @click.native="showDamageRangeAnalize"
+        >ダメージ分析ダイアログ表示</v-btn>
       </v-flex>
     </v-layout>
     <equipment-seletor-dialog
@@ -34,6 +39,10 @@
       @cancel="cancel"
     />
     <card-simulation-panel :show-dialog.sync="showSimulation" />
+    <damage-range-analize-panel
+      :show-dialog.sync="showDamageRangeAnalizePanel"
+      :machine="machine"
+    />
   </div>
 </template>
 
@@ -44,12 +53,18 @@
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
 import MachineTypeSelectorDialog from "@/components/embriomachine/MachineTypeSelectorDialog";
 import CardSimulationPanel from "@/components/embriomachine/CardSimulationPanel";
+import DamageRangeAnalizePanel from "@/components/embriomachine/DamageRangeAnalizePanel";
+import Machine from "@/model/embriomachine/machine";
+import MachineType from "@/model/embriomachine/machinetype";
+import Equipment from "@/model/embriomachine/equipment";
+import MountPosition from "@/model/embriomachine/mountposition";
 
 export default {
   components: {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
-    CardSimulationPanel: CardSimulationPanel
+    CardSimulationPanel: CardSimulationPanel,
+    DamageRangeAnalizePanel: DamageRangeAnalizePanel
   },
 
   data() {
@@ -57,11 +72,13 @@ export default {
       showEquipment: false,
       showMachineType: false,
       showSimulation: false,
+      showDamageRangeAnalizePanel: false,
       equipment: {},
       dialogEquipment: {},
       machineType: {},
       dialogMachineType: {},
-      targetPosition: "胴"
+      targetPosition: "胴",
+      machine: null
     };
   },
 
@@ -96,6 +113,42 @@ export default {
     },
     acceptMachineType() {
       this.machineType = this.dialogMachineType;
+    },
+    showDamageRangeAnalize() {
+      let testMachineType = new MachineType(
+        "xx",
+        "5",
+        "6",
+        "3",
+        "21",
+        "7",
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      );
+      let testEqyionent = new Equipment(
+        "パルスレーザー",
+        "A",
+        "射撃武器",
+        "③～⑤",
+        2,
+        3,
+        "N",
+        "4",
+        "射撃",
+        MountPosition.ARM,
+        2,
+        true,
+        "",
+        99
+      );
+      this.machine = new Machine("name", testMachineType);
+      this.machine.addEquipment(MachineType.POSITION_LEFTARM, testEqyionent);
+
+      this.showDamageRangeAnalizePanel = true;
     },
     cancel() {}
   }
