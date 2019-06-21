@@ -78,7 +78,7 @@ export default {
     this.title = to.meta.title;
   },
   watch: {
-    $route(to, from) {
+    $route(to) {
       this.title = to.meta.title;
     }
   },

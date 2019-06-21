@@ -1,5 +1,5 @@
 // import abilityType from './abilityType'
-import Equipment from "@/model/embriomachine/equipment";
+// import Equipment from "@/model/embriomachine/equipment";
 
 export default class Card {
 
