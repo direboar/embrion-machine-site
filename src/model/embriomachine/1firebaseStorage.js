@@ -1,4 +1,4 @@
-import Machine from "@/model/embriomachine/machine";
+2import Machine from "@/model/embriomachine/machine";
 import firebase from "firebase";
 
 export default class FirebaseStorage {
