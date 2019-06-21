@@ -31,6 +31,7 @@
             slot="items"
             slot-scope="props"
           >
+
             <td class="text-xs-left weaponname">
               <v-btn
                 small
