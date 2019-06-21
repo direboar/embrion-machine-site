@@ -1,6 +1,8 @@
 language: node_js
 node_js:
-  - "7"
+  - "7npm "
 before_install:
   - npm i -g npm@4.0.5
 cache: npm
+script:
+  - npm run build
