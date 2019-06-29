@@ -6,3 +6,11 @@ before_install:
 cache: npm
 script:
   - npm run build
+deploy:
+  provider: pages
+  repo:embriosupport-dev-page
+  skip_cleanup: true
+  github_token: $github_token 
+  keep_history: true
+  on:
+    branch: master    

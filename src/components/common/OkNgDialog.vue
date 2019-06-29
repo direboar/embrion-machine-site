@@ -44,7 +44,7 @@
 export default {
   name: "OkNgDialog",
   props: {
-    //ダイアログ表示フラグ。
+    //ダイアログ表示フラグ
     dialogSize: {
       type: Number,
       default: 700
