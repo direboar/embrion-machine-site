@@ -60,7 +60,7 @@
 export default {
   name: "SpellHelpDialog",
   props: {
-    //ダイアログ表示フラグ。
+    //ダイアログ表示フラグ
     showDialog: {
       type: Boolean,
       default: false

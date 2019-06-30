@@ -7,12 +7,24 @@ cache: npm
 script:
   - npm run build
 deploy:
-  provider: pages
-  repo: embriosupport-dev-page
-  skip_cleanup: true
-  github_token: $github_token 
-  keep_history: true
-  local_dir : dist
-  verbose : true
-  on:
-    branch: master    
+  - provider: pages
+    repo: direboar/embriosupport-dev-page
+    target_branch : master
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    keep_history: true
+    local_dir : dist
+    verbose : true
+    on:
+      all_branches: true
+      condition: $TRAVIS_BRANCH =~ ^feature
+  - provider: pages
+    repo: direboar/embriosupport-prod-page
+    target_branch : master
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    keep_history: true
+    local_dir : dist
+    verbose : true
+    on:
+      branch: master
