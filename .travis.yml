@@ -13,5 +13,6 @@ deploy:
   github_token: $github_token 
   keep_history: true
   local_dir : dist
+  verbose : true
   on:
     branch: master    
