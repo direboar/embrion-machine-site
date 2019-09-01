@@ -1041,7 +1041,7 @@ export default class Equipment {
         "maxLimit":1
        },
        {
-        "name":"Sランクダミー", //FIXME ダミーデータのため、後で削除すること。
+        "name":"軽装甲×＆全部位ダミー", //FIXME ダミーデータのため、後で削除すること。
         "rank":"S",
         "type":"射撃",
         "range":"-",
@@ -1050,9 +1050,73 @@ export default class Equipment {
         "rangeType":"-",
         "damage":"-",
         "damageType":"-",
-        "mountPosition":"全部位",
+        "mountPosition":"軽装甲×＆全部位",
         "minLimit":1,
         "equipSamePosition":true,
+        "effect":"ダミー",
+        "maxLimit":1
+       },
+       {
+        "name":"脚×ダミー", //FIXME ダミーデータのため、後で削除すること。
+        "rank":"S",
+        "type":"射撃",
+        "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
+        "damage":"-",
+        "damageType":"-",
+        "mountPosition":"脚×",
+        "minLimit":1,
+        "equipSamePosition":true,
+        "effect":"ダミー",
+        "maxLimit":1
+       },
+       {
+        "name":"胴1＋全部位ダミー", //FIXME ダミーデータのため、後で削除すること。
+        "rank":"S",
+        "type":"射撃",
+        "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
+        "damage":"-",
+        "damageType":"-",
+        "mountPosition":"胴１＋全部位",
+        "minLimit":2,
+        "equipSamePosition":false,
+        "effect":"ダミー",
+        "maxLimit":2
+       },
+       {
+        "name":"ロケットパンチ１ダミー", //FIXME ダミーデータのため、後で削除すること。
+        "rank":"S",
+        "type":"射撃",
+        "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
+        "damage":"-",
+        "damageType":"-",
+        "mountPosition":"腕１（ロケットパンチ）",
+        "minLimit":1,
+        "equipSamePosition":false,
+        "effect":"ダミー",
+        "maxLimit":1
+       },
+       {
+        "name":"ロケットパンチ２ダミー", //FIXME ダミーデータのため、後で削除すること。
+        "rank":"S",
+        "type":"射撃",
+        "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
+        "damage":"-",
+        "damageType":"-",
+        "mountPosition":"腕１（ロケットパンチ）",
+        "minLimit":1,
+        "equipSamePosition":false,
         "effect":"ダミー",
         "maxLimit":1
        },

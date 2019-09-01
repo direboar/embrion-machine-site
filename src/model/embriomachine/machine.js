@@ -303,6 +303,29 @@ export default class Machine {
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
           }
         }
+
+        //腕1（ロケットパンチ、有線ロケットパンチは同じ腕に装備できない）
+        if (equipment.mountPosition === MountPosition.ARM_ONE_ROCKETPANCH) {
+          let leftArmRocketPanchCount = this.equipments[MachineType.POSITION_LEFTARM].filter(equipment=>equipment.name.indexOf("ロケットパンチ")>=0).length;
+          let rightArmRocketPanchCount = this.equipments[MachineType.POSITION_RIGHTARM].filter(equipment=>equipment.name.indexOf("ロケットパンチ")>=0).length;
+          if(leftArmRocketPanchCount >= 2 || rightArmRocketPanchCount >= 2){
+              errors.push(equipment.name + "の装備方法が間違っています。ロケットパンチは同じ腕に装備できません。")
+          }
+        }
+        //胴1＋全部位
+        if (equipment.mountPosition === MountPosition.BODY_ONE_AND_ALL) {
+          let bodyCount = this.getEquipmentCountOf([MachineType.POSITION_BODY], equipment);
+          if(bodyCount === 0){
+            errors.push(equipment.name + "は胴に１つ装備しなければいけません。")
+          }
+        }
+        //軽装甲ｘ＆全部位
+        if (equipment.mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_ALL) {
+          if (this.machineType !==null && this.machineType.weight === "軽") {
+           errors.push(equipment.name + "は軽装甲の機体では装備できません。")
+          }
+        }
+
       });
     }
 
@@ -340,7 +363,7 @@ export default class Machine {
     }
     return total;
   }
-  
+
   /**
    * 指定したランクの武装の種類をカウントする。
    * 

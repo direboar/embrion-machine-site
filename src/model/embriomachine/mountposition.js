@@ -37,6 +37,27 @@ export default class MountPosition {
   static get HEAD_AND_BODY_EACH_ONE(){
     return "頭１＆胴１";
   }
+  //胴1＋全部位
+  static get BODY_ONE_AND_ALL(){
+    return "胴１＋全部位";
+  }
+  //腕1（ロケットパンチ、有線ロケットパンチは同じ腕に装備できない）
+  static get ARM_ONE_ROCKETPANCH(){
+    return "腕１（ロケットパンチ）";
+  }
+
+  //ミサイル武装と入替
+
+  //ロケット武装と入替
+
+  //脚×
+  static get WITHOUT_LEG(){
+    return "脚×";
+  }
+  //軽装甲×＆全部位
+  static get MIDDLE_OR_HEAVEY_AND_ALL(){
+    return "軽装甲×＆全部位";
+  }
   //装備数上限なし
   static get INFINITY(){
     return 99;
@@ -71,6 +92,21 @@ export default class MountPosition {
     }
     if(mountPosition === MountPosition.HEAD_AND_BODY_EACH_ONE){
       return [MachineType.POSITION_HEAD,MachineType.POSITION_BODY];
+    }
+    if(mountPosition === MountPosition.BODY_ONE_AND_ALL){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+    }
+    if(mountPosition === MountPosition.ARM_ONE_ROCKETPANCH){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ARM);
+    }
+    if(mountPosition === MountPosition.WITHOUT_LEG){
+      let ret = MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+      ret.splice(ret.indexOf(MachineType.POSITION_LEFTLEG),1)
+      ret.splice(ret.indexOf(MachineType.POSITION_RIGHTLEG),1)
+      return ret;
+    }
+    if(mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_ALL){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
     }
     return [];
   }
