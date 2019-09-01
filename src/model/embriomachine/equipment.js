@@ -43,7 +43,7 @@ export default class Equipment {
   constructor(name,rank,type,range,minRange,maxRange,rangeType,damage,damageType,mountPosition,minLimit,equipSamePosition,effect,maxLimit) {
     // 名前
     this.name = name
-    // ランク A,B
+    // ランク S,A,B
     this.rank = rank
     // 種別 射撃、白兵、機雷、その他、補助
     this.type = type
@@ -1038,6 +1038,22 @@ export default class Equipment {
         "minLimit":1,
         "equipSamePosition":true,
         "effect":"手札にこの武装がある場合、破壊することで射撃ダメージを全て防げる。<br/>この武装がプロットエリアにある場合、上記をすべての種類のダメージに対して適用できる。<br/>この武装は複数搭載できない。",
+        "maxLimit":1
+       },
+       {
+        "name":"Sランクダミー", //FIXME ダミーデータのため、後で削除すること。
+        "rank":"S",
+        "type":"射撃",
+        "range":"-",
+        "minRange" : "0",
+        "maxRange" : "0",
+        "rangeType":"-",
+        "damage":"-",
+        "damageType":"-",
+        "mountPosition":"全部位",
+        "minLimit":1,
+        "equipSamePosition":true,
+        "effect":"ダミー",
         "maxLimit":1
        },
       ]

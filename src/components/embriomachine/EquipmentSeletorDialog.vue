@@ -3,7 +3,7 @@
     <v-dialog
       v-model="showDialog"
       :persistent="editMode"
-      max-width="850"
+      max-width="900"
       :fullscreen="isXs"
     >
       <v-card>
@@ -268,7 +268,7 @@ export default {
         Equipment.TYPE_SONOTA
       ],
       type: Equipment.TYPE_SHAGEKI,
-      ranks: ["A", "B"],
+      ranks: ["S", "A", "B"],
       selectedRanks: ["B"],
       rank: "B",
       itemcounts: [1, 2, 3],

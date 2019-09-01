@@ -218,7 +218,7 @@
                         <v-list-tile-content class="subheaders">{{machine.machineType.chargeDamage}}／{{machine.machineType.coveredChargeDamage}}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.getEquipmentCountByRank("A")}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.getARankEquipmentCount()}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>

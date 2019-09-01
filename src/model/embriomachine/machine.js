@@ -325,13 +325,29 @@ export default class Machine {
     return this.getEquipmentCountOf(MountPosition.toMachineEquipmentPosition(MountPosition.ALL), targetEquipment)
   }
 
+  /** 
+   * 現在の機体が、Aランク装備数枠をいくつ使用しているかを返却する。
+   * ・Aランク装備数をカウント
+   * ・Sランク装備数は２倍でカウント
+   * ・複座とする場合は、Aランク装備数２とカウントする。
+   */
+  getARankEquipmentCount() {
+    let total = this.getEquipmentCountByRank("A")
+    total += this.getEquipmentCountByRank("S") * 2
+    //複座とする場合は、Aランク装備数２とカウントする。
+    if(this.machineType.hasDoubleSeat){
+      total +=2
+    }
+    return total;
+  }
+  
   /**
    * 指定したランクの武装の種類をカウントする。
    * 
+   * getARankEquipmentCountとは異なり、指定されたランクに一致する武装のカウントのみを行う。
    * カウントの仕様は、Aランク大会仕様に従う。
    * ・装備数が、最小装備数を満たすごとに種類が１増える
    * ・最大装備数が２の場合、装備数３の場合は２とカウントする。
-   * ・複座とする場合は、Aランク装備数２とカウントする。
    * @param {*} rank 
    */
   getEquipmentCountByRank(rank) {
@@ -366,11 +382,6 @@ export default class Machine {
     groupBy.forEach(val => {
       total += Math.ceil(val.count / val.equipment.minLimit)
     });
-
-    //複座とする場合は、Aランク装備数２とカウントする。
-    if(this.machineType.hasDoubleSeat){
-      total +=2
-    }
 
     return total;
   }
