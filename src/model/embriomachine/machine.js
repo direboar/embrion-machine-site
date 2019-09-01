@@ -331,6 +331,7 @@ export default class Machine {
    * カウントの仕様は、Aランク大会仕様に従う。
    * ・装備数が、最小装備数を満たすごとに種類が１増える
    * ・最大装備数が２の場合、装備数３の場合は２とカウントする。
+   * ・複座とする場合は、Aランク装備数２とカウントする。
    * @param {*} rank 
    */
   getEquipmentCountByRank(rank) {
@@ -365,6 +366,12 @@ export default class Machine {
     groupBy.forEach(val => {
       total += Math.ceil(val.count / val.equipment.minLimit)
     });
+
+    //複座とする場合は、Aランク装備数２とカウントする。
+    if(this.machineType.hasDoubleSeat){
+      total +=2
+    }
+
     return total;
   }
 

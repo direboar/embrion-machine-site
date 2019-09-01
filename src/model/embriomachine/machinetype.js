@@ -34,9 +34,11 @@ export default class MachineType {
         POSITION_LEFTLEG : MachineType.POSITION_LEFTLEG
       }
     }
-  constructor(name,movility,evadeRate,armorPoint,constitution,initiative,headSlot,bodySlot,leftArmSlot,rightArmSlot,leftLegSlot,rightLegSlot) {
+  constructor(name,hasDoubleSeat,movility,evadeRate,armorPoint,constitution,initiative,headSlot,bodySlot,leftArmSlot,rightArmSlot,leftLegSlot,rightLegSlot) {
     // 名前
     this.name = name
+    // 複座かどうか
+    this.hasDoubleSeat = hasDoubleSeat
     // 移動力
     this.movility = movility
     // 回避値
@@ -133,23 +135,41 @@ export default class MachineType {
   static getMachineTypes(){
     let ret = []
 
-    ret.push(new MachineType("軽・サイズSS",7,10,0,17,1,1,1,2,2,1,1))
-    ret.push(new MachineType("軽・サイズS",7,9,0,18,2,1,2,2,2,1,1))
-    ret.push(new MachineType("軽・サイズM",6,8,0,19,3,1,2,2,2,2,2))
-    ret.push(new MachineType("軽・サイズL",5,7,0,20,6,1,2,3,3,2,2))
-    ret.push(new MachineType("軽・サイズLL",4,7,0,21,10,2,2,3,3,2,2))
+    ret.push(new MachineType("軽・サイズSS",false,7,10,0,17,1,1,1,2,2,1,1))
+    ret.push(new MachineType("軽・サイズS",false,7,9,0,18,2,1,2,2,2,1,1))
+    ret.push(new MachineType("軽・サイズM",false,6,8,0,19,3,1,2,2,2,2,2))
+    ret.push(new MachineType("軽・サイズL",false,5,7,0,20,6,1,2,3,3,2,2))
+    ret.push(new MachineType("軽・サイズLL",false,4,7,0,21,10,2,2,3,3,2,2))
 
-    ret.push(new MachineType("中・サイズSS",6,8,3,19,4,1,1,2,2,1,1))
-    ret.push(new MachineType("中・サイズS",6,7,3,20,5,1,2,2,2,1,1))
-    ret.push(new MachineType("中・サイズM",5,6,3,21,7,1,2,2,2,2,2))
-    ret.push(new MachineType("中・サイズL",4,5,3,22,11,1,2,3,3,2,2))
-    ret.push(new MachineType("中・サイズLL",3,5,3,23,13,2,2,3,3,2,2))
+    ret.push(new MachineType("中・サイズSS",false,6,8,3,19,4,1,1,2,2,1,1))
+    ret.push(new MachineType("中・サイズS",false,6,7,3,20,5,1,2,2,2,1,1))
+    ret.push(new MachineType("中・サイズM",false,5,6,3,21,7,1,2,2,2,2,2))
+    ret.push(new MachineType("中・サイズL",false,4,5,3,22,11,1,2,3,3,2,2))
+    ret.push(new MachineType("中・サイズLL",false,3,5,3,23,13,2,2,3,3,2,2))
 
-    ret.push(new MachineType("重・サイズSS",5,6,6,21,8,1,1,2,2,1,1))
-    ret.push(new MachineType("重・サイズS",5,5,6,22,9,1,2,2,2,1,1))
-    ret.push(new MachineType("重・サイズM",4,4,6,23,12,1,2,2,2,2,2))
-    ret.push(new MachineType("重・サイズL",3,3,6,24,14,1,2,3,3,2,2))
-    ret.push(new MachineType("重・サイズLL",2,3,6,25,15,2,2,3,3,2,2))
+    ret.push(new MachineType("重・サイズSS",false,5,6,6,21,8,1,1,2,2,1,1))
+    ret.push(new MachineType("重・サイズS",false,5,5,6,22,9,1,2,2,2,1,1))
+    ret.push(new MachineType("重・サイズM",false,4,4,6,23,12,1,2,2,2,2,2))
+    ret.push(new MachineType("重・サイズL",false,3,3,6,24,14,1,2,3,3,2,2))
+    ret.push(new MachineType("重・サイズLL",false,2,3,6,25,15,2,2,3,3,2,2))
+
+    ret.push(new MachineType("軽・サイズSS(複座)",true,5,11,0,17,1,2,2,2,2,1,1))
+    ret.push(new MachineType("軽・サイズS(複座)",true,5,10,0,18,2,2,3,2,2,1,1))
+    ret.push(new MachineType("軽・サイズM(複座)",true,4,9,0,19,3,2,3,2,2,2,2))
+    ret.push(new MachineType("軽・サイズL(複座)",true,3,8,0,20,6,2,3,3,3,2,2))
+    ret.push(new MachineType("軽・サイズLL(複座)",true,2,8,0,21,10,3,3,3,3,2,2))
+
+    ret.push(new MachineType("中・サイズSS(複座)",true,5,10,2,19,4,2,2,2,2,1,1))
+    ret.push(new MachineType("中・サイズS(複座)",true,5,9,2,20,5,2,3,2,2,1,1))
+    ret.push(new MachineType("中・サイズM(複座)",true,4,8,2,21,7,2,3,2,2,2,2))
+    ret.push(new MachineType("中・サイズL(複座)",true,3,7,2,22,11,2,3,3,3,2,2))
+    ret.push(new MachineType("中・サイズLL(複座)",true,2,7,2,23,13,3,3,3,3,2,2))
+
+    ret.push(new MachineType("重・サイズSS(複座)",true,4,8,5,21,8,2,2,2,2,1,1))
+    ret.push(new MachineType("重・サイズS(複座)",true,4,7,5,22,9,2,3,2,2,1,1))
+    ret.push(new MachineType("重・サイズM(複座)",true,3,6,5,23,12,2,3,2,2,2,2))
+    ret.push(new MachineType("重・サイズL(複座)",true,2,5,5,24,14,2,3,3,3,2,2))
+    ret.push(new MachineType("重・サイズLL(複座)",true,2,5,5,26,15,3,3,3,3,2,2))
 
     return ret;
   }

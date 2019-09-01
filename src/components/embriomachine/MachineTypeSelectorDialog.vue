@@ -17,9 +17,23 @@
               wrap
             >
               <v-flex
-                sm5
+                sm6
                 xs6
               >
+                <v-radio-group
+                  label="種類"
+                  v-model="seatType"
+                  :row="!isXs"
+                  class="body-1"
+                >
+                  <v-radio
+                    v-for="seatType in seatTypes"
+                    :label="seatType"
+                    :value="seatType"
+                    :key="seatType"
+                    color="brown lighten-2"
+                  ></v-radio>
+                </v-radio-group>
                 <v-radio-group
                   v-model="selectedMachineTypeName"
                   :mandatory="false"
@@ -33,39 +47,41 @@
                 </v-radio-group>
               </v-flex>
               <v-flex
-                sm7
+                sm6
                 xs6
               >
                 <v-layout
                   row
                   wrap
                 >
-                  <!--FIXME コンポーネント化-->
-                  <v-toolbar
-                    floating
-                    dense
-                  >
-                    <v-tooltip>
-                      <v-btn
-                        slot="activator"
-                        icon
-                        @click.native="select"
-                      >
-                        <v-icon>fas fa-hand-pointer</v-icon>
-                      </v-btn>
-                      <span>装甲・サイズを選択します。</span>
-                    </v-tooltip>
-                    <v-tooltip>
-                      <v-btn
-                        slot="activator"
-                        icon
-                        @click.native="closeDialog"
-                      >
-                        <v-icon>fas fa-backward</v-icon>
-                      </v-btn>
-                      <span>機体作成・編集画面に戻ります。</span>
-                    </v-tooltip>
-                  </v-toolbar>
+                  <v-flex xs12>
+                    <!--FIXME コンポーネント化-->
+                    <v-toolbar
+                      floating
+                      dense
+                    >
+                      <v-tooltip>
+                        <v-btn
+                          slot="activator"
+                          icon
+                          @click.native="select"
+                        >
+                          <v-icon>fas fa-hand-pointer</v-icon>
+                        </v-btn>
+                        <span>装甲・サイズを選択します。</span>
+                      </v-tooltip>
+                      <v-tooltip>
+                        <v-btn
+                          slot="activator"
+                          icon
+                          @click.native="closeDialog"
+                        >
+                          <v-icon>fas fa-backward</v-icon>
+                        </v-btn>
+                        <span>機体作成・編集画面に戻ります。</span>
+                      </v-tooltip>
+                    </v-toolbar>
+                  </v-flex>
                   <v-flex xs6>
                     <v-list dense>
                       <v-list-tile>
@@ -177,7 +193,10 @@
   </div>
 </template>
 
-<style>
+<style lang="styl">
+.v-label {
+  font-size: 11pt;
+}
 </style>
 
 <script>
@@ -199,8 +218,10 @@ export default {
   },
   data() {
     return {
+      //単座、複座
+      seatTypes: ["単座", "複座"],
+      seatType: "単座",
       selectedMachineTypeName: this.targetMachineType.name,
-      machineTypes: MachineType.getMachineTypes(),
       POSITION_CONST: MachineType.getPositionConst()
     };
   },
@@ -225,9 +246,18 @@ export default {
       });
       return ret;
     },
-    headSlot() {
-      return this.machineType.headSlot;
+
+    machineTypes() {
+      //単座か複座で表示対象の機種を絞り込む。
+      return MachineType.getMachineTypes().filter(machineType => {
+        if (this.seatType === "複座") {
+          return machineType.hasDoubleSeat;
+        } else {
+          return !machineType.hasDoubleSeat;
+        }
+      });
     },
+
     contentClass() {
       if (this.$vuetify.breakpoint.name === "xs") {
         return "caption";
@@ -235,6 +265,15 @@ export default {
         return "subheading";
       }
     },
+
+    // lavelFontSize() {
+    //   if (this.$vuetify.breakpoint.name === "xs") {
+    //     return "9px";
+    //   } else {
+    //     return "12px";
+    //   }
+    // },
+
     isXs() {
       return this.$vuetify.breakpoint.name === "xs";
     }
