@@ -130,7 +130,8 @@ export default {
       if (val) {
         this.equipments = this.machine.getAllEquipmentOf([
           Equipment.TYPE_SHAGEKI,
-          Equipment.TYPE_HAKUHEI
+          Equipment.TYPE_HAKUHEI,
+          Equipment.TYPE_SHAGEKI_HAKUHEI
         ]);
       }
     }

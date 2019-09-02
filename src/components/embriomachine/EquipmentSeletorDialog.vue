@@ -306,7 +306,7 @@ export default {
     equipments() {
       return Equipment.getEquipments().filter(equipment => {
         if (this.type !== null) {
-          if (equipment.type !== this.type) {
+          if (!equipment.isTypeOf(this.type)) {
             return false;
           }
           if (equipment.rank !== this.rank) {
