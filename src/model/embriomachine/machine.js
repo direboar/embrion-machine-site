@@ -319,6 +319,15 @@ export default class Machine {
             errors.push(equipment.name + "は胴に１つ装備しなければいけません。")
           }
         }
+
+        //胴１のみ
+        if (equipment.mountPosition === MountPosition.BODY_ONE_ONLY) {
+          let bodyCount = this.getEquipmentCountOf([MachineType.POSITION_BODY], equipment);
+          if(bodyCount > 1){
+            errors.push(equipment.name + "は胴に１つしか装備できません。")
+          }
+        }
+
         //軽装甲ｘ＆全部位
         if (equipment.mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_ALL) {
           if (this.machineType !==null && this.machineType.weight === "軽") {

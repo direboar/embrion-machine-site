@@ -50,6 +50,10 @@ export default class MountPosition {
 
   //ロケット武装と入替
 
+  //胴１のみ
+  static get BODY_ONE_ONLY(){
+    return "胴１のみ";
+  }
   //脚×
   static get WITHOUT_LEG(){
     return "脚×";
@@ -98,6 +102,9 @@ export default class MountPosition {
     }
     if(mountPosition === MountPosition.ARM_ONE_ROCKETPANCH){
       return MountPosition.toMachineEquipmentPosition(MountPosition.ARM);
+    }
+    if(mountPosition === MountPosition.BODY_ONE_ONLY){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.BODY);
     }
     if(mountPosition === MountPosition.WITHOUT_LEG){
       let ret = MountPosition.toMachineEquipmentPosition(MountPosition.ALL);

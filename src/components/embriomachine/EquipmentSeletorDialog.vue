@@ -265,6 +265,7 @@ export default {
         Equipment.TYPE_SOUKOU,
         Equipment.TYPE_HOJO,
         Equipment.TYPE_TOTSUGEKI,
+        Equipment.TYPE_IDOU,
         Equipment.TYPE_SONOTA
       ],
       type: Equipment.TYPE_SHAGEKI,
