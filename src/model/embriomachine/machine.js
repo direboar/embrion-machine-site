@@ -334,6 +334,14 @@ export default class Machine {
            errors.push(equipment.name + "は軽装甲の機体では装備できません。")
           }
         }
+        //腕各１
+        if (equipment.mountPosition === MountPosition.ARM_EACH_ONE) {
+          let rightLegCount = this.getEquipmentCountOf([MachineType.POSITION_RIGHTARM], equipment);
+          let leftLegCount = this.getEquipmentCountOf([MachineType.POSITION_LEFTARM], equipment);
+          if (rightLegCount !== 1 || leftLegCount !== 1) {
+            errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
+          }
+        }
 
       });
     }

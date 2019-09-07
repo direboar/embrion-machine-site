@@ -43,7 +43,11 @@ export default class MountPosition {
   }
   //腕1（ロケットパンチ、有線ロケットパンチは同じ腕に装備できない）
   static get ARM_ONE_ROCKETPANCH(){
-    return "腕１（ロケットパンチ）";
+    return "腕各１のみ（ロケットパンチ）";
+  }
+  //脚腕各１
+  static get ARM_EACH_ONE(){
+    return "腕各１";
   }
 
   //ミサイル武装と入替
@@ -72,7 +76,7 @@ export default class MountPosition {
     if(mountPosition === MountPosition.ALL){
       return [MachineType.POSITION_HEAD,MachineType.POSITION_BODY,MachineType.POSITION_LEFTARM,MachineType.POSITION_RIGHTARM,MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];
     }
-    if(mountPosition === MountPosition.ARM){
+    if(mountPosition === MountPosition.ARM || MountPosition.ARM_EACH_ONE){
       return [MachineType.POSITION_LEFTARM,MachineType.POSITION_RIGHTARM];
     }
     if(mountPosition === MountPosition.BODY){
