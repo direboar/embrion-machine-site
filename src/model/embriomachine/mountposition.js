@@ -76,13 +76,13 @@ export default class MountPosition {
     if(mountPosition === MountPosition.ALL){
       return [MachineType.POSITION_HEAD,MachineType.POSITION_BODY,MachineType.POSITION_LEFTARM,MachineType.POSITION_RIGHTARM,MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];
     }
-    if(mountPosition === MountPosition.ARM || MountPosition.ARM_EACH_ONE){
+    if(mountPosition === MountPosition.ARM){
       return [MachineType.POSITION_LEFTARM,MachineType.POSITION_RIGHTARM];
     }
     if(mountPosition === MountPosition.BODY){
       return [MachineType.POSITION_BODY];
     }
-    if(mountPosition === MountPosition.LEG || mountPosition === MountPosition.LEG_EACH_ONE){
+    if(mountPosition === MountPosition.LEG){
       return [MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];
     }
     if(mountPosition === MountPosition.ARM_OR_LEG){
@@ -95,16 +95,19 @@ export default class MountPosition {
       ret.splice(ret.indexOf(MachineType.POSITION_HEAD),1)
       return ret;
     }
+    if(mountPosition === MountPosition.LEG_EACH_ONE){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.LEG);
+    }
     if(mountPosition === MountPosition.BODY_TWO_OR_LEG_EACH_ONE){
       return [MachineType.POSITION_BODY,MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];
     }
     if(mountPosition === MountPosition.HEAD_AND_BODY_EACH_ONE){
       return [MachineType.POSITION_HEAD,MachineType.POSITION_BODY];
     }
-    if(mountPosition === MountPosition.BODY_ONE_AND_ALL){
-      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
-    }
     if(mountPosition === MountPosition.ARM_ONE_ROCKETPANCH){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ARM);
+    }
+    if(mountPosition === MountPosition.ARM_EACH_ONE){
       return MountPosition.toMachineEquipmentPosition(MountPosition.ARM);
     }
     if(mountPosition === MountPosition.BODY_ONE_ONLY){
@@ -117,6 +120,9 @@ export default class MountPosition {
       return ret;
     }
     if(mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_ALL){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+    }
+    if(mountPosition === MountPosition.BODY_ONE_AND_ALL){
       return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
     }
     return [];
