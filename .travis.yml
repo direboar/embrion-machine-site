@@ -10,6 +10,13 @@ script:
 before_deploy: |
   mkdir gh_dist
   mv ./dist ./gh_dist 
+
+  echo AuthType Basi> ./gh_dist/.htaccess
+  echo AuthName “auth”>> ./gh_dist/.htaccess
+  echo AuthUserFile .htpasswd >> ./gh_dist/.htaccess
+  echo require valid-user >> ./gh_dist/.htaccess
+  echo emb:RRwA70ZeQI4cE > ./gh_dist/.htpasswd
+
 # feature以下のブランチの場合は、dev環境にデプロイ。masterの場合はprod環境にデプロイ。
 deploy:
   - provider: pages
