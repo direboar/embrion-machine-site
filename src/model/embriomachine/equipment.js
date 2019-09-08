@@ -248,7 +248,7 @@ export default class Equipment {
         "minLimit": 2,
         "equipSamePosition": false,
         "effect": "",
-        "maxLimit": 8
+        "maxLimit": 10
       },
       {
         "name": "バルカン",
@@ -259,7 +259,7 @@ export default class Equipment {
         "maxRange": "2",
         "rangeType": "A",
         "damage": "2",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
@@ -275,12 +275,12 @@ export default class Equipment {
         "maxRange": "4",
         "rangeType": "A",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
         "effect": "",
-        "maxLimit": 4
+        "maxLimit": 6
       },
       {
         "name": "ガトリングガン",
@@ -291,12 +291,12 @@ export default class Equipment {
         "maxRange": "5",
         "rangeType": "A",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
         "effect": "",
-        "maxLimit": 2
+        "maxLimit": 6
       },
       {
         "name": "スナイパーライフル",
@@ -307,12 +307,12 @@ export default class Equipment {
         "maxRange": "11",
         "rangeType": "A",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
         "effect": "",
-        "maxLimit": 3
+        "maxLimit": 5
       },
       {
         "name": "短距離ミサイル",
@@ -323,12 +323,12 @@ export default class Equipment {
         "maxRange": "6",
         "rangeType": "B",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
         "effect": "射線が通っていなくても射撃できる",
-        "maxLimit": 5
+        "maxLimit": 9
       },
       {
         "name": "長距離ミサイル",
@@ -339,12 +339,12 @@ export default class Equipment {
         "maxRange": "9",
         "rangeType": "B",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
         "effect": "射線が通っていなくても射撃できる",
-        "maxLimit": 5
+        "maxLimit": 7
       },
       {
         "name": "ロケット砲",
@@ -355,12 +355,12 @@ export default class Equipment {
         "maxRange": "8",
         "rangeType": "N",
         "damage": "4",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
         "effect": "",
-        "maxLimit": 5
+        "maxLimit": 7
       },
       {
         "name": "アンカー",
@@ -376,7 +376,7 @@ export default class Equipment {
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "射撃の前に機体の向きを変更できる。<br/>対象を自機の正面に移動させる。その際、対象の向きは変わらない。",
-        "maxLimit": 1
+        "maxLimit": 2
       },
       {
         "name": "クロー",
@@ -392,7 +392,7 @@ export default class Equipment {
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "（ダメージ適用前）対象の手札または補助、プロットエリアに種別「装甲」のカードがある場合、対象はそのうち２枚を選択し、破壊する。",
-        "maxLimit": 2
+        "maxLimit": 3
       },
       {
         "name": "ブレード",
@@ -408,7 +408,7 @@ export default class Equipment {
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "",
-        "maxLimit": 1
+        "maxLimit": 2
       },
       {
         "name": "ランス",
@@ -456,7 +456,7 @@ export default class Equipment {
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "",
-        "maxLimit": 1
+        "maxLimit": 2
       },
       {
         "name": "ヒートソード",
@@ -467,7 +467,7 @@ export default class Equipment {
         "maxRange": "2",
         "rangeType": "N",
         "damage": "3",
-        "damageType": "白兵",
+        "damageType": "白兵・レーザー",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": false,
@@ -483,7 +483,7 @@ export default class Equipment {
         "maxRange": "1",
         "rangeType": "N",
         "damage": "6",
-        "damageType": "白兵・実弾兵器",
+        "damageType": "白兵・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
@@ -499,7 +499,7 @@ export default class Equipment {
         "maxRange": "0",
         "rangeType": "N",
         "damage": "3",
-        "damageType": "白兵・実弾兵器",
+        "damageType": "白兵・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
@@ -520,7 +520,7 @@ export default class Equipment {
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "正面方向へ可能な限り（最大で移動値マス）直線移動する。<br/>正面に隣接する機体に対し、「自機の突撃ダメージ＋１」点、自機に「対象の火突撃ダメージー１」点の白兵ダメージを与える。",
-        "maxLimit": 2
+        "maxLimit": 4
       },
       {
         "name": "シールド",
@@ -539,7 +539,7 @@ export default class Equipment {
         "maxLimit": 3
       },
       {
-        "name": "バーニア",
+        "name": "バーニア(♠)",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -551,11 +551,11 @@ export default class Equipment {
         "mountPosition": "胴２ or 脚各１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "１枚では使用不可。突撃には使用不可。<br/>移動、白兵時に高低差を１少ないものとして扱い、特殊地形への侵入に必要な移動力を無視できる。",
-        "maxLimit": 12
+        "effect": "移動：〇、突撃：×、白兵：〇。<br/>使用した場合、高低差を１少ないものとして扱い、特殊地形の追加移動力を消費しない。1枚不可。同じスート（♠）を持つ補助武装との同時使用不可<br/>",
+        "maxLimit": 16
       },
       {
-        "name": "ホイール",
+        "name": "ホイール(♠)",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -567,27 +567,27 @@ export default class Equipment {
         "mountPosition": "脚各１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "１枚では使用不可。白兵には使用不可。<br/>移動、突撃時に移動力を＋２できる。",
+        "effect": "移動：〇、突撃：〇、白兵：×。<br/>使用した場合、移動力を＋２する。<br/>1枚不可。同じスート（♠）を持つ補助武装との同時使用不可",
+        "maxLimit": 14
+      },
+      {
+        "name": "キャタピラ(♠)",
+        "rank": "B",
+        "type": "補助",
+        "range": "-",
+        "minRange": "0",
+        "maxRange": "0",
+        "rangeType": "-",
+        "damage": "-",
+        "damageType": "-",
+        "mountPosition": "脚各１",
+        "minLimit": 2,
+        "equipSamePosition": false,
+        "effect": "移動：〇、突撃：〇、白兵：×。<br/>使用した場合、移動力を＋１し、瓦礫・砂地・水地の追加移動力を消費しない。<br/>1枚不可。同じスート（♠）を持つ補助武装との同時使用不可",
         "maxLimit": 4
       },
       {
-        "name": "キャタピラ",
-        "rank": "B",
-        "type": "補助",
-        "range": "-",
-        "minRange": "0",
-        "maxRange": "0",
-        "rangeType": "-",
-        "damage": "-",
-        "damageType": "-",
-        "mountPosition": "脚各１",
-        "minLimit": 2,
-        "equipSamePosition": false,
-        "effect": "１枚では使用不可。白兵には使用不可。<br/>移動、突撃時に移動力を＋１し、瓦礫、砂地、水地への侵入に必要な追加移動力を無視できる。",
-        "maxLimit": 2
-      },
-      {
-        "name": "ムーブセンサー",
+        "name": "ムーブセンサー(♡)",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -599,8 +599,8 @@ export default class Equipment {
         "mountPosition": "頭１＆胴１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "１枚では使用不可。バーニアと同時に使用できる。<br/>白兵攻撃直前に１マス移動できる。",
-        "maxLimit": 2
+        "effect": "移動：×、突撃：×、白兵：〇。<br/>使用した場合、移動力１で白兵移動する。<br/>1枚不可。同じスート（♡）を持つ補助武装との同時使用不可。",
+        "maxLimit": 6
       },
       {
         "name": "パルスレーザー",
@@ -643,12 +643,12 @@ export default class Equipment {
         "maxRange": "3",
         "rangeType": "A",
         "damage": "2",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "対象が森に存在する場合、ダメージ＋１<br/>対象が水地に存在する場合、ダメージ－１<br/>（ダメージ適用後）対象は山札を４枚オープンし、誘爆チェックを行う。",
-        "maxLimit": 1
+        "maxLimit": 2
       },
       {
         "name": "サウンドウェーブ",
@@ -663,7 +663,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "ゲーム終了時まで対象の回避値を半分（切上）にする。この効果やサウンドストームの効果は累積しない。",
+        "effect": "即座に、ゲーム終了時まで対象の回避値を半分（切上）にする。この効果やサウンドストームの効果は累積しない。",
         "maxLimit": 1
       },
       {
@@ -691,7 +691,7 @@ export default class Equipment {
         "maxRange": "3",
         "rangeType": "A",
         "damage": "4",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
@@ -707,7 +707,7 @@ export default class Equipment {
         "maxRange": "11",
         "rangeType": "A",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
@@ -723,7 +723,7 @@ export default class Equipment {
         "maxRange": "8",
         "rangeType": "B",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
@@ -739,11 +739,11 @@ export default class Equipment {
         "maxRange": "6",
         "rangeType": "B",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
-        "effect": "射線が通っていなくても射撃できる。<br/>手札にこの武装がある場合、破壊することで射撃ダメージを３点防げる。<br/>この武装がプロットエリアにある場合、たとえ射撃に使用した後であっても、上記をすべての種類のダメージに対して適用できる。",
+        "effect": "射線が通っていなくても射撃できる。<br/>手札にこの武装がある場合、破壊することで射撃ダメージを３点防げる。<br/>この武装がプロットエリアにある場合、たとえ射撃に使用した後であっても、すべての種類のダメージを３点まで防げる。",
         "maxLimit": 2
       },
       {
@@ -755,7 +755,7 @@ export default class Equipment {
         "maxRange": "8",
         "rangeType": "N",
         "damage": "4",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
@@ -771,7 +771,7 @@ export default class Equipment {
         "maxRange": "8",
         "rangeType": "N",
         "damage": "5",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
@@ -787,7 +787,7 @@ export default class Equipment {
         "maxRange": "5",
         "rangeType": "N",
         "damage": "3",
-        "damageType": "射撃・実弾兵器",
+        "damageType": "射撃・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
@@ -963,7 +963,7 @@ export default class Equipment {
         "maxRange": "1",
         "rangeType": "N",
         "damage": "6",
-        "damageType": "白兵",
+        "damageType": "白兵・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
@@ -979,11 +979,11 @@ export default class Equipment {
         "maxRange": "0",
         "rangeType": "-",
         "damage": "5",
-        "damageType": "白兵・実弾兵器",
+        "damageType": "白兵・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "自機の周囲８マスに強化機雷トークン２枚とダミートークン２枚を重ならないように配置する<br/>各タイミングの終了時に機体がトークン上に存在するか否かを確認する。存在する場合、そのトークンをオープンする。機雷だった場合はダメージを適用し、トークンを取り除く。",
+        "effect": "自機の周囲８マスに強化機雷トークン２枚とダミートークン２枚を重ならないように配置する<br/>各タイミングの終了時に機体がトークン上に存在するか否かを確認する。存在する場合、そのトークンをオープンし取り除く。機雷だった場合はダメージを適用する。",
         "maxLimit": 2
       },
       {
@@ -1011,11 +1011,11 @@ export default class Equipment {
         "maxRange": "0",
         "rangeType": "-",
         "damage": "X",
-        "damageType": "白兵・実弾兵器",
+        "damageType": "白兵・実弾兵器（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "自機と周囲８マスに存在する機体に自機の耐久値の半分（切上）の白兵ダメージを与える。<br/>範囲内に種別「機雷」のトークンが存在する場合。すべてを作動させ、それらに含まれている機雷すべてのダメージをこの武装のダメージに追加する。<br/>この武装は使用後に破壊される。",
+        "effect": "自機と周囲８マスに存在する機体に自機の耐久値の半分（切上）の白兵ダメージを与える。<br/>範囲内に種別「機雷」のトークンが存在する場合。すべて作動し、それらに含まれている機雷すべてのダメージをこの武装のダメージに追加する。<br/>この武装は使用後に破壊される。",
         "maxLimit": 1
       },
       {
@@ -1035,7 +1035,7 @@ export default class Equipment {
         "maxLimit": 1
       },
       {
-        "name": "ホバー",
+        "name": "ホバー(♠)",
         "rank": "A",
         "type": "補助",
         "range": "-",
@@ -1047,8 +1047,8 @@ export default class Equipment {
         "mountPosition": "脚各１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "１枚では使用不可。白兵には使用不可。<br/>移動、突撃時に移動力を＋２し、瓦礫、砂地、水地への侵入に必要な追加移動力を無視できる。水地では高低差を無視し、水面の高度に存在するものとして扱う。",
-        "maxLimit": 2
+        "effect": "移動：〇、突撃：〇、白兵：×。<br/>各セグメント開始時に使用・不使用を決定し、不使用時にはカードを横向きにする。<br/>使用する場合、移動力を＋２し、瓦礫・砂地・水地の追加移動力を消費しない。水地では水面の高度に存在するものとして扱う。<br/>1枚不可。同じスート（♠）を持つ補助武装との同時使用不可。",
+        "maxLimit": 4
       },
       {
         "name": "防水幕",
@@ -1063,7 +1063,7 @@ export default class Equipment {
         "mountPosition": "胴",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "水地への侵入に必要な追加移動力を無視する",
+        "effect": "移動：〇、突撃：〇、白兵：〇<br/>常に、水地の追加移動力を消費しない",
         "maxLimit": 1
       },
       {
@@ -1096,7 +1096,7 @@ export default class Equipment {
         "mountPosition": "腕・脚",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "このダメージは「装甲」の効果によって防ぐことができず、種別が「装甲」のみのカードでは受けられない。山札から「装甲」のみのカードがオープンされた場合、その「装甲」は捨札となり新たにカードをオープンする。山札に「装甲」のみのカードしかない場合、手札やプロット、補助へダメージを受ける。",
+        "effect": "このダメージは「装甲」の効果によって防ぐことができず、種別が「装甲」のみのカードでは受けられない。<br/>山札から「装甲」のみのカードがオープンされた場合、その「装甲」は捨札となり新たにカードをオープンする。山札に「装甲」のみのカードしかない場合、手札やプロット、補助へダメージを受ける。",
         "maxLimit": 1
       },
       {
@@ -1160,7 +1160,7 @@ export default class Equipment {
         "mountPosition": "胴１＋全部位",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "白兵ダメージや「照準」された場合にも最初に使用できる。自機が受けたエネルギー武装⚡のダメージを、手札やプロットの「プレート」を１枚捨札にする、もしくは、このカード２枚を破壊することで、半分（切上）にできる。一度に複数回使用することはできない。",
+        "effect": "白兵ダメージや「照準」された場合にも最初に使用できる。<br/>自機が受けたエネルギー武装⚡のダメージを、手札やプロットの「プレート」を１枚捨札にする、もしくは、このカード２枚を破壊することで、半分（切上）にできる。<br/>一度に複数回使用することはできない。",
         "maxLimit": 4
       },
       {
@@ -1176,7 +1176,7 @@ export default class Equipment {
         "mountPosition": "脚各１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "移動：〇、突撃：×、白兵：〇。常に、移動力を＋１し、高低差を１少ないものとして扱い、特殊地形の追加移動力を消費しない。",
+        "effect": "移動：〇、突撃：×、白兵：〇。<br/>常に、移動力を＋１し、高低差を１少ないものとして扱い、特殊地形の追加移動力を消費しない。",
         "maxLimit": 2
       },
       {
@@ -1192,7 +1192,7 @@ export default class Equipment {
         "mountPosition": "胴",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "移動値＋６。移動力を可能な限り消費しきるように移動する。使用後この武装は破壊される。",
+        "effect": "移動値＋６。移動力を可能な限り消費しきるように移動する。<br/>使用後この武装は破壊される。",
         "maxLimit": 2
       },
       {
@@ -1208,7 +1208,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "自機の周囲８マスにトラバサミトークン２枚とダミートークン２枚を重ならないように設置する。各タイミングの終了時に機体がトークン上に存在する場合、そのトークンをオープンし取り除く。トラバサミだった場合はその機体にダメージを適用し、その機体のプロットエリアの両方に「キャンセル（▲▲▲）」チットを置く。このチットがある場合、「射撃」か「キャンセル（▲▲▲）チット２枚の除去」のどちらかを行なう。この効果を受けている間、強制移動を含む一切の移動が行なえない。",
+        "effect": "自機の周囲８マスにトラバサミトークン２枚とダミートークン２枚を重ならないように設置する。<br/>各タイミングの終了時に機体がトークン上に存在する場合、そのトークンをオープンし取り除く。<br/>トラバサミだった場合はその機体にダメージを適用し、その機体のプロットエリアの両方に「キャンセル（▲▲▲）」チットを置く。<br/>このチットがある場合、「射撃」か「キャンセル（▲▲▲）チット２枚の除去」のどちらかを行なう。<br/>この効果を受けている間、強制移動を含む一切の移動が行なえない。",
         "maxLimit": 1
       },
       {
@@ -1224,7 +1224,7 @@ export default class Equipment {
         "mountPosition": "胴１のみ",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "白兵ダメージや「照準」された場合にも使用できる。「プレート」を１枚捨札にする、もしくは、このカード１枚を破壊することで、すべての種類のダメージを１点防ぐことができる。一度に複数回使用することはできない。",
+        "effect": "白兵ダメージや「照準」された場合にも使用できる。<br/>「プレート」を１枚捨札にする、もしくは、このカード１枚を破壊することで、すべての種類のダメージを１点防ぐことができる。<br/>一度に複数回使用することはできない。",
         "maxLimit": 2
       },
       {
@@ -1240,7 +1240,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "この武装を搭載した部位と同じ部位に搭載される武装の必要搭載数の実数（同部位分）を丸数字として扱う（他の部位にも搭載できるようになる）。 注意：このチェックは本アプリでは未実装です。",
+        "effect": "この武装を搭載した部位と同じ部位に搭載される武装の必要搭載数の実数（同部位分）を丸数字として扱う（他の部位にも搭載できるようになる）。<br/><b>注意：このチェックは本アプリでは未実装です。</b>",
         "maxLimit": 2
       },
       {
@@ -1272,7 +1272,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "機体ではなくマスが対象となる。対象のマスとその四辺に隣接したマスに存在するすべての機体にダメージを与える。使用後この武装は破壊される。",
+        "effect": "機体ではなくマスが対象となる。対象のマスとその四辺に隣接したマスに存在するすべての機体にダメージを与える。<br/>使用後この武装は破壊される。",
         "maxLimit": 2
       },
       {
@@ -1288,7 +1288,7 @@ export default class Equipment {
         "mountPosition": "腕",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "機体ではなくマスが対象となる。対象のマスとその四辺に隣接したマスに存在するすべての機体にダメージを与える。使用後この武装は破壊される。",
+        "effect": "",
         "maxLimit": 1
       },
       {
@@ -1304,7 +1304,7 @@ export default class Equipment {
         "mountPosition": "頭１＆胴１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "移動：×、突撃：×、白兵：〇。使用した場合、移動力２で白兵移動する。その際、白兵攻撃の対象に常に近づくように移動しなくてはならない。1枚不可。同じスート（♡）を持つ補助武装との同時使用不可。",
+        "effect": "移動：×、突撃：×、白兵：〇。</br>使用した場合、移動力２で白兵移動する。その際、白兵攻撃の対象に常に近づくように移動しなくてはならない。</br>１枚不可。同じスート（♡）を持つ補助武装との同時使用不可。",
         "maxLimit": 4
       },
       {
@@ -1320,7 +1320,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "移動：×、突撃：〇、白兵：×。１枚不可。使用した場合、突撃移動時に移動力を１消費することで、一度だけ機体の向きを好きな方向に変えることができる。使用後この武装は破壊される。",
+        "effect": "移動：×、突撃：〇、白兵：×。</br>使用した場合、突撃移動時に移動力を１消費することで、一度だけ機体の向きを好きな方向に変えることができる。</br>使用後この武装は破壊される。",
         "maxLimit": 2
       },
       {
@@ -1336,7 +1336,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "移動：〇、突撃：×、白兵：〇。使用した場合、高低差を１少ないものとして扱う。",
+        "effect": "移動：〇、突撃：×、白兵：〇。</br>使用した場合、高低差を１少ないものとして扱う。",
         "maxLimit": 2
       },
       {
@@ -1368,7 +1368,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "射撃の直前に機体の向きを変更できる。森によるダメージへの修正を受けない。水地の機体を対象にできない。対象を自機の正面に強制移動させる。その際、対象の向きは変わらない。",
+        "effect": "射撃の直前に機体の向きを変更できる。</br>森によるダメージへの修正を受けない。</br>水地の機体を対象にできない。</br>対象を自機の正面に強制移動させる。その際、対象の向きは変わらない。",
         "maxLimit": 2
       },
       {
@@ -1384,7 +1384,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 3,
         "equipSamePosition": false,
-        "effect": "射撃の直前に機体の向きを変更できる。自機の正面方向１～10マス、幅１マスの直線上に存在するすべての機体を対象とし、命中する。",
+        "effect": "射撃の直前に機体の向きを変更できる。</br>自機の正面方向１～10マス、幅１マスの直線上に存在するすべての機体を対象とし、命中する。",
         "maxLimit": 3
       },
       {
@@ -1416,7 +1416,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
-        "effect": "白兵移動可能な補助武装があれば、射撃タイミング開始時に使用できる。射撃の直前に機体の向きを変更できる。",
+        "effect": "白兵移動可能な補助武装があれば、射撃タイミング開始時に使用できる。</br>射撃の直前に機体の向きを変更できる。",
         "maxLimit": 2
       },
       {
@@ -1448,7 +1448,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "射撃タイミングでオープンする。射撃として使用しなかった場合、白兵タイミングで使用する。",
+        "effect": "射撃タイミングでオープンする。</br>射撃として使用しなかった場合、白兵タイミングで使用する。",
         "maxLimit": 2
       },
       {
@@ -1480,7 +1480,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "このカードが手札かプロットエリアにあれば、破壊することで白兵攻撃のダメージを１点防ぐことができる。上記を含む、白兵攻撃のダメージでこのカードが破壊された場合、その白兵攻撃に用いられたカードを破壊する。",
+        "effect": "このカードが手札かプロットエリアにあれば、破壊することで白兵攻撃のダメージを１点防ぐことができる。</br>上記を含む、白兵攻撃のダメージでこのカードが破壊された場合、その白兵攻撃に用いられたカードを破壊する。",
         "maxLimit": 1
       },
       {
@@ -1544,7 +1544,7 @@ export default class Equipment {
         "mountPosition": "腕各１のみ（ロケットパンチ）",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "同部位に有線ロケットパンチと同時に搭載できない。使用後この武装は破壊される。",
+        "effect": "同部位に有線ロケットパンチと同時に搭載できない。</br>使用後この武装は破壊される。",
         "maxLimit": 1
       },
       {
@@ -1560,7 +1560,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "（ダメージ適用前）対象は山札を３枚オープンし、種別「装甲」が含まれているカードがあればそれらを破壊する。種別「装甲」以外のカードは捨札にする。命中した場合、この武装は破壊される。",
+        "effect": "（ダメージ適用前）対象は山札を３枚オープンし、種別「装甲」が含まれているカードがあればそれらを破壊する。種別「装甲」以外のカードは捨札にする。</br>命中した場合、この武装は破壊される。",
         "maxLimit": 1
       },
       {
@@ -1576,7 +1576,7 @@ export default class Equipment {
         "mountPosition": "脚各１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "常に、移動力を＋１し、高低差を１少ないものとして扱い、特殊地形の追加移動力を消費しない。1枚不可。同じスート（♠）を持つ補助武装との同時使用不可。",
+        "effect": "移動：〇、突撃：×、白兵：×。</br>常に、移動力を＋１し、高低差を１少ないものとして扱い、特殊地形の追加移動力を消費しない。</br>1枚不可。同じスート（♠）を持つ補助武装との同時使用不可。",
         "maxLimit": 2
       },
       {
@@ -1592,7 +1592,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "このカードが補助エリアにある限り、回避値1/2（切上）。白兵ダメージや「照準」された場合にも使用できる。この装甲を破壊することで、すべての種類のダメージを６点まで防ぐことができる。",
+        "effect": "このカードが補助エリアにある限り、回避値1/2（切上）。</br>白兵ダメージや「照準」された場合にも使用できる。</br>この装甲を破壊することで、すべての種類のダメージを６点まで防ぐことができる。",
         "maxLimit": 1
       },
       {
@@ -1608,7 +1608,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "突撃移動を行ない、正面に隣接する機体を対象とする。（ダメージ適用前）対象は山札を３枚オープンし、種別「装甲」が含まれているカードがあればそれらを破壊する。種別「装甲」以外のカードは捨札にする。対象に「自機の突撃ダメージ＋１」点、自機に「対象の被突撃ダメージ－１」点の白兵ダメージを与える。",
+        "effect": "突撃移動を行ない、正面に隣接する機体を対象とする。</br>（ダメージ適用前）対象は山札を３枚オープンし、種別「装甲」が含まれているカードがあればそれらを破壊する。</br>種別「装甲」以外のカードは捨札にする。対象に「自機の突撃ダメージ＋１」点、自機に「対象の被突撃ダメージ－１」点の白兵ダメージを与える。",
         "maxLimit": 1
       },
       {
@@ -1624,7 +1624,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "自機の周囲８マスのうち４マスに高感度機雷トークン２枚と高感度ダミートークン２枚を重ならないように設置する。各タイミングの終了時に機体がトークンかトークンに隣接したマス上に存在するか否かを確認する。存在する場合、そのトークンをオープンし取り除く。機雷だった場合はそのマスと隣接したマスに存在する機体にダメージを適用する。",
+        "effect": "自機の周囲８マスのうち４マスに高感度機雷トークン２枚と高感度ダミートークン２枚を重ならないように設置する。</br>各タイミングの終了時に機体がトークンかトークンに隣接したマス上に存在するか否かを確認する。存在する場合、そのトークンをオープンし取り除く。機雷だった場合はそのマスと隣接したマスに存在する機体にダメージを適用する。",
         "maxLimit": 1
       },
       {
@@ -1640,7 +1640,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "自機の周囲８マスとその周囲１６マスに収まるように投擲機雷トークン２枚とダミートークン２枚を重ならないように設置する。機体のいるマスには設置できない。各タイミングの終了時に機体がトークン上に存在するか否かを確認する。存在する場合、そのトークンをオープンし取り除く。機雷だった場合はダメージを適用する。",
+        "effect": "自機の周囲８マスとその周囲１６マスに収まるように投擲機雷トークン２枚とダミートークン２枚を重ならないように設置する。機体のいるマスには設置できない。</br>各タイミングの終了時に機体がトークン上に存在するか否かを確認する。存在する場合、そのトークンをオープンし取り除く。機雷だった場合はダメージを適用する。",
         "maxLimit": 1
       },
       {
@@ -1720,7 +1720,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "森によるダメージへの修正を受けない。命中した場合、この武装は破壊される。対象はゲーム終了時まで、移動値が－２（最低１）される。",
+        "effect": "森によるダメージへの修正を受けない。</br>命中した場合、この武装は破壊される。</br>対象はゲーム終了時まで、移動値が－２（最低１）される。",
         "maxLimit": 1
       },
       {
@@ -1736,7 +1736,7 @@ export default class Equipment {
         "mountPosition": "腕各１のみ（ロケットパンチ）",
         "minLimit": 1,
         "equipSamePosition": false,
-        "effect": "同部位にロケットパンチと同時に搭載できない。射撃タイミングでオープンする。射撃として使用した場合、射撃の直前に機体の向きを変更できる。対象を自機の正面に強制移動させる。その際、対象の向きは変わらない。射撃として使用しなかった場合、白兵タイミングで使用する。",
+        "effect": "同部位にロケットパンチと同時に搭載できない。</br>射撃タイミングでオープンする。</br>射撃として使用した場合、射撃の直前に機体の向きを変更できる。対象を自機の正面に強制移動させる。その際、対象の向きは変わらない。</br>射撃として使用しなかった場合、白兵タイミングで使用する。",
         "maxLimit": 1
       },
       {
@@ -1752,7 +1752,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "射撃タイミングでオープンする。射撃として使用した場合、この武装は破壊される。射撃として使用しなかった場合、白兵タイミングで使用する。",
+        "effect": "射撃タイミングでオープンする。</br>射撃として使用した場合、この武装は破壊される。</br>射撃として使用しなかった場合、白兵タイミングで使用する。",
         "maxLimit": 1
       },
       {
@@ -1768,7 +1768,7 @@ export default class Equipment {
         "mountPosition": "腕",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "このダメージは「装甲」の効果によって防ぐことができず、種別が「装甲」のみのカードでは受けられない。山札から「装甲」のみのカードがオープンされた場合、その「装甲」は捨札となり新たにカードをオープンする。山札に「装甲」のみのカードしかない場合、手札やプロット、補助へダメージを受ける。",
+        "effect": "このダメージは「装甲」の効果によって防ぐことができず、種別が「装甲」のみのカードでは受けられない。</br>山札から「装甲」のみのカードがオープンされた場合、その「装甲」は捨札となり新たにカードをオープンする。</br>山札に「装甲」のみのカードしかない場合、手札やプロット、補助へダメージを受ける。",
         "maxLimit": 1
       },
       {
@@ -1784,7 +1784,7 @@ export default class Equipment {
         "mountPosition": "腕",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "白兵タイミングでオープンする。白兵として使用しなかった場合、その他タイミングで使用し、自機の存在するマスを「瓦礫－１」、隣接するマスの１つを「瓦礫＋１」に変更する。",
+        "effect": "白兵タイミングでオープンする。</br>白兵として使用しなかった場合、その他タイミングで使用し、自機の存在するマスを「瓦礫－１」、隣接するマスの１つを「瓦礫＋１」に変更する。",
         "maxLimit": 1
       },
       {
@@ -1816,7 +1816,7 @@ export default class Equipment {
         "mountPosition": "頭",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "白兵攻撃の際は、対象の部位：頭に搭載している武装へ先にダメージを与える。手札にこのカードがある場合、「装甲」として破壊することで射撃ダメージを２点まで防げる。この武装がプロットエリアにある場合、たとえ白兵に使用したあとであっても、「装甲」としてすべての種類のダメージを２点まで防げる。",
+        "effect": "白兵攻撃の際は、対象の部位：頭に搭載している武装へ先にダメージを与える。</br>手札にこのカードがある場合、「装甲」として破壊することで射撃ダメージを２点まで防げる。</br>この武装がプロットエリアにある場合、たとえ白兵に使用したあとであっても、「装甲」としてすべての種類のダメージを２点まで防げる。",
         "maxLimit": 1
       },
       {
@@ -1832,7 +1832,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "「ミサイル」武装１枚と入替で装備。名称に「ミサイル」と入っている武装の攻撃が命中した場合使用できる。その「ミサイル」のダメージを＋２する。その「ミサイル」によるダメージは、種別「装甲」でも１点分しか防ぐことができない。使用した場合、この武装は破壊される。＊注意：この武器を正しく装備するための処理は実装されていません。",
+        "effect": "「ミサイル」武装１枚と入替で装備。名称に「ミサイル」と入っている武装の攻撃が命中した場合使用できる。</br>その「ミサイル」のダメージを＋２する。その「ミサイル」によるダメージは、種別「装甲」でも１点分しか防ぐことができない。</br>使用した場合、この武装は破壊される。</br><b>注意：この武器を正しく装備するための処理は実装されていません。</b>",
         "maxLimit": 1
       },
       {
@@ -1848,7 +1848,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "「ロケット」武装１枚と入替で装備。名称に「ロケット」と入っている武装の攻撃が命中した場合使用できる。対象に「継続ダメージ１」チットを渡す。対象は毎クリンナップフェイズの開始時に射撃ダメージ１を受ける。この効果は累積しない。使用した場合、この武装は破壊される。＊注意：この武器を正しく装備するための処理は実装されていません。",
+        "effect": "「ロケット」武装１枚と入替で装備。名称に「ロケット」と入っている武装の攻撃が命中した場合使用できる。</br>対象に「継続ダメージ１」チットを渡す。対象は毎クリンナップフェイズの開始時に射撃ダメージ１を受ける。この効果は累積しない。</br>使用した場合、この武装は破壊される。<b>注意：この武器を正しく装備するための処理は実装されていません。</b>",
         "maxLimit": 1
       },
       {
@@ -1880,7 +1880,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "自機に隣接するように浮遊機雷トークン１枚を設置する。機体シート上にまだなければ、浮遊機雷チットを受け取る。トークンと同じマスに機体が存在する場合、直ちにダメージを適用しトークンを取り除く。浮遊機雷チットを持つなら、特殊タイミング（機雷）で任意の浮遊機雷トークン１枚を２マス強制移動できる。浮遊機雷トークンは攻撃の対象にでき、ダメージも受ける（直ちに除去）。",
+        "effect": "自機に隣接するように浮遊機雷トークン１枚を設置する。機体シート上にまだなければ、浮遊機雷チットを受け取る。</br>トークンと同じマスに機体が存在する場合、直ちにダメージを適用しトークンを取り除く。</br>浮遊機雷チットを持つなら、特殊タイミング（機雷）で任意の浮遊機雷トークン１枚を２マス強制移動できる。</br>浮遊機雷トークンは攻撃の対象にでき、ダメージも受ける（直ちに除去）。",
         "maxLimit": 1
       },
       {
@@ -1896,7 +1896,7 @@ export default class Equipment {
         "mountPosition": "軽装甲×＆全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "３マスの突撃移動を行なう。突撃移動中、正面に他の機体が隣接した場合、その機体を対象とし、対象ごと残りの突撃移動を行なう（対象は強制移動される）。移動終了時、この移動で自機の存在したマスはすべて高度０の平地となる（最大４マス）。対象に対し、「自機の突撃ダメージ＋１」点、自機に「対象の被突撃ダメージ」点の白兵ダメージを与える。",
+        "effect": "３マスの突撃移動を行なう。突撃移動中、正面に他の機体が隣接した場合、その機体を対象とし、対象ごと残りの突撃移動を行なう（対象は強制移動される）。</br>移動終了時、この移動で自機の存在したマスはすべて高度０の平地となる（最大４マス）。</br>対象に対し、「自機の突撃ダメージ＋１」点、自機に「対象の被突撃ダメージ」点の白兵ダメージを与える。",
         "maxLimit": 1
       },
       {
@@ -1912,7 +1912,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "突撃移動を行ない、正面に隣接する機体を対象とする。対象に「自機の突撃ダメージ＋２」点、自機に「対象の被突撃ダメージ＋１」点の白兵ダメージを与える。",
+        "effect": "突撃移動を行ない、正面に隣接する機体を対象とする。</br>対象に「自機の突撃ダメージ＋２」点、自機に「対象の被突撃ダメージ＋１」点の白兵ダメージを与える。",
         "maxLimit": 1
       },
       {
@@ -1928,7 +1928,7 @@ export default class Equipment {
         "mountPosition": "胴１＋全部位",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "使用したら補助エリアに置き、飛行状態となる。各ドローフェイズ終了時に飛行状態、不使用状態を決定する。不使用状態の間はこのカードを横向きにする。飛行状態：移動：〇、突撃：〇、白兵：×。回避値＋４、移動値＋２、高低差を３まで無視、特殊地形の追加移動力なし。白兵や腕のみ搭載の武装使用不可。移動タイミング開始時「任意の方向を向く」or「正面方向に１マス移動」を行なう。",
+        "effect": "使用したら補助エリアに置き、飛行状態となる。各ドローフェイズ終了時に飛行状態、不使用状態を決定する。不使用状態の間はこのカードを横向きにする。</br>飛行状態：移動：〇、突撃：〇、白兵：×。回避値＋４、移動値＋２、高低差を３まで無視、特殊地形の追加移動力なし。白兵や<u>腕のみ搭載の武装</u>使用不可。移動タイミング開始時「任意の方向を向く」or「正面方向に１マス移動」を行なう。",
         "maxLimit": 2
       },
       {
@@ -1944,7 +1944,7 @@ export default class Equipment {
         "mountPosition": "胴",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "移動タイミング開始時に光学迷彩マーカーを自機のマスに設置し、機体コマをマップ上から取り除く（その間「突撃」や「機雷」のみ効果あり）。光学迷彩マーカーのマスは機体進入不可。そのセグメントの特殊タイミング終了時、自機の光学迷彩マーカー上に自機の機体コマを戻す。そこから移動力を可能な限り消費しきるように移動し、光学迷彩マーカーを取り除く。",
+        "effect": "移動タイミング開始時に光学迷彩マーカーを自機のマスに設置し、機体コマをマップ上から取り除く（その間「突撃」や「機雷」のみ効果あり）。光学迷彩マーカーのマスは機体進入不可。</br>そのセグメントの特殊タイミング終了時、自機の光学迷彩マーカー上に自機の機体コマを戻す。そこから移動力を可能な限り消費しきるように移動し、光学迷彩マーカーを取り除く。",
         "maxLimit": 1
       },
       {
@@ -1960,7 +1960,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 3,
         "equipSamePosition": false,
-        "effect": "使用したら補助エリアに置く。２枚目なら下記の射撃を行ない２枚とも捨札にする。このセグメントに移動していない全機体(自機も)のチームチットを混ぜ、ランダムに１枚引く。マップ上の位置に関係なくそのチットの機体を対象とし命中する。照準後なら、２枚引き１枚選べる。照準自体の効果は得ない。",
+        "effect": "使用したら補助エリアに置く。２枚目なら下記の射撃を行ない２枚とも捨札にする。</br>このセグメントに移動していない全機体(自機も)のチームチットを混ぜ、ランダムに１枚引く。</br>マップ上の位置に関係なくそのチットの機体を対象とし命中する。</br>照準後なら、２枚引き１枚選べる。照準自体の効果は得ない。",
         "maxLimit": 3
       },
       {
@@ -1976,7 +1976,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 2,
         "equipSamePosition": true,
-        "effect": "機体ではなくマスが対象となる。対象のマスから２マス以内に存在するすべての機体は、そのイニシアチブ順に移動値に関わらず対象のマスに近づくように強制移動する。この効果の範囲内の、移動可能な全機体は、「その全機体の非突撃ダメージの合計」ダメージⓈを受ける。",
+        "effect": "機体ではなくマスが対象となる。対象のマスから２マス以内に存在するすべての機体は、そのイニシアチブ順に移動値に関わらず対象のマスに近づくように強制移動する。</br>この効果の範囲内の、移動可能な全機体は、「その全機体の非突撃ダメージの合計」ダメージⓈを受ける。",
         "maxLimit": 2
       },
 
