@@ -16,6 +16,22 @@
             xs6
           >
             <v-radio-group
+              label="ルール"
+              v-model="edition"
+              :row="!isXs"
+              v-if="editMode"
+            >
+              <v-radio
+                v-for="edition in editions"
+                :label="edition"
+                :value="edition"
+                :key="edition"
+                :disabled="!editMode"
+                class="body-1"
+                color="light-green lighten-1"
+              ></v-radio>
+            </v-radio-group>
+            <v-radio-group
               label="ランク"
               v-model="rank"
               :row="!isXs"
@@ -273,7 +289,9 @@ export default {
       selectedRanks: ["B"],
       rank: "B",
       itemcounts: [1, 2, 3],
-      itemcount: 1
+      itemcount: 1,
+      editions: ["基本", "玉座"],
+      edition: "基本"
     };
   },
 
@@ -283,14 +301,17 @@ export default {
         this.selectedEquipmentName = val.name;
         this.type = val.type;
         this.rank = val.rank;
+        this.rank = val.edition;
         if (this.type === "" || this.type === undefined) {
           this.type = "射撃";
           this.rank = "B";
+          this.edition = "基本";
         }
       } else {
         this.selectedEquipment = "";
         this.type = "射撃";
         this.rank = "B";
+        this.edition = "基本";
       }
     },
     equipment: function(val) {
@@ -311,6 +332,9 @@ export default {
             return false;
           }
           if (equipment.rank !== this.rank) {
+            return false;
+          }
+          if (equipment.edition !== this.edition) {
             return false;
           }
         }
