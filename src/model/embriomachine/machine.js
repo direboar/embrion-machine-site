@@ -252,8 +252,8 @@ export default class Machine {
         }
 
         //2-2.装備の最低装備枚数を満たしている
-        if (equipment.equipSamePosition) {
-          //2-2-1.〇ではない場合：１か所の部位に裁定枚数が装備されている
+        if (equipment.equipSamePosition && !this.reducedByBarretteTube(equipment)) {
+          //2-2-1.〇ではない場合、もしくは対象の装備がバレットチューブと同じ部位に装備されている場合：１か所の部位に裁定枚数が装備されている
           //現在装備している部位の、該当装備品の数をカウントする。
           let count = this.getEquipmentCountOf([equipmentPosition], equipment)
           if (count < equipment.minLimit) {
@@ -351,6 +351,24 @@ export default class Machine {
     return errors.filter((elem, index, array) => array.indexOf(elem) === index)
   }
 
+  /**
+   * 指定した装備が、バレットチューブにより装備の制約が軽減されている（〇扱いになっている）かをチェックする。
+   * @param {*} targetEquipment
+   * @memberof Machine
+   */
+  reducedByBarretteTube(targetEquipment){
+    let reducedEquipments = [];
+    let barretteTube = Equipment.findByName("バレットチューブ");
+
+    for (let equipmentPosition in this.equipments) {
+      if(this.getEquipmentCountOf(equipmentPosition,barretteTube)>0){
+        reducedEquipments = reducedEquipments.concat(this.equipments[equipmentPosition]);
+      }
+    }
+
+    return reducedEquipments.find((elem)=>{return elem.name === targetEquipment.name});
+  }
+
   //指定したポジションのスロット上限チェックを行います。
   validateSlotSize(machineTypePosition, errors) {
     let alreadyEquipmentCount = this.getEquipmentCountOf([machineTypePosition]);
@@ -444,7 +462,7 @@ export default class Machine {
     }
     return ret;
   }
-
+  
   static assign(obj) {
     let machine = new Machine();
     Object.assign(machine, obj);

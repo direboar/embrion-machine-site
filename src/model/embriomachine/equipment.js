@@ -91,6 +91,9 @@ export default class Equipment {
       }
       if (this.minLimit === 3) {
         return "③";
+      }
+      if (this.minLimit === 4) {
+        return "④";
       } else {
         return this.minLimit;
       }
@@ -190,6 +193,19 @@ export default class Equipment {
   //選択可能な装備を取得する
   static getEquipments() {
     return Equipment.assigns(Equipment.json());
+  }
+
+  /**
+   * 指定した名前で装備を検索する。
+   *
+   * @static
+   * @param {装備名} equipmentName
+   * @returns 名前が一致する装備。
+   * @memberof Equipment
+   */
+  static findByName(equipmentName){
+    let filtered = Equipment.getEquipments().filter((equipment)=>{return equipment.name === equipmentName})
+    return filtered.length > 0 ? filtered[0] : null;
   }
 
   static assigns(array) {
@@ -1306,7 +1322,7 @@ export default class Equipment {
         "mountPosition": "全部位",
         "minLimit": 1,
         "equipSamePosition": true,
-        "effect": "この武装を搭載した部位と同じ部位に搭載される武装の必要搭載数の実数（同部位分）を丸数字として扱う（他の部位にも搭載できるようになる）。<br/><b>注意：このチェックは本アプリでは未実装です。</b>",
+        "effect": "この武装を搭載した部位と同じ部位に搭載される武装の必要搭載数の実数（同部位分）を丸数字として扱う（他の部位にも搭載できるようになる）。",
         "maxLimit": 2,
         "edition" : "玉座"
       },
@@ -1509,7 +1525,7 @@ export default class Equipment {
         "damageType": "射撃・実弾兵器(💣💣）・レーザー",
         "mountPosition": "全部位",
         "minLimit": 4,
-        "equipSamePosition": false,
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 4,
         "edition" : "玉座"

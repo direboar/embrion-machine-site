@@ -301,7 +301,7 @@ export default {
         this.selectedEquipmentName = val.name;
         this.type = val.type;
         this.rank = val.rank;
-        this.rank = val.edition;
+        this.edition = val.edition;
         if (this.type === "" || this.type === undefined) {
           this.type = "射撃";
           this.rank = "B";
