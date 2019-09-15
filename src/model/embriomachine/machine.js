@@ -255,17 +255,23 @@ export default class Machine {
         if (equipment.equipSamePosition && !this.reducedByBarretteTube(equipment)) {
           //2-2-1.〇ではない場合、もしくは対象の装備がバレットチューブと同じ部位に装備されている場合：１か所の部位に裁定枚数が装備されている
           //現在装備している部位の、該当装備品の数をカウントする。
-          let count = this.getEquipmentCountOf([equipmentPosition], equipment)
-          if (count < equipment.minLimit) {
+          //その際、弾薬の補正処理を含める。
+          let count = this.getEquipmentCountOfConsideringAmmunitions([equipmentPosition], equipment)
+          if (count < equipment.minLimit || count % equipment.minLimit !==0) {
             errors.push(equipment.name + "は" + equipmentPosition + "に" + equipment.minLimit + "個以上装備しなければなりません。")
           }
         } else {
           //2-2-2.〇である場合：装備可能部位全体で最低枚数が装備されている
-          let count = this.getEquipmentCountOf(machineEquipmentPositions, equipment)
-          if (count < equipment.minLimit) {
+          //その際、弾薬の補正処理を含める。（実際は弾薬補正がかかることはないが、念のため実装している）
+          let count = this.getEquipmentCountOfConsideringAmmunitions(machineEquipmentPositions, equipment)
+          if (count < equipment.minLimit || count % equipment.minLimit !==0) {
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "に合計で" + equipment.minLimit + "個以上装備しなければなりません。")
           }
         }
+
+        //弾薬を、ロケットやミサイルと交換で装備しなかった場合を検出する
+        this.validateAmmunition(equipment,"ドリルミサイル弾薬","ミサイル",errors);
+        this.validateAmmunition(equipment,"硫酸ロケット弾薬","ロケット",errors);
 
         //枚数上限チェック
         let totalCount = this.getEquipmentCount(equipment);
@@ -367,6 +373,71 @@ export default class Machine {
     }
 
     return reducedEquipments.find((elem)=>{return elem.name === targetEquipment.name});
+  }
+
+  /**
+   * 指定した装備個所（配列指定）の装備数を取得する。その際、弾薬の考慮を行う。
+   * 仕様：
+   *  名称に「ミサイル」が含まれる場合、ドリルミサイル弾薬をカウントに含める。
+   *  名称に「ロケット」が含まれる場合、硫酸ロケット弾薬をカウントに含める。
+   * 
+   * @param {*} targetEquipmentPositions 装備個所
+   * @param {*} targetEquipment 装備（指定なしの場合は、装備かかわらずカウントする）
+   * @returns
+   * @memberof Machine
+   */
+  getEquipmentCountOfConsideringAmmunitions(targetEquipmentPositions, targetEquipment){
+    let count = this.getEquipmentCountOf(targetEquipmentPositions, targetEquipment)
+    //弾薬の補正処理
+    if(targetEquipment.name.includes("ミサイル")){
+      count = count + this.getEquipmentCountOf(targetEquipmentPositions, Equipment.findByName("ドリルミサイル弾薬"));
+    }
+    if(targetEquipment.name.includes("ロケット")){
+      count = count + this.getEquipmentCountOf(targetEquipmentPositions, Equipment.findByName("硫酸ロケット弾薬"));
+    }
+    return count;
+  }
+
+  /**
+   * 弾薬が単独で装備されていない（入替で装備されている）ことをチェックする。
+   * 
+   * @param {*} equipment チェック対象の装備
+   * @param {*} targetAmmunitionName チェックする弾薬の種類
+   * @param {*} targetEquipmentName 対象の弾薬を装備できる武器の名称（ミサイル、ロケットなど名称の文言の一部の文字列）
+   * @param {*} errors エラーメッセージを追加する配列。
+   * @memberof Machine
+   */
+  validateAmmunition(equipment,targetAmmunitionName,targetEquipmentName,errors){
+    //FIXME 仕様の確認：
+    // 硫酸ロケット弾薬などは、有線ロケットパンチなど最低武装数が１の武器と入れかえで装備することはできますか。
+    // その場合、上記の例でランクのカウントは１となることでよいですか。
+    // （上記が２だと正直実装的に厳しいこともあり確認しています。）
+
+    if(equipment.name === targetAmmunitionName){
+      //targetEquipmentName（ロケットなど）を名称に含む全武装を取得。
+      let allEquipments = this.getAllEquipment().filter(
+        equipment => {
+          return equipment.name.includes(targetEquipmentName) && equipment.name !== targetAmmunitionName
+        });
+
+      //上記の重複のないリストを作成。
+      let distinctEquipments = allEquipments.reduce(
+        (accumurator,current)=>{
+          accumurator[current.name] = current
+          return accumurator;
+        },
+      {});
+      distinctEquipments = Object.values(distinctEquipments);
+
+      //弾薬だけを単独で装備している場合、もしくは弾薬抜きでロケット等の武器の装備数を満たしている場合は、エラーとする。
+      let totalMinLimit = distinctEquipments.reduce(
+        (accumurator,current)=>
+          {return accumurator+=current.minLimit},
+        0);
+      if(totalMinLimit === 0 || totalMinLimit === allEquipments.length){
+        errors.push(equipment.name + "は、" + targetEquipmentName + "という名称を持つ武器と入れ替えで装備しなければなりません")
+      }
+    }
   }
 
   //指定したポジションのスロット上限チェックを行います。
