@@ -17,13 +17,15 @@ exports.cssLoaders = function (options) {
 
   const cssLoader = {
     loader: 'css-loader',
+    options: {
+      sourceMap: options.sourceMap
+    }
   }
 
   const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-      sourceMap: options.sourceMap,
-      plugins: () => [require('autoprefixer')]
+      sourceMap: options.sourceMap
     }
   }
 
