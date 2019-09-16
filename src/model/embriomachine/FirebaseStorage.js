@@ -11,7 +11,6 @@ console.log(process.env.HEADER_DB);
     this.fileUploadDir = process.env.FILE_UPLOAD_DIR;
     this.pagesize = 15;
   }
-}
 
   //FIXME コールバックを取るのではなく外側でハンドリングさせる
   getMachineHeaderAndDetail(id, callback, error) {
