@@ -4,12 +4,12 @@ import firebase from "firebase";
 export default class FirebaseStorage {
   constructor() {
     this.machines = []
+console.log(process.env.HEADER_DB)
     //realtime databaseのルートノード。configで設定。
     this.headerdb = process.env.HEADER_DB;
     this.detaildb = process.env.DETAIL_DB;
     this.fileUploadDir = process.env.FILE_UPLOAD_DIR;
     this.pagesize = 15;
-    console.log(process.env.HEADER_DB)
   }
 
   //FIXME コールバックを取るのではなく外側でハンドリングさせる
