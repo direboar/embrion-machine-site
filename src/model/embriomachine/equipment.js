@@ -784,7 +784,7 @@ export default class Equipment {
       {
         "name": "ミサイルシールド",
         "rank": "A",
-        "type": "射撃",
+        "type": "射撃／装甲",
         "range": "❺～❻",
         "minRange": "5",
         "maxRange": "6",
