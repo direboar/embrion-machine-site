@@ -6,7 +6,6 @@ before_install:
 cache: npm
 script:
   - npm run build
-#  - npm run build-development
 # github-pagesにデプロイする際、/dist以下にデプロイする必要があるため、ディレクトリを明示的にコピーする。  
 before_deploy: |
   mkdir gh_dist
