@@ -5,6 +5,7 @@ before_install:
   - npm i -g npm@4.0.5
 cache: npm
 script:
+# マスターブランチ以外の場合、接続先DBをステージング環境用に切り替える。（フラグを参照し、prod.dev.jsで分岐している）
   - if [ "$TRAVIS_BRANCH" != "master" ]; then npm config set stagingdb "true"; fi
   - npm run build
 # github-pagesにデプロイする際、/dist以下にデプロイする必要があるため、ディレクトリを明示的にコピーする。  
