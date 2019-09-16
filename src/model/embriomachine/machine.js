@@ -389,10 +389,10 @@ export default class Machine {
   getEquipmentCountOfConsideringAmmunitions(targetEquipmentPositions, targetEquipment){
     let count = this.getEquipmentCountOf(targetEquipmentPositions, targetEquipment)
     //弾薬の補正処理
-    if(targetEquipment.name.includes("ミサイル")){
+    if(targetEquipment.name.includes("ミサイル") && targetEquipment.name !== "ドリルミサイル弾薬"){
       count = count + this.getEquipmentCountOf(targetEquipmentPositions, Equipment.findByName("ドリルミサイル弾薬"));
     }
-    if(targetEquipment.name.includes("ロケット")){
+    if(targetEquipment.name.includes("ロケット") && targetEquipment.name !== "硫酸ロケット弾薬"){
       count = count + this.getEquipmentCountOf(targetEquipmentPositions, Equipment.findByName("硫酸ロケット弾薬"));
     }
     return count;
@@ -477,39 +477,28 @@ export default class Machine {
    * カウントの仕様は、Aランク大会仕様に従う。
    * ・装備数が、最小装備数を満たすごとに種類が１増える
    * ・最大装備数が２の場合、装備数３の場合は２とカウントする。
+   * ・弾薬類については、例えば高射程ミサイル１＋硫酸ミサイル弾薬装備時は２とカウントする。
    * @param {*} rank 
    */
   getEquipmentCountByRank(rank) {
-    let allEquipments = [];
-
     //指定したランクに絞り込み、allEquipmentsに集約。
-    for (let equipmentPosition in this.equipments) {
-      let filtere = this.equipments[equipmentPosition].filter(
-        equipments => equipments.rank === rank
-      );
-      allEquipments = allEquipments.concat(filtere);
-    }
-
-    //装備毎に、装備数を集計。
-    let groupBy = allEquipments.reduce((ret, current) => {
-      let val = ret.find(element => {
-        return element.equipment.name === current.name;
-      });
-      if (val === undefined) {
-        ret.push({
-          equipment: current,
-          count: 1,
-        })
-      } else {
-        val.count++;
-      }
-      return ret;
-    }, []);
-
+    //上記の重複のないリストを作成。
+    let allEquipments = this.getAllEquipment().reduce(
+      (accumurator,current)=>{
+        if(current.rank === rank){
+          accumurator[current.name] = current
+        }
+        return accumurator;
+      },
+    {});
+    allEquipments = Object.values(allEquipments);
+    
     //ルールに従い、装備の数をカウント。
     let total = 0;
-    groupBy.forEach(val => {
-      total += Math.ceil(val.count / val.equipment.minLimit)
+    allEquipments.forEach(equipment => {
+      let allPosition = MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+      let equipmentCount = this.getEquipmentCountOfConsideringAmmunitions(allPosition,equipment);
+      total += Math.ceil(equipmentCount / equipment.minLimit)
     });
 
     return total;
