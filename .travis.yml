@@ -5,6 +5,9 @@ before_install:
   - npm i -g npm@4.0.5
 cache: npm
 script:
+  - npm config set HEADER_DB embriomachine_dev/header
+  - npm config set DETAIL_DB embriomachine_dev/detail
+  - npm config set FILE_UPLOAD_DIR embriomachine_dev/files
   - npm run build
 # github-pagesにデプロイする際、/dist以下にデプロイする必要があるため、ディレクトリを明示的にコピーする。  
 before_deploy: |
