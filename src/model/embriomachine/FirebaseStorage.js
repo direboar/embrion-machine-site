@@ -3,7 +3,7 @@ import firebase from "firebase";
 
 export default class FirebaseStorage {
   constructor() {
-    console.log(process.env.npm_config_HEADER_DB);
+    // console.log(process.env.npm_config_HEADER_DB);
     console.log(JSON.stringify(process.env));
     this.machines = []
     console.log(process.env.HEADER_DB);
