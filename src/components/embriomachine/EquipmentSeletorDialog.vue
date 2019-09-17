@@ -3,7 +3,7 @@
     <v-dialog
       v-model="showDialog"
       :persistent="editMode"
-      max-width="900"
+      max-width="1000"
       :fullscreen="isXs"
     >
       <v-card>
