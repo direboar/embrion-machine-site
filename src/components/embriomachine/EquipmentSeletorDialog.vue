@@ -4,7 +4,7 @@
       v-model="showDialog"
       :persistent="editMode"
       max-width="1000"
-      :fullscreen="isXs"
+      :fullscreen="isMd"
     >
       <v-card>
         <v-layout
@@ -366,6 +366,9 @@ export default {
     },
     isXs() {
       return this.$vuetify.breakpoint.name === "xs";
+    },
+    isMd() {
+      return ["xs", "sm", "md"].includes(this.$vuetify.breakpoint.name);
     }
   },
 
