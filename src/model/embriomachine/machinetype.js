@@ -102,7 +102,8 @@ export default class MachineType {
   }
 
   get size(){
-    return this.name.split("・")[1].replace("サイズ","");
+    //FIXME 無理やり感が強いので直したほうが良い。
+    return this.name.split("・")[1].replace("サイズ","").replace("(複座)","");
   }
 
   get weight(){
