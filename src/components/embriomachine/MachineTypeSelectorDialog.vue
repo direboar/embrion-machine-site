@@ -266,14 +266,6 @@ export default {
       }
     },
 
-    // lavelFontSize() {
-    //   if (this.$vuetify.breakpoint.name === "xs") {
-    //     return "9px";
-    //   } else {
-    //     return "12px";
-    //   }
-    // },
-
     isXs() {
       return this.$vuetify.breakpoint.name === "xs";
     }

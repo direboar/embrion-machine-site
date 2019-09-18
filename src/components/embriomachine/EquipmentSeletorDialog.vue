@@ -286,7 +286,6 @@ export default {
       ],
       type: Equipment.TYPE_SHAGEKI,
       ranks: ["S", "A", "B"],
-      selectedRanks: ["B"],
       rank: "B",
       itemcounts: [1, 2, 3],
       itemcount: 1,
@@ -297,21 +296,11 @@ export default {
 
   watch: {
     targetEquipment: function(val) {
-      if (val != null) {
+      if (val && val.name) {
         this.selectedEquipmentName = val.name;
         this.type = val.type;
         this.rank = val.rank;
         this.edition = val.edition;
-        if (this.type === "" || this.type === undefined) {
-          this.type = "射撃";
-          this.rank = "B";
-          this.edition = "基本";
-        }
-      } else {
-        this.selectedEquipment = "";
-        this.type = "射撃";
-        this.rank = "B";
-        this.edition = "基本";
       }
     },
     equipment: function(val) {
@@ -374,18 +363,13 @@ export default {
 
   methods: {
     closeDialog() {
-      // this.$emit("update:targetEquipment", {});
       this.$emit("update:showDialog", false);
       this.$emit("cancel");
-      this.selectedEquipmentName = "";
       this.itemcount = 1;
     },
     select() {
-      // this.$emit("update:targetEquipment", {});
-      // this.$emit("update:targetEquipment", this.equipment);
       this.$emit("update:showDialog", false);
       this.$emit("select", this.equipment, this.itemcount);
-      this.selectedEquipmentName = "";
       this.itemcount = 1;
     },
     //FIXME deprecated.
