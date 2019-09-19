@@ -19,11 +19,11 @@
             >
               <v-flex
                 sm1
-                xs6
+                xs1
               />
               <v-flex
                 sm2
-                xs6
+                xs3
               >
                 <v-select
                   dense
@@ -39,7 +39,7 @@
               </v-flex>
               <v-flex
                 sm2
-                xs6
+                xs3
               >
                 <v-select
                   dense
@@ -55,7 +55,7 @@
               </v-flex>
               <v-flex
                 sm2
-                xs6
+                xs4
               >
                 <v-select
                   dense
@@ -69,22 +69,24 @@
                   :disabled="!editMode"
                 ></v-select>
               </v-flex>
-              <v-flex
-                sm4
-                xs6
-              >
+              <v-flex sm3>
                 <v-text-field
                   v-if="editMode&&!isXs"
                   v-model="searchEquipmentName"
-                  label="装備名（入力した名称で絞り込みます）"
+                  label="装備名（絞り込み用）"
                   item-value="text"
                   :disabled="!editMode"
                 ></v-text-field>
               </v-flex>
-              <v-flex
-                sm1
-                xs6
-              />
+              <v-flex sm1>
+                <v-btn
+                  v-if="editMode&&!isXs"
+                  label="装備名（入力した名称で絞り込みます）"
+                  :disabled="!editMode"
+                  @click.native="selectAll"
+                >{{buttonLabel}}
+                </v-btn>
+              </v-flex>
               <!--FIXME コンポーネント化-->
               <v-toolbar
                 floating
@@ -92,11 +94,11 @@
                 v-if="isXs"
               >
                 <v-select
-                  v-if="editMode"
                   :items="itemcounts"
                   v-model="itemcount"
                   label="装備数"
                   item-value="text"
+                  :disabled="!editMode"
                 ></v-select>
                 <v-tooltip>
                   <v-btn
@@ -120,13 +122,13 @@
                   <span>機体作成・編集画面に戻ります。</span>
                 </v-tooltip>
               </v-toolbar>
-              <v-flex
+              <!-- <v-flex
                 sm9
                 xs6
-              />
+              /> -->
               <v-flex
                 sm4
-                xs6
+                xs5
               >
                 <v-layout
                   style="max-height: 600px"
@@ -136,6 +138,7 @@
                     label="装備"
                     v-model="selectedEquipmentName"
                     :mandatory="false"
+                    :class="isXs ? 'small' : ''"
                   >
                     <v-radio
                       v-for="equipment in equipments"
@@ -152,17 +155,17 @@
                 sm4
                 xs3
               >
-                <v-list :dense="isXs">
-                  <v-list-tile>
+                <v-list
+                  :dense="isXs"
+                  :two-line="isXs"
+                >
+                  <v-list-tile v-if="editMode&&!isXs">
                     <v-select
-                      v-if="editMode&&!isXs"
                       :items="itemcounts"
                       v-model="itemcount"
                       label="装備数"
                       item-value="text"
                     ></v-select>
-                  </v-list-tile>
-                  <v-list-tile>
                   </v-list-tile>
                   <v-list-tile>
                     <v-list-tile-content :class="contentClass">種別／ランク</v-list-tile-content>
@@ -192,14 +195,14 @@
               </v-flex>
               <v-flex
                 sm4
-                xs3
+                xs4
               >
-                <v-list :dense="isXs">
-                  <v-list-tile>
-                    <v-toolbar
-                      floating
-                      v-if="!isXs"
-                    >
+                <v-list
+                  :dense="isXs"
+                  :two-line="isXs"
+                >
+                  <v-list-tile v-if="!isXs">
+                    <v-toolbar floating>
                       <v-tooltip>
                         <v-btn
                           slot="activator"
@@ -222,8 +225,6 @@
                         <span>機体作成・編集画面に戻ります。</span>
                       </v-tooltip>
                     </v-toolbar>
-                  </v-list-tile>
-                  <v-list-tile>
                   </v-list-tile>
                   <v-list-tile>
                     <v-list-tile-content :class="contentClass">{{equipment.type}}（{{equipment.rank}}）</v-list-tile-content>
@@ -268,6 +269,12 @@
 </template>
 
 <style>
+/* チェックボックスのフォント制御用。
+   @see https://github.com/vuetifyjs/vuetify/issues/5715
+   @see https://codepen.io/jongallant/pen/MLGPVR */
+.small label {
+  font-size: 12px;
+}
 </style>
 
 <script>
@@ -319,14 +326,7 @@ export default {
       editions: ["基本", "玉座"],
       selectedEditions: ["基本"],
       searchEquipmentName: "",
-      headers: [
-        {
-          text: "武装名",
-          align: "left",
-          sortable: false,
-          value: "name"
-        }
-      ]
+      buttonLabel: "全選択"
     };
   },
 
@@ -418,6 +418,19 @@ export default {
   },
 
   methods: {
+    selectAll() {
+      if (this.buttonLabel === "全選択") {
+        this.selectedTypes = this.types;
+        this.selectedRanks = this.ranks;
+        this.selectedEditions = this.editions;
+        this.buttonLabel = "全選択解除";
+      } else {
+        this.selectedTypes = [Equipment.TYPE_SHAGEKI];
+        this.selectedRanks = ["B"];
+        this.selectedEditions = ["基本"];
+        this.buttonLabel = "全選択";
+      }
+    },
     closeDialog() {
       this.$emit("update:showDialog", false);
       this.$emit("cancel");
