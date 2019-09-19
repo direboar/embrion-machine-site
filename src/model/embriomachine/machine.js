@@ -9,7 +9,7 @@ export default class Machine {
     this.name = name
     // 移動力
     if (machineType === null || machineType === undefined) {
-      this.machineType = new MachineType("")
+      this.machineType = null;
     } else {
       this.machineType = machineType
     }
@@ -469,7 +469,7 @@ export default class Machine {
     let total = this.getEquipmentCountByRank("A")
     total += this.getEquipmentCountByRank("S") * 2
     //複座とする場合は、Aランク装備数２とカウントする。
-    if(this.machineType.hasDoubleSeat){
+    if(this.machineType != null && this.machineType.hasDoubleSeat){
       total +=2
     }
     return total;

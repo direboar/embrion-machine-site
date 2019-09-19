@@ -4,7 +4,7 @@
       v-model="showDialog"
       persistent
       :fullscreen="isXs"
-      max-width="500"
+      max-width="600"
     >
       <v-card>
         <v-layout
@@ -17,7 +17,7 @@
               wrap
             >
               <v-flex
-                sm6
+                sm4
                 xs6
               >
                 <v-radio-group
@@ -35,19 +35,19 @@
                   ></v-radio>
                 </v-radio-group>
                 <v-radio-group
-                  v-model="selectedMachineTypeName"
+                  v-model="weightAndSize"
                   :mandatory="false"
                 >
                   <v-radio
-                    v-for="machineType in machineTypes"
-                    :label="machineType.name"
-                    :value="machineType.name"
-                    :key="machineType.name"
+                    v-for="aAeightAndSize in weightAndSizes"
+                    :label="getNameOf(aAeightAndSize)"
+                    :value="aAeightAndSize"
+                    :key="getNameOf(aAeightAndSize)"
                   ></v-radio>
                 </v-radio-group>
               </v-flex>
               <v-flex
-                sm6
+                sm8
                 xs6
               >
                 <v-layout
@@ -221,17 +221,15 @@ export default {
       //単座、複座
       seatTypes: ["単座", "複座"],
       seatType: "単座",
-      selectedMachineTypeName: this.targetMachineType.name,
-      POSITION_CONST: MachineType.getPositionConst()
+      weightAndSizes: MachineType.getWeightAndSize(),
+      weightAndSize: MachineType.getWeightAndSize()[0]
     };
   },
 
   watch: {
     targetMachineType: function(val) {
       if (val != null) {
-        this.selectedMachineTypeName = val.name;
-      } else {
-        this.selectedMachineTypeName = "";
+        this.weightAndSize = val.toWeightAndSize();
       }
     }
   },
@@ -240,7 +238,10 @@ export default {
     machineType() {
       let ret = {};
       this.machineTypes.forEach(item => {
-        if (item.name === this.selectedMachineTypeName) {
+        if (
+          item.size === this.weightAndSize.size &&
+          item.weight === this.weightAndSize.weight
+        ) {
           ret = item;
         }
       });
@@ -275,14 +276,21 @@ export default {
     closeDialog() {
       // this.$emit("update:targetMachineType", {});
       this.$emit("cancel");
-      this.selectedMachineTypeName = "";
+      this.weightAndSize = null;
       this.$emit("update:showDialog", false);
     },
     select() {
       // this.$emit("update:targetMachineType", this.machineType);
       this.$emit("select", this.machineType);
-      this.selectedMachineTypeName = "";
+      this.weightAndSize = null;
       this.$emit("update:showDialog", false);
+    },
+    getNameOf(weightAndSize) {
+      let name = MachineType.getNameOf(weightAndSize);
+      if (this.seatType === "複座") {
+        name += "(複座)";
+      }
+      return name;
     }
   }
 };
