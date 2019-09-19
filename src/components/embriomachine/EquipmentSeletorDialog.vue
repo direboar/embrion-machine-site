@@ -159,8 +159,9 @@
                   :dense="isXs"
                   :two-line="isXs"
                 >
-                  <v-list-tile v-if="editMode&&!isXs">
+                  <v-list-tile v-if="!isXs">
                     <v-select
+                      v-if="editMode"
                       :items="itemcounts"
                       v-model="itemcount"
                       label="装備数"
