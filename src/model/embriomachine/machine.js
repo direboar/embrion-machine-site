@@ -130,7 +130,7 @@ export default class Machine {
     this.equipmentToRealtimeDatabaseObject(equipments, MachineType.POSITION_LEFTLEG);
 
     return {
-      machineType: this.machineType.name,
+      machineType: this.machineType !== null ? this.machineType.name : null,
       equipments: equipments,
       id: this.id, //headerのID。（detailからヘッダを検索する際に使用数r）,
       memo: this.memo

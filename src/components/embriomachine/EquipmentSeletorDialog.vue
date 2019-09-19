@@ -334,9 +334,9 @@ export default {
     targetEquipment: function(val) {
       if (val && val.name) {
         this.selectedEquipmentName = val.name;
-        this.selectetTypes = [val.type];
+        this.selectedTypes = [val.type];
         this.selectedRanks = [val.rank];
-        this.selecteEditions = [val.edition];
+        this.selectedEditions = [val.edition];
       }
     },
     equipment: function(val) {
