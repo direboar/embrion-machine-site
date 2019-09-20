@@ -97,7 +97,9 @@ export default class Machine {
   getAllEquipmentOf(types) {
     let ret = this.getAllEquipment();
     ret = ret.filter(item => {
-      return types.indexOf(item.type) >= 0;
+      return item.type.split("／").reduce((accumurator,current)=>{
+        return accumurator || types.includes(current) 
+      },false);
     });
     return ret;
   }
