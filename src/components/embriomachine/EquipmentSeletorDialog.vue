@@ -338,6 +338,7 @@ export default {
         this.selectedTypes = [val.type];
         this.selectedRanks = [val.rank];
         this.selectedEditions = [val.edition];
+        this.searchEquipmentName = "";
       }
     },
     equipment: function(val) {
