@@ -66,6 +66,10 @@ export default class MountPosition {
   static get MIDDLE_OR_HEAVEY_AND_ALL(){
     return "軽装甲×＆全部位";
   }
+  //頭
+  static get HEAD_ONLY(){
+    return "頭";
+  }
   //装備数上限なし
   static get INFINITY(){
     return 99;
@@ -112,6 +116,9 @@ export default class MountPosition {
     }
     if(mountPosition === MountPosition.BODY_ONE_ONLY){
       return MountPosition.toMachineEquipmentPosition(MountPosition.BODY);
+    }
+    if(mountPosition === MountPosition.HEAD_ONLY){
+      return [MachineType.POSITION_HEAD];
     }
     if(mountPosition === MountPosition.WITHOUT_LEG){
       let ret = MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
