@@ -86,7 +86,7 @@ export default class MachineType {
   }
  
   get headSlot(){
-    return this.getSlot(MachineType.POSITION_HEAD) + 1;
+    return this.getSlot(MachineType.POSITION_HEAD);
   }
 
   get bodySlot(){
