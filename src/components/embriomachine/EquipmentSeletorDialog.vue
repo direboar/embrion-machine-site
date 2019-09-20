@@ -335,10 +335,12 @@ export default {
     targetEquipment: function(val) {
       if (val && val.name) {
         this.selectedEquipmentName = val.name;
-        this.selectedTypes = [val.type];
+        this.selectedTypes = val.type.split("／");
         this.selectedRanks = [val.rank];
         this.selectedEditions = [val.edition];
         this.searchEquipmentName = "";
+      } else {
+        this.selectedEquipmentName = "";
       }
     },
     equipment: function(val) {
@@ -385,7 +387,8 @@ export default {
           retVal = retVal && equipment.name.includes(this.searchEquipmentName);
         }
 
-        if (!equipment.canEquip(this.targetPosition)) {
+        //装備部位が指定されている場合、チェックを行う
+        if (this.targetPosition && !equipment.canEquip(this.targetPosition)) {
           retVal = false;
         }
         // console.log(equipment.name + " = " + retVal);
