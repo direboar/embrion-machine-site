@@ -137,7 +137,7 @@ export default class MachineType {
   }
 
   get constitution(){
-    let retVal = this.movility + this.getTotalSlot() + this.armorPoint + 2;//照準、射撃
+    let retVal = this.movility + this.getTotalSlot() + this.armorPoint + 1;//照準、射撃
     //突撃
     if(this.weight === "重"){
       retVal +=2;
