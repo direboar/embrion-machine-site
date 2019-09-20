@@ -80,7 +80,7 @@ export default class MachineType {
   getTotalSlot(){
     let ret = 0;
     for(let slot in this.slots){
-      ret += this.slots[slot];
+      ret += this.getSlot(slot);
     }
     return ret;
   }

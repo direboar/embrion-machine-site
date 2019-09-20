@@ -1323,7 +1323,7 @@ export default class Equipment {
         "minLimit": 1,
         "equipSamePosition": true,
         "effect": "この武装を搭載した部位と同じ部位に搭載される武装の必要搭載数の実数（同部位分）を丸数字として扱う（他の部位にも搭載できるようになる）。",
-        "maxLimit": 2,
+        "maxLimit": 1,
         "edition" : "玉座"
       },
       {

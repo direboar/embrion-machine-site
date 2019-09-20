@@ -439,7 +439,7 @@ export default class Machine {
         (accumurator,current)=>
           {return accumurator+=current.minLimit},
         0);
-      if(totalMinLimit === 0 || totalMinLimit !== allEquipments.length + ammunitions.length){ 
+      if(totalMinLimit === 0 ||  (allEquipments.length + ammunitions.length) % totalMinLimit !== 0){ 
         errors.push(targetAmmunitionName + "は、" + targetEquipmentName + "という名称を持つ武器と入れ替えで装備しなければなりません")
       }
     }
