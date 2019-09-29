@@ -1254,7 +1254,7 @@ export default class Equipment {
         "mountPosition": "脚各１",
         "minLimit": 2,
         "equipSamePosition": false,
-        "effect": "移動：〇、突撃：×、白兵：〇。<br/>常に、移動力を＋１し、高低差を１少ないものとして扱い、特殊地形の追加移動力を消費しない。",
+        "effect": "移動：〇、突撃：×、白兵：〇。<br/>特殊地形の追加移動力を消費しない。",
         "maxLimit": 2,
         "edition" : "玉座"
       },
