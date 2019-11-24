@@ -9,7 +9,7 @@ export default class Machine {
     this.name = name
     // 移動力
     if (machineType === null || machineType === undefined) {
-      this.machineType = new MachineType("")
+      this.machineType = null;
     } else {
       this.machineType = machineType
     }
@@ -97,7 +97,9 @@ export default class Machine {
   getAllEquipmentOf(types) {
     let ret = this.getAllEquipment();
     ret = ret.filter(item => {
-      return types.indexOf(item.type) >= 0;
+      return item.type.split("／").reduce((accumurator,current)=>{
+        return accumurator || types.includes(current) 
+      },false);
     });
     return ret;
   }
@@ -130,7 +132,7 @@ export default class Machine {
     this.equipmentToRealtimeDatabaseObject(equipments, MachineType.POSITION_LEFTLEG);
 
     return {
-      machineType: this.machineType.name,
+      machineType: this.machineType !== null ? this.machineType.name : null,
       equipments: equipments,
       id: this.id, //headerのID。（detailからヘッダを検索する際に使用数r）,
       memo: this.memo
@@ -252,17 +254,17 @@ export default class Machine {
         }
 
         //2-2.装備の最低装備枚数を満たしている
-        if (equipment.equipSamePosition) {
-          //2-2-1.〇ではない場合：１か所の部位に裁定枚数が装備されている
+        if (equipment.equipSamePosition && !this.reducedByBarretteTube(equipment)) {
+          //2-2-1.〇ではない場合、もしくは対象の装備がバレットチューブと同じ部位に装備されている場合：１か所の部位に裁定枚数が装備されている
           //現在装備している部位の、該当装備品の数をカウントする。
-          let count = this.getEquipmentCountOf([equipmentPosition], equipment)
-          if (count < equipment.minLimit) {
+          //その際、弾薬の補正処理を含める。
+          if(!this.checkEquipmentCountOfConsideringAmmunitions([equipmentPosition], equipment,equipment.minLimit)){
             errors.push(equipment.name + "は" + equipmentPosition + "に" + equipment.minLimit + "個以上装備しなければなりません。")
           }
         } else {
           //2-2-2.〇である場合：装備可能部位全体で最低枚数が装備されている
-          let count = this.getEquipmentCountOf(machineEquipmentPositions, equipment)
-          if (count < equipment.minLimit) {
+          //その際、弾薬の補正処理を含める。（実際は弾薬補正がかかることはないが、念のため実装している）
+          if(!this.checkEquipmentCountOfConsideringAmmunitions(machineEquipmentPositions, equipment,equipment.minLimit)){
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "に合計で" + equipment.minLimit + "個以上装備しなければなりません。")
           }
         }
@@ -303,12 +305,162 @@ export default class Machine {
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
           }
         }
+
+        //腕1（ロケットパンチ、有線ロケットパンチは同じ腕に装備できない）
+        if (equipment.mountPosition === MountPosition.ARM_ONE_ROCKETPANCH) {
+          let leftArmRocketPanchCount = this.equipments[MachineType.POSITION_LEFTARM].filter(equipment=>equipment.name.indexOf("ロケットパンチ")>=0).length;
+          let rightArmRocketPanchCount = this.equipments[MachineType.POSITION_RIGHTARM].filter(equipment=>equipment.name.indexOf("ロケットパンチ")>=0).length;
+          if(leftArmRocketPanchCount >= 2 || rightArmRocketPanchCount >= 2){
+              errors.push(equipment.name + "の装備方法が間違っています。ロケットパンチは同じ腕に装備できません。")
+          }
+        }
+        //胴1＋全部位
+        if (equipment.mountPosition === MountPosition.BODY_ONE_AND_ALL) {
+          let bodyCount = this.getEquipmentCountOf([MachineType.POSITION_BODY], equipment);
+          if(bodyCount === 0){
+            errors.push(equipment.name + "は胴に１つ装備しなければいけません。")
+          }
+        }
+
+        //胴１のみ
+        if (equipment.mountPosition === MountPosition.BODY_ONE_ONLY) {
+          let bodyCount = this.getEquipmentCountOf([MachineType.POSITION_BODY], equipment);
+          if(bodyCount > 1){
+            errors.push(equipment.name + "は胴に１つしか装備できません。")
+          }
+        }
+
+        //軽装甲ｘ＆全部位
+        if (equipment.mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_ALL) {
+          if (this.machineType !==null && this.machineType.weight === "軽") {
+           errors.push(equipment.name + "は軽装甲の機体では装備できません。")
+          }
+        }
+        //腕各１
+        if (equipment.mountPosition === MountPosition.ARM_EACH_ONE) {
+          let rightLegCount = this.getEquipmentCountOf([MachineType.POSITION_RIGHTARM], equipment);
+          let leftLegCount = this.getEquipmentCountOf([MachineType.POSITION_LEFTARM], equipment);
+          if (rightLegCount !== 1 || leftLegCount !== 1) {
+            errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
+          }
+        }
+
       });
     }
+
+    //弾薬を、ロケットやミサイルと交換で装備しなかった場合を検出する。
+    //弾薬が二重計上されていないかをチェックする。
+    this.validateAmmunition("ドリルミサイル弾薬","ミサイル",errors);
+    this.validateAmmunition("硫酸ロケット弾薬","ロケット",errors);
 
     //メッセージの重複を削除して返却
     //see https://qiita.com/cocottejs/items/7afe6d5f27ee7c36c61f
     return errors.filter((elem, index, array) => array.indexOf(elem) === index)
+  }
+
+  /**
+   * 指定した装備が、バレットチューブにより装備の制約が軽減されている（〇扱いになっている）かをチェックする。
+   * @param {*} targetEquipment
+   * @memberof Machine
+   */
+  reducedByBarretteTube(targetEquipment){
+    let reducedEquipments = [];
+    let barretteTube = Equipment.findByName("バレットチューブ");
+
+    for (let equipmentPosition in this.equipments) {
+      if(this.getEquipmentCountOf(equipmentPosition,barretteTube)>0){
+        reducedEquipments = reducedEquipments.concat(this.equipments[equipmentPosition]);
+      }
+    }
+
+    return reducedEquipments.find((elem)=>{return elem.name === targetEquipment.name});
+  }
+
+  //FIXME この実装が成立しているのは、ドリルミサイル弾薬や硫酸ロケット弾薬が１つしか装備できないことに依存している。
+  //      装備毎にドリルミサイル弾薬の件数を追加で加算するようになっているが、本来弾薬類はどれかほかの装備の入替で
+  //      装備するものなので、２つ以上入れ替えた時点で破たんする。
+  //      ただし、そのためには弾薬類のチェックをまとめて行わないといけない。
+  //      現時点では、装備全体での弾薬類の整合性チェックはvalidateAmmunitionで実施し、装備単独でのチェックは本関数で実施するようにしている。
+  //      …が、弾薬の装備可能数が２を超えた時点で破たんするので、その時点で回収が必要。
+  /**
+   * 指定した装備個所（配列指定）の装備数を取得し、最低枚数の条件を満たしているかをチェックする。その際、弾薬の考慮を行う。
+   * 仕様：
+   *  装備数が、指定した最低枚数の等倍であることをチェックする。
+   *  条件を満たさず、名称に「ミサイル」が含まれる場合、ドリルミサイル弾薬をカウントに含めて再チェックする。
+   *  条件を満たさず、名称に「ロケット」が含まれる場合、硫酸ロケット弾薬をカウントに含めて再チェックする。
+   * 
+   * @param {*} targetEquipmentPositions 装備個所
+   * @param {*} targetEquipment 装備（指定なしの場合は、装備かかわらずカウントする）
+   * @param {*} minLimit 最低枚数
+   * @returns
+   * @memberof Machine
+   */
+  checkEquipmentCountOfConsideringAmmunitions(targetEquipmentPositions, targetEquipment,minLimit){
+    let count = this.getEquipmentCountOf(targetEquipmentPositions, targetEquipment)
+    if(count >= minLimit && count % minLimit ===0){
+      return true;
+    }else{
+      //弾薬の補正処理
+      if(targetEquipment.name.includes("ミサイル") && targetEquipment.name !== "ドリルミサイル弾薬"){
+        count = count + this.getEquipmentCountOf(targetEquipmentPositions, Equipment.findByName("ドリルミサイル弾薬"));
+        if(count >= minLimit && count % minLimit ===0){
+          return true;
+        }
+      }
+      if(targetEquipment.name.includes("ロケット") && targetEquipment.name !== "硫酸ロケット弾薬"){
+        count = count + this.getEquipmentCountOf(targetEquipmentPositions, Equipment.findByName("硫酸ロケット弾薬"));
+        if(count >= minLimit && count % minLimit ===0){
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+  
+  /**
+   * 弾薬が単独で装備されていない（入替で装備されている）ことをチェックする。
+   * また、弾薬が二重計上されていないかをチェックする。
+   * @param {*} targetAmmunitionName チェックする弾薬の種類
+   * @param {*} targetEquipmentName 対象の弾薬を装備できる武器の名称（ミサイル、ロケットなど名称の文言の一部の文字列）
+   * @param {*} errors エラーメッセージを追加する配列。
+   * @memberof Machine
+   */
+  validateAmmunition(targetAmmunitionName,targetEquipmentName,errors){
+    // 硫酸ロケット弾薬などは、有線ロケットパンチなど最低武装数が１の武器と入れかえで装備することはできない。
+
+    let ammunitions = this.getAllEquipment().filter(equipment=>equipment.name === targetAmmunitionName);
+    if(ammunitions.length > 0){
+      //targetEquipmentName（ロケットなど）を名称に含む全武装を取得。
+      //ただし、上限枚数が1の武器は入れかえて装備できないので、この時点で除外する。
+      let allEquipments = this.getAllEquipment().filter(
+        equipment => {
+          return equipment.name.includes(targetEquipmentName) && equipment.name !== targetAmmunitionName && equipment.minLimit != 1
+        });
+
+      //装備毎の合計件数を求める
+      let equipmentMap = allEquipments.reduce(
+        (accumurator,current)=>{
+          if(accumurator[current.name]){
+            accumurator[current.name].count++;
+          }else{
+            accumurator[current.name] = {eqipment : current , count : 1}
+          }
+          return accumurator;
+        },
+      {});
+      let equipments = Object.values(equipmentMap);
+
+      let totalMinLimit = equipments.reduce(
+        (accumurator,current)=>
+         {
+          return accumurator += Math.ceil(current.count/current.eqipment.minLimit) * current.eqipment.minLimit;
+         },
+      0);
+
+      if(totalMinLimit === 0 ||  (allEquipments.length + ammunitions.length) !== totalMinLimit){ 
+        errors.push(targetAmmunitionName + "は、" + targetEquipmentName + "という名称を持つ武器と入れ替えで装備しなければなりません")
+      }
+    }
   }
 
   //指定したポジションのスロット上限チェックを行います。
@@ -325,12 +477,30 @@ export default class Machine {
     return this.getEquipmentCountOf(MountPosition.toMachineEquipmentPosition(MountPosition.ALL), targetEquipment)
   }
 
+  /** 
+   * 現在の機体が、Aランク装備数枠をいくつ使用しているかを返却する。
+   * ・Aランク装備数をカウント
+   * ・Sランク装備数は２倍でカウント
+   * ・複座とする場合は、Aランク装備数２とカウントする。
+   */
+  getARankEquipmentCount() {
+    let total = this.getEquipmentCountByRank("A")
+    total += this.getEquipmentCountByRank("S") * 2
+    //複座とする場合は、Aランク装備数２とカウントする。
+    if(this.machineType != null && this.machineType.hasDoubleSeat){
+      total +=2
+    }
+    return total;
+  }
+
   /**
    * 指定したランクの武装の種類をカウントする。
    * 
+   * getARankEquipmentCountとは異なり、指定されたランクに一致する武装のカウントのみを行う。
    * カウントの仕様は、Aランク大会仕様に従う。
    * ・装備数が、最小装備数を満たすごとに種類が１増える
    * ・最大装備数が２の場合、装備数３の場合は２とカウントする。
+   * ・弾薬類については、例えば高射程ミサイル１＋硫酸ミサイル弾薬装備時は２とカウントする。
    * @param {*} rank 
    */
   getEquipmentCountByRank(rank) {
@@ -360,11 +530,29 @@ export default class Machine {
       return ret;
     }, []);
 
-    //ルールに従い、装備の数をカウント。
+    //弾薬の装備数をカウント
+    let missileAmmunitionCount = 
+      this.getAllEquipment().filter(equipment=>equipment.name === "ドリルミサイル弾薬").length;
+    let rocketAmmunitionCount = 
+      this.getAllEquipment().filter(equipment=>equipment.name === "硫酸ロケット弾薬").length;
+
     let total = 0;
     groupBy.forEach(val => {
+      //装備不足分を計算し、弾薬の装備で補填する。
+      let lack = val.count % val.equipment.minLimit;
+      if(lack !== 0 && val.equipment.name.includes("ミサイル") && missileAmmunitionCount>=lack){
+        missileAmmunitionCount = missileAmmunitionCount - lack;
+        val.count = val.count + lack;
+      }
+      if(lack !== 0 && val.equipment.name.includes("ロケット") && rocketAmmunitionCount>=lack){
+        missileAmmunitionCount = rocketAmmunitionCount - lack;
+        val.count = val.count + lack;
+      }
+
+      //装備数を、最低枚数で割る。
       total += Math.ceil(val.count / val.equipment.minLimit)
     });
+
     return total;
   }
 
@@ -386,7 +574,7 @@ export default class Machine {
     }
     return ret;
   }
-
+  
   static assign(obj) {
     let machine = new Machine();
     Object.assign(machine, obj);

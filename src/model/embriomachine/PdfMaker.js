@@ -42,7 +42,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 100,
-            y: 40
+            y: 45
           }
         },
         //移動値
@@ -52,8 +52,8 @@ export default class PdfMaker {
             fontSize: 20
           },
           absolutePosition: {
-            x: 185,
-            y: 40
+            x: 190,
+            y: 45
           }
         },
         //回避値
@@ -63,20 +63,20 @@ export default class PdfMaker {
             fontSize: 20
           },
           absolutePosition: {
-            x: 280,
-            y: 40
+            x: 340,
+            y: 45
           }
         },
         //名前
         {
-          text: machine.name,
-          style: {
-            fontSize: machine.name.length > 20 ? 10 : 16
-          },
-          absolutePosition: {
-            x: 460,
-            y: 33
-          }
+         text: this.splitMachineName(machine.name),
+         style: {
+           fontSize: machine.name.length > 15 ? 13 : 15
+         },
+         absolutePosition: {
+           x: 530,
+           y: 35
+         }
         },
         //装甲値
         {
@@ -86,7 +86,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 150,
-            y: 95
+            y: 100
           }
         },
         //スロット
@@ -97,7 +97,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 150,
-            y: 130
+            y: 135
           }
         },
         //耐久値
@@ -108,7 +108,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 150,
-            y: 165
+            y: 170
           }
         },
         //突撃
@@ -119,7 +119,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 255,
-            y: 95
+            y: 100
           }
         },
         //被突撃
@@ -130,7 +130,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 255,
-            y: 130
+            y: 135
           }
         },
         //サイズ
@@ -140,8 +140,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 100,
-            y: 200
+            x: 95,
+            y: 205
           }
         },
         //重量
@@ -151,8 +151,30 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 150,
-            y: 200
+            x: 145,
+            y: 205
+          }
+        },
+        //Aランク数
+        {
+          text: machine.getARankEquipmentCount(),
+          style: {
+            fontSize: 15
+          },
+          absolutePosition: {
+            x: 95,
+            y: 240
+          }
+        },
+        //単座・複座
+        {
+          text: machineType.hasDoubleSeat ? "複座" : "単座",
+          style: {
+            fontSize: 15
+          },
+          absolutePosition: {
+            x: 145,
+            y: 240
           }
         },
         //頭１
@@ -163,7 +185,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 350,
-            y: 125
+            y: 115
           }
         },
         //頭2
@@ -174,7 +196,18 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 350,
-            y: 160
+            y: 150
+          }
+        },
+        //頭3
+        {
+          text: machine.getEquipment(MachineType.POSITION_HEAD, 2).name,
+          style: {
+            fontSize: 15
+          },
+          absolutePosition: {
+            x: 350,
+            y: 185
           }
         },
         //胴１
@@ -184,7 +217,7 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 565,
+            x: 595,
             y: 195
           }
         },
@@ -195,8 +228,19 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 565,
+            x: 595,
             y: 230
+          }
+        },
+        //胴3
+        {
+          text: machine.getEquipment(MachineType.POSITION_BODY, 2).name,
+          style: {
+            fontSize: 15
+          },
+          absolutePosition: {
+            x: 595,
+            y: 265
           }
         },
         //右腕1
@@ -207,8 +251,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 110,
-            y: 305
+            x: 105,
+            y: 320
           }
         },
         //右腕2
@@ -219,8 +263,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 110,
-            y: 340
+            x: 105,
+            y: 355
           }
         },
         //右腕3
@@ -231,8 +275,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 110,
-            y: 375
+            x: 105,
+            y: 390
           }
         },
         //左腕1
@@ -243,8 +287,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 590,
-            y: 305
+            x: 595,
+            y: 320
           }
         },
         //左腕2
@@ -255,8 +299,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 590,
-            y: 340
+            x: 595,
+            y: 355
           }
         },
         //左腕3
@@ -267,8 +311,8 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 590,
-            y: 375
+            x: 595,
+            y: 390
           }
         },
         //右脚1
@@ -279,7 +323,7 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 135,
+            x: 125,
             y: 450
           }
         },
@@ -291,7 +335,7 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 135,
+            x: 125,
             y: 485
           }
         },
@@ -303,7 +347,7 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 565,
+            x: 570,
             y: 450
           }
         },
@@ -315,7 +359,7 @@ export default class PdfMaker {
             fontSize: 15
           },
           absolutePosition: {
-            x: 565,
+            x: 570,
             y: 485
           }
         }
@@ -372,5 +416,13 @@ export default class PdfMaker {
       retVal.height = height * (maxWitdh / witdh);
     }
     return retVal;
+  }
+
+  splitMachineName(machineName){
+    if(machineName.length <= 15){
+      return machineName
+    } else {
+      return [machineName.slice(0,15)+"\r\n",machineName.slice(15)]
+    }
   }
 }

@@ -37,6 +37,39 @@ export default class MountPosition {
   static get HEAD_AND_BODY_EACH_ONE(){
     return "頭１＆胴１";
   }
+  //胴1＋全部位
+  static get BODY_ONE_AND_ALL(){
+    return "胴１＋全部位";
+  }
+  //腕1（ロケットパンチ、有線ロケットパンチは同じ腕に装備できない）
+  static get ARM_ONE_ROCKETPANCH(){
+    return "腕各１のみ（ロケットパンチ）";
+  }
+  //脚腕各１
+  static get ARM_EACH_ONE(){
+    return "腕各１";
+  }
+
+  //ミサイル武装と入替
+
+  //ロケット武装と入替
+
+  //胴１のみ
+  static get BODY_ONE_ONLY(){
+    return "胴１のみ";
+  }
+  //脚×
+  static get WITHOUT_LEG(){
+    return "脚×";
+  }
+  //軽装甲×＆全部位
+  static get MIDDLE_OR_HEAVEY_AND_ALL(){
+    return "軽装甲×＆全部位";
+  }
+  //頭
+  static get HEAD_ONLY(){
+    return "頭";
+  }
   //装備数上限なし
   static get INFINITY(){
     return 99;
@@ -53,7 +86,7 @@ export default class MountPosition {
     if(mountPosition === MountPosition.BODY){
       return [MachineType.POSITION_BODY];
     }
-    if(mountPosition === MountPosition.LEG || mountPosition === MountPosition.LEG_EACH_ONE){
+    if(mountPosition === MountPosition.LEG){
       return [MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];
     }
     if(mountPosition === MountPosition.ARM_OR_LEG){
@@ -66,11 +99,38 @@ export default class MountPosition {
       ret.splice(ret.indexOf(MachineType.POSITION_HEAD),1)
       return ret;
     }
+    if(mountPosition === MountPosition.LEG_EACH_ONE){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.LEG);
+    }
     if(mountPosition === MountPosition.BODY_TWO_OR_LEG_EACH_ONE){
       return [MachineType.POSITION_BODY,MachineType.POSITION_LEFTLEG,MachineType.POSITION_RIGHTLEG];
     }
     if(mountPosition === MountPosition.HEAD_AND_BODY_EACH_ONE){
       return [MachineType.POSITION_HEAD,MachineType.POSITION_BODY];
+    }
+    if(mountPosition === MountPosition.ARM_ONE_ROCKETPANCH){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ARM);
+    }
+    if(mountPosition === MountPosition.ARM_EACH_ONE){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ARM);
+    }
+    if(mountPosition === MountPosition.BODY_ONE_ONLY){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.BODY);
+    }
+    if(mountPosition === MountPosition.HEAD_ONLY){
+      return [MachineType.POSITION_HEAD];
+    }
+    if(mountPosition === MountPosition.WITHOUT_LEG){
+      let ret = MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+      ret.splice(ret.indexOf(MachineType.POSITION_LEFTLEG),1)
+      ret.splice(ret.indexOf(MachineType.POSITION_RIGHTLEG),1)
+      return ret;
+    }
+    if(mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_ALL){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+    }
+    if(mountPosition === MountPosition.BODY_ONE_AND_ALL){
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
     }
     return [];
   }

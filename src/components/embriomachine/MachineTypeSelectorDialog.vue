@@ -4,7 +4,7 @@
       v-model="showDialog"
       persistent
       :fullscreen="isXs"
-      max-width="500"
+      max-width="600"
     >
       <v-card>
         <v-layout
@@ -17,55 +17,71 @@
               wrap
             >
               <v-flex
-                sm5
+                sm4
                 xs6
               >
                 <v-radio-group
-                  v-model="selectedMachineTypeName"
+                  label="種類"
+                  v-model="seatType"
+                  :row="!isXs"
+                  class="body-1"
+                >
+                  <v-radio
+                    v-for="seatType in seatTypes"
+                    :label="seatType"
+                    :value="seatType"
+                    :key="seatType"
+                    color="brown lighten-2"
+                  ></v-radio>
+                </v-radio-group>
+                <v-radio-group
+                  v-model="weightAndSize"
                   :mandatory="false"
                 >
                   <v-radio
-                    v-for="machineType in machineTypes"
-                    :label="machineType.name"
-                    :value="machineType.name"
-                    :key="machineType.name"
+                    v-for="aAeightAndSize in weightAndSizes"
+                    :label="getNameOf(aAeightAndSize)"
+                    :value="aAeightAndSize"
+                    :key="getNameOf(aAeightAndSize)"
                   ></v-radio>
                 </v-radio-group>
               </v-flex>
               <v-flex
-                sm7
+                sm8
                 xs6
               >
                 <v-layout
                   row
                   wrap
                 >
-                  <!--FIXME コンポーネント化-->
-                  <v-toolbar
-                    floating
-                    dense
-                  >
-                    <v-tooltip>
-                      <v-btn
-                        slot="activator"
-                        icon
-                        @click.native="select"
-                      >
-                        <v-icon>fas fa-hand-pointer</v-icon>
-                      </v-btn>
-                      <span>装甲・サイズを選択します。</span>
-                    </v-tooltip>
-                    <v-tooltip>
-                      <v-btn
-                        slot="activator"
-                        icon
-                        @click.native="closeDialog"
-                      >
-                        <v-icon>fas fa-backward</v-icon>
-                      </v-btn>
-                      <span>機体作成・編集画面に戻ります。</span>
-                    </v-tooltip>
-                  </v-toolbar>
+                  <v-flex xs12>
+                    <!--FIXME コンポーネント化-->
+                    <v-toolbar
+                      floating
+                      dense
+                    >
+                      <v-tooltip>
+                        <v-btn
+                          slot="activator"
+                          icon
+                          @click.native="select"
+                        >
+                          <v-icon>fas fa-hand-pointer</v-icon>
+                        </v-btn>
+                        <span>装甲・サイズを選択します。</span>
+                      </v-tooltip>
+                      <v-tooltip>
+                        <v-btn
+                          slot="activator"
+                          icon
+                          @click.native="closeDialog"
+                        >
+                          <v-icon>fas fa-backward</v-icon>
+                        </v-btn>
+                        <span>機体作成・編集画面に戻ります。</span>
+                      </v-tooltip>
+                    </v-toolbar>
+                  </v-flex>
                   <v-flex xs6>
                     <v-list dense>
                       <v-list-tile>
@@ -177,7 +193,10 @@
   </div>
 </template>
 
-<style>
+<style lang="styl">
+.v-label {
+  font-size: 11pt;
+}
 </style>
 
 <script>
@@ -199,18 +218,18 @@ export default {
   },
   data() {
     return {
-      selectedMachineTypeName: this.targetMachineType.name,
-      machineTypes: MachineType.getMachineTypes(),
-      POSITION_CONST: MachineType.getPositionConst()
+      //単座、複座
+      seatTypes: ["単座", "複座"],
+      seatType: "単座",
+      weightAndSizes: MachineType.getWeightAndSize(),
+      weightAndSize: MachineType.getWeightAndSize()[0]
     };
   },
 
   watch: {
     targetMachineType: function(val) {
       if (val != null) {
-        this.selectedMachineTypeName = val.name;
-      } else {
-        this.selectedMachineTypeName = "";
+        this.weightAndSize = val.toWeightAndSize();
       }
     }
   },
@@ -219,15 +238,27 @@ export default {
     machineType() {
       let ret = {};
       this.machineTypes.forEach(item => {
-        if (item.name === this.selectedMachineTypeName) {
+        if (
+          item.size === this.weightAndSize.size &&
+          item.weight === this.weightAndSize.weight
+        ) {
           ret = item;
         }
       });
       return ret;
     },
-    headSlot() {
-      return this.machineType.headSlot;
+
+    machineTypes() {
+      //単座か複座で表示対象の機種を絞り込む。
+      return MachineType.getMachineTypes().filter(machineType => {
+        if (this.seatType === "複座") {
+          return machineType.hasDoubleSeat;
+        } else {
+          return !machineType.hasDoubleSeat;
+        }
+      });
     },
+
     contentClass() {
       if (this.$vuetify.breakpoint.name === "xs") {
         return "caption";
@@ -235,6 +266,7 @@ export default {
         return "subheading";
       }
     },
+
     isXs() {
       return this.$vuetify.breakpoint.name === "xs";
     }
@@ -244,14 +276,21 @@ export default {
     closeDialog() {
       // this.$emit("update:targetMachineType", {});
       this.$emit("cancel");
-      this.selectedMachineTypeName = "";
+      this.weightAndSize = null;
       this.$emit("update:showDialog", false);
     },
     select() {
       // this.$emit("update:targetMachineType", this.machineType);
       this.$emit("select", this.machineType);
-      this.selectedMachineTypeName = "";
+      this.weightAndSize = null;
       this.$emit("update:showDialog", false);
+    },
+    getNameOf(weightAndSize) {
+      let name = MachineType.getNameOf(weightAndSize);
+      if (this.seatType === "複座") {
+        name += "(複座)";
+      }
+      return name;
     }
   }
 };

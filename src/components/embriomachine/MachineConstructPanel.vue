@@ -182,7 +182,7 @@
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.name : ""}}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
@@ -196,29 +196,29 @@
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.movility}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.movility : ""}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.evadeRate}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.evadeRate : ""}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.armorPoint}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.armorPoint : ""}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.constitution}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.constitution : ""}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.initiative}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.initiative : ""}}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType.chargeDamage}}／{{machine.machineType.coveredChargeDamage}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.chargeDamage+"／"+machine.machineType.coveredChargeDamage: ""}}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.getEquipmentCountByRank("A")}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{machine.getARankEquipmentCount()}}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
@@ -252,7 +252,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>頭／SLOT:{{machine.machineType.getSlot(POSITION_CONST.POSITION_HEAD)}}</v-toolbar-title>
+                      <v-toolbar-title>頭／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_HEAD) : ""}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -303,7 +303,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>胴／SLOT:{{machine.machineType.getSlot(POSITION_CONST.POSITION_BODY)}}</v-toolbar-title>
+                      <v-toolbar-title>胴／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_BODY) : ""}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -354,7 +354,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>右腕／SLOT:{{machine.machineType.getSlot(POSITION_CONST.POSITION_RIGHTARM)}}</v-toolbar-title>
+                      <v-toolbar-title>右腕／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_RIGHTARM) : ""}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -405,7 +405,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>左腕／SLOT:{{machine.machineType.getSlot(POSITION_CONST.POSITION_LEFTARM)}}</v-toolbar-title>
+                      <v-toolbar-title>左腕／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_LEFTARM) : ""}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -457,7 +457,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>右脚／SLOT:{{machine.machineType.getSlot(POSITION_CONST.POSITION_RIGHTLEG)}}</v-toolbar-title>
+                      <v-toolbar-title>右脚／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_RIGHTLEG) : ""}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -508,7 +508,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>左脚／SLOT:{{machine.machineType.getSlot(POSITION_CONST.POSITION_LEFTLEG)}}</v-toolbar-title>
+                      <v-toolbar-title>左脚／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_LEFTLEG) : ""}}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -753,10 +753,7 @@ export default {
 
   computed: {
     validateerror() {
-      if (
-        this.machine.machineType.name === undefined ||
-        this.machine.machineType.name === ""
-      ) {
+      if (this.machine.machineType === null) {
         return ["機体の装甲・サイズが未選択です"];
       } else {
         return this.machine.validate();
@@ -790,7 +787,7 @@ export default {
     showMachineTypeDialog() {
       let machineType = this.machine.machineType;
       //初期値としては「軽・SS」を選択する。
-      if (machineType.name === undefined || machineType.name === "") {
+      if (machineType === null) {
         this.dialogMachineType = MachineType.getDefaultMachineType();
       } else {
         this.dialogMachineType = this.machine.machineType;

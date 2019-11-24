@@ -9,7 +9,6 @@ export default class FirebaseStorage {
     this.detaildb = process.env.DETAIL_DB;
     this.fileUploadDir = process.env.FILE_UPLOAD_DIR;
     this.pagesize = 15;
-
   }
 
   //FIXME コールバックを取るのではなく外側でハンドリングさせる
