@@ -578,7 +578,7 @@ export default class Equipment {
         "edition" : "基本"
       },
       {
-        "name": "バーニア(♠)",
+        "name": "バーニア",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -595,7 +595,7 @@ export default class Equipment {
         "edition" : "基本"
       },
       {
-        "name": "ホイール(♠)",
+        "name": "ホイール",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -612,7 +612,7 @@ export default class Equipment {
         "edition" : "基本"
       },
       {
-        "name": "キャタピラ(♠)",
+        "name": "キャタピラ",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -629,7 +629,7 @@ export default class Equipment {
         "edition" : "基本"
       },
       {
-        "name": "ムーブセンサー(♡)",
+        "name": "ムーブセンサー",
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -1105,7 +1105,7 @@ export default class Equipment {
         "edition" : "基本"
       },
       {
-        "name": "ホバー(♠)",
+        "name": "ホバー",
         "rank": "A",
         "type": "補助",
         "range": "-",
@@ -1378,7 +1378,7 @@ export default class Equipment {
         "edition" : "玉座"
       },
       {
-        "name": "フリーセンサー（♡）", 
+        "name": "フリーセンサー", 
         "rank": "B",
         "type": "補助",
         "range": "-",
@@ -1667,7 +1667,7 @@ export default class Equipment {
         "edition" : "玉座"
       },
       {
-        "name": "多脚（♠）", 
+        "name": "多脚", 
         "rank": "A",
         "type": "補助",
         "range": "-",
@@ -2041,7 +2041,7 @@ export default class Equipment {
         "edition" : "玉座"
       },
       {
-        "name": "低空飛行ユニット(♠)", 
+        "name": "低空飛行ユニット", 
         "rank": "S",
         "type": "補助／その他",
         "range": "-",
@@ -2108,103 +2108,6 @@ export default class Equipment {
         "maxLimit": 2,
         "edition" : "玉座"
       },
-
-      // {
-      //   "name": "軽装甲×＆全部位ダミー", //FIXME ダミーデータのため、後で削除すること。
-      //   "rank": "S",
-      //   "type": "射撃",
-      //   "range": "-",
-      //   "minRange": "0",
-      //   "maxRange": "0",
-      //   "rangeType": "-",
-      //   "damage": "-",
-      //   "damageType": "-",
-      //   "mountPosition": "軽装甲×＆全部位",
-      //   "minLimit": 1,
-      //   "equipSamePosition": true,
-      //   "effect": "ダミー",
-      //   "maxLimit": 1
-      // },
-      // {
-      //   "name": "脚×ダミー", //FIXME ダミーデータのため、後で削除すること。
-      //   "rank": "S",
-      //   "type": "射撃",
-      //   "range": "-",
-      //   "minRange": "0",
-      //   "maxRange": "0",
-      //   "rangeType": "-",
-      //   "damage": "-",
-      //   "damageType": "-",
-      //   "mountPosition": "脚×",
-      //   "minLimit": 1,
-      //   "equipSamePosition": true,
-      //   "effect": "ダミー",
-      //   "maxLimit": 1
-      // },
-      // {
-      //   "name": "胴1＋全部位ダミー", //FIXME ダミーデータのため、後で削除すること。
-      //   "rank": "S",
-      //   "type": "射撃",
-      //   "range": "-",
-      //   "minRange": "0",
-      //   "maxRange": "0",
-      //   "rangeType": "-",
-      //   "damage": "-",
-      //   "damageType": "-",
-      //   "mountPosition": "胴１＋全部位",
-      //   "minLimit": 2,
-      //   "equipSamePosition": false,
-      //   "effect": "ダミー",
-      //   "maxLimit": 2
-      // },
-      // {
-      //   "name": "ロケットパンチ１ダミー", //FIXME ダミーデータのため、後で削除すること。
-      //   "rank": "S",
-      //   "type": "射撃",
-      //   "range": "-",
-      //   "minRange": "0",
-      //   "maxRange": "0",
-      //   "rangeType": "-",
-      //   "damage": "-",
-      //   "damageType": "-",
-      //   "mountPosition": "腕１（ロケットパンチ）",
-      //   "minLimit": 1,
-      //   "equipSamePosition": false,
-      //   "effect": "ダミー",
-      //   "maxLimit": 1
-      // },
-      // {
-      //   "name": "ロケットパンチ２ダミー", //FIXME ダミーデータのため、後で削除すること。
-      //   "rank": "S",
-      //   "type": "射撃",
-      //   "range": "-",
-      //   "minRange": "0",
-      //   "maxRange": "0",
-      //   "rangeType": "-",
-      //   "damage": "-",
-      //   "damageType": "-",
-      //   "mountPosition": "腕１（ロケットパンチ）",
-      //   "minLimit": 1,
-      //   "equipSamePosition": false,
-      //   "effect": "ダミー",
-      //   "maxLimit": 1
-      // },
-      // {
-      //   "name": "射撃かつ近接ダミー", //FIXME ダミーデータのため、後で削除すること。
-      //   "rank": "S",
-      //   "type": "射撃／白兵",
-      //   "range": "④～⑥／2",
-      //   "minRange": "4／2",
-      //   "maxRange": "6／2",
-      //   "rangeType": "A／N",
-      //   "damage": "2／2",
-      //   "damageType": "射撃／白兵",
-      //   "mountPosition": "脚×",
-      //   "minLimit": 1,
-      //   "equipSamePosition": false,
-      //   "effect": "射撃タイミングでオープンする。射撃として使用しなかった場合、白兵タイミングで使用する。",
-      //   "maxLimit": 1
-      // },
     ]
   }
 }
