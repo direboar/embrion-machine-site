@@ -9,7 +9,7 @@ export default class PdfMaker {
       //ファイルサイズを取得。
       var img = document.createElement("img");
       img.src = file;
-      imageSize = this.calcPdfImageSize(img.height, img.width, 340, 250);
+      imageSize = this.calcPdfImageSize(img.height, img.width, 320, 250);
     }
 
     let machineType = machine.machineType;
@@ -389,7 +389,7 @@ export default class PdfMaker {
           //中央に出すように位置調整
           absolutePosition: {
             x: 300 + (250 - imageSize.witdh) / 2,
-            y: 190 + (340 - imageSize.height) / 2
+            y: 220 + (320 - imageSize.height) / 2
           }
         }
       );
@@ -400,7 +400,7 @@ export default class PdfMaker {
   }
 
   // width: 250,
-  // height: 340,
+  // height: 320,
   calcPdfImageSize(height, witdh, maxHeight, maxWitdh) {
     let retVal = {
       height: maxHeight,
