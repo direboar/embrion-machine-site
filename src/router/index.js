@@ -25,7 +25,7 @@ export default new Router({
       name: 'IndexPage',
       component: IndexPage,
       meta : {
-        title: 'エムブリオマシンサポートサイト'
+        title: 'エムブリオマシン 機体作成データベース'
       }
     },
     {
