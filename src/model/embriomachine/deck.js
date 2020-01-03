@@ -15,7 +15,7 @@ export default class Deck {
 
   addEquipments(equipments) {
     equipments.forEach(equipment => {
-      if (equipment.type !== "補助") {
+      if (!equipment.isTypeOf("補助")) {
         let card = new Card(equipment.name, equipment);
         this.addCard(card);
       }
