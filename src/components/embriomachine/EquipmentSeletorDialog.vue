@@ -322,7 +322,7 @@ export default {
       selectedTypes: [Equipment.TYPE_SHAGEKI],
       ranks: ["S", "A", "B"],
       selectedRanks: ["B"],
-      itemcounts: [1, 2, 3],
+      itemcounts: [1, 2, 3, 4],
       itemcount: 1,
       editions: ["基本", "玉座"],
       selectedEditions: ["基本"],
