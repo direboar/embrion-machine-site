@@ -213,6 +213,16 @@ export default class FirebaseStorage {
     let id = machine.getId()
     let detailId = machine.getDetailId()
 
+    //削除時に、idがnullであるとrootのノードが削除される可能性があるので、念のためチェックする。
+    if(!id){
+      error("削除対象のIDが取得できませんでした。削除を中断します。");
+      return;
+    }
+    if(!detailId){
+      error("削除対象のdetailIdが取得できませんでした。削除を中断します。");
+      return;
+    }
+
     try {
       await firebase
         .database()
@@ -247,7 +257,7 @@ export default class FirebaseStorage {
         contentType: contentType,
         cacheControl: 'public,max-age=300',
       };
-      imageRef.updateMetadata(newMetadata).then(function(matadata) {}).catch((e)=>{alert(e)});
+      imageRef.updateMetadata(newMetadata).catch((e)=>{alert(e)});
       callback()
     }).catch((e) => {
       error(e)
@@ -267,7 +277,7 @@ export default class FirebaseStorage {
 
         var xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
-        xhr.onload = event => {
+        xhr.onload = () => {
           let fileReader = new FileReader();
           fileReader.onload = data => {
             // //発生しないはずだが念のため。
