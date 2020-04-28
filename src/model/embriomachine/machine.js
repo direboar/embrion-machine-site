@@ -280,7 +280,7 @@ export default class Machine {
         if (equipment.mountPosition === MountPosition.LEG_EACH_ONE) {
           let rightLegCount = this.getEquipmentCountOf([MachineType.POSITION_RIGHTLEG], equipment);
           let leftLegCount = this.getEquipmentCountOf([MachineType.POSITION_LEFTLEG], equipment);
-          if (rightLegCount !== 1 || leftLegCount !== 1) {
+          if(rightLegCount !== leftLegCount){
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
           }
         }
@@ -289,11 +289,15 @@ export default class Machine {
           let bodyCount = this.getEquipmentCountOf([MachineType.POSITION_BODY], equipment);
           let rightLegCount = this.getEquipmentCountOf([MachineType.POSITION_RIGHTLEG], equipment);
           let leftLegCount = this.getEquipmentCountOf([MachineType.POSITION_LEFTLEG], equipment);
-          if (bodyCount === 2 && rightLegCount === 0 && leftLegCount === 0) {
-            //ok
-          } else if (bodyCount === 0 && rightLegCount === 1 && leftLegCount === 1) {
-            //ok
-          } else {
+
+          let isError = false;
+          if(bodyCount % 2 !==0){
+            isError = true;
+          }
+          if(rightLegCount !== leftLegCount){
+            isError = true;
+          }
+          if(isError){
             errors.push(equipment.name + "は" + MachineType.POSITION_BODY + "に２つ、もしくは" + MachineType.POSITION_RIGHTLEG + "," + MachineType.POSITION_LEFTLEG + "にそれぞれ一つずつ装備しなければなりません。")
           }
         }
@@ -301,7 +305,7 @@ export default class Machine {
         if (equipment.mountPosition === MountPosition.HEAD_AND_BODY_EACH_ONE) {
           let headCount = this.getEquipmentCountOf([MachineType.POSITION_HEAD], equipment);
           let bodyCount = this.getEquipmentCountOf([MachineType.POSITION_BODY], equipment);
-          if (headCount !== 1 || bodyCount !== 1) {
+          if(headCount !== bodyCount){
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
           }
         }
@@ -340,7 +344,7 @@ export default class Machine {
         if (equipment.mountPosition === MountPosition.ARM_EACH_ONE) {
           let rightLegCount = this.getEquipmentCountOf([MachineType.POSITION_RIGHTARM], equipment);
           let leftLegCount = this.getEquipmentCountOf([MachineType.POSITION_LEFTARM], equipment);
-          if (rightLegCount !== 1 || leftLegCount !== 1) {
+          if(rightLegCount !== leftLegCount){
             errors.push(equipment.name + "は" + machineEquipmentPositions.join() + "にそれぞれ一つずつ装備しなければなりません。")
           }
         }
