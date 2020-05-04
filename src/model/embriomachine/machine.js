@@ -579,6 +579,52 @@ export default class Machine {
     }
     return ret;
   }
+
+  /** 機体の情報をテキストで出力する*/
+  toText(){
+    const text = `装甲重量：${this.machineType.weight} サイズ： ${this.machineType.size} ${this.machineType.hasDoubleSeat ? "複座" : "単座"} 移動値：${this.machineType.movility} 
+回避値：${this.machineType.evadeRate} 装甲値：${this.machineType.armorPoint} 耐久値：${this.machineType.constitution}
+イニシアチブ：${this.machineType.initiative} 突撃値：${this.machineType.chargeDamage} 被突撃値：${this.machineType.coveredChargeDamage}
+
+デッキ
+突撃：${this.machineType.chargeCount}  照準：１
+頭（スロット${this.machineType.getSlot(MachineType.POSITION_HEAD)}）
+${this.getEquepmentTextOf(MachineType.POSITION_HEAD)}
+胴（スロット${this.machineType.getSlot(MachineType.POSITION_BODY)}）
+${this.getEquepmentTextOf(MachineType.POSITION_BODY)}
+右腕（スロット${this.machineType.getSlot(MachineType.POSITION_RIGHTARM)}）
+${this.getEquepmentTextOf(MachineType.POSITION_RIGHTARM)}
+左腕（スロット${this.machineType.getSlot(MachineType.POSITION_LEFTARM)}）
+${this.getEquepmentTextOf(MachineType.POSITION_LEFTARM)}
+右脚（スロット${this.machineType.getSlot(MachineType.POSITION_RIGHTLEG)}）
+${this.getEquepmentTextOf(MachineType.POSITION_RIGHTLEG)}
+左脚（スロット${this.machineType.getSlot(MachineType.POSITION_LEFTLEG)}）
+${this.getEquepmentTextOf(MachineType.POSITION_LEFTLEG)}
+`
+    return text
+  }
+
+  getEquepmentTextOf(position){
+    const equipments = this.equipments[position]
+
+    // const summary = {
+    //   type : null,
+    //   count : 0
+    // }
+    const summary = equipments.reduce((accumurator,equipment)=>{
+      if(accumurator[equipment.name]){
+        accumurator[equipment.name] ++
+      }else{
+        accumurator[equipment.name] = 1
+      }
+      return accumurator
+    },{})
+
+    const keys = Object.keys(summary)
+    return keys.reduce((accumurator,key)=>{
+      return `${accumurator}${key} : ${summary[key]} `
+    },"")
+  }  
   
   static assign(obj) {
     let machine = new Machine();
@@ -606,5 +652,6 @@ export default class Machine {
     });
     return retVal;
   }
+  
 
 }

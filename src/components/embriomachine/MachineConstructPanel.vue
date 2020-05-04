@@ -1,41 +1,20 @@
 <template>
   <div>
     <v-card>
-      <v-layout
-        row
-        wrap
-      >
+      <v-layout row wrap>
         <v-flex xs12>
-          <v-layout
-            row
-            wrap
-          >
+          <v-layout row wrap>
             <v-flex xs12>
-              <v-alert
-                :value="validateerror.length>0"
-                type="error"
-              >
+              <v-alert :value="validateerror.length > 0" type="error">
                 <p v-html="formatErrorMessage(validateerror)"></p>
               </v-alert>
             </v-flex>
-            <v-flex
-              xl3
-              md4
-              sm6
-              xs12
-            >
+            <v-flex xl3 md4 sm6 xs12>
               <v-card>
-                <v-toolbar
-                  color="grey darken-1"
-                  dark
-                  dense
-                >
+                <v-toolbar color="grey darken-1" dark dense>
                   <v-toolbar-title>基本データ</v-toolbar-title>
                   <v-spacer></v-spacer>
-                  <v-toolbar
-                    floating
-                    dense
-                  >
+                  <v-toolbar floating dense>
                     <v-tooltip>
                       <v-btn
                         slot="activator"
@@ -81,6 +60,13 @@
                       </v-btn>
                       <span>距離ごとのダメージ表を表示します</span>
                     </v-tooltip>
+                    <file-download-icon
+                      tooltip="機体のテキストデータを出力します"
+                      :data="exportTextData"
+                      :disabled="!canPrint || isXs"
+                      :fileName="this.machine.name + '.txt'"
+                      icon="fas fa-file-export"
+                    />
                     <v-tooltip>
                       <v-btn
                         slot="activator"
@@ -90,7 +76,9 @@
                       >
                         <v-icon>fas fa-copy</v-icon>
                       </v-btn>
-                      <span>機体をコピーして作成画面に移動します（保存しないとコピーは失われます）。</span>
+                      <span
+                        >機体をコピーして作成画面に移動します（保存しないとコピーは失われます）。</span
+                      >
                     </v-tooltip>
                     <v-tooltip>
                       <v-btn
@@ -104,26 +92,16 @@
                       <span>機体を削除します。</span>
                     </v-tooltip>
                     <v-tooltip>
-                      <v-btn
-                        slot="activator"
-                        icon
-                        @click.native="back"
-                      >
+                      <v-btn slot="activator" icon @click.native="back">
                         <v-icon>fas fa-backward</v-icon>
                       </v-btn>
                       <span>一覧画面に戻ります。</span>
                     </v-tooltip>
                   </v-toolbar>
                 </v-toolbar>
-                <v-layout
-                  row
-                  wrap
-                >
+                <v-layout row wrap>
                   <v-flex xs4>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-divider />
                       <v-list-tile>
                         <v-list-tile-content>名前</v-list-tile-content>
@@ -153,22 +131,25 @@
                         <v-list-tile-content>イニシアチブ</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content>突撃／被突撃ダメージ</v-list-tile-content>
+                        <v-list-tile-content
+                          >突撃／被突撃ダメージ</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content>Aランク武装の数</v-list-tile-content>
+                        <v-list-tile-content
+                          >Aランク武装の数</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content>機体へのリンク</v-list-tile-content>
+                        <v-list-tile-content
+                          >機体へのリンク</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-divider />
                     </v-list>
                   </v-flex>
                   <v-flex xs8>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile>
                         <v-list-tile-content>
                           <v-text-field
@@ -182,7 +163,11 @@
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.name : ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.name
+                            : ""
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
@@ -196,34 +181,62 @@
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.movility : ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.movility
+                            : ""
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.evadeRate : ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.evadeRate
+                            : ""
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.armorPoint : ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.armorPoint
+                            : ""
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.constitution : ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.constitution
+                            : ""
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.initiative : ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.initiative
+                            : ""
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.machineType !== null ? machine.machineType.chargeDamage+"／"+machine.machineType.coveredChargeDamage: ""}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.machineType !== null
+                            ? machine.machineType.chargeDamage +
+                              "／" +
+                              machine.machineType.coveredChargeDamage
+                            : ""
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content class="subheaders">{{machine.getARankEquipmentCount()}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          machine.getARankEquipmentCount()
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                       <v-list-tile>
                         <v-list-tile-content>
-                          <a :href="linkurl">{{linkurl}}</a>
+                          <a :href="linkurl">{{ linkurl }}</a>
                         </v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
@@ -232,51 +245,54 @@
                 </v-layout>
               </v-card>
             </v-flex>
-            <v-flex
-              xl9
-              md8
-              sm6
-              xs12
-            >
+            <v-flex xl9 md8 sm6 xs12>
               <v-card>
-                <v-layout
-                  row
-                  wrap
-                >
-                  <v-flex
-                    md6
-                    xs12
-                  >
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
-                      <v-toolbar-title>頭／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_HEAD) : ""}}</v-toolbar-title>
+                <v-layout row wrap>
+                  <v-flex md6 xs12>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >頭／SLOT:{{
+                          machine.machineType !== null
+                            ? machine.machineType.getSlot(
+                                POSITION_CONST.POSITION_HEAD
+                              )
+                            : ""
+                        }}</v-toolbar-title
+                      >
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
-                        @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_HEAD)"
+                        @click.native="
+                          showEquipmentSelectDialog(
+                            POSITION_CONST.POSITION_HEAD
+                          )
+                        "
                         :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile
-                        v-for="(equipment, index)  in this.machine.equipments[POSITION_CONST.POSITION_HEAD]"
+                        v-for="(equipment, index) in this.machine.equipments[
+                          POSITION_CONST.POSITION_HEAD
+                        ]"
                         :key="index"
                       >
                         <v-list-tile-content></v-list-tile-content>
-                        <v-list-tile-content class="subheaders">{{equipment.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          equipment.name
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="showEquipmentViewDialog(POSITION_CONST.POSITION_HEAD,equipment)"
+                            @click.native="
+                              showEquipmentViewDialog(
+                                POSITION_CONST.POSITION_HEAD,
+                                equipment
+                              )
+                            "
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -285,7 +301,12 @@
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="deleteEquipment(POSITION_CONST.POSITION_HEAD,equipment)"
+                            @click.native="
+                              deleteEquipment(
+                                POSITION_CONST.POSITION_HEAD,
+                                equipment
+                              )
+                            "
                             :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
@@ -294,40 +315,51 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex
-                    md6
-                    xs12
-                  >
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
-                      <v-toolbar-title>胴／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_BODY) : ""}}</v-toolbar-title>
+                  <v-flex md6 xs12>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >胴／SLOT:{{
+                          machine.machineType !== null
+                            ? machine.machineType.getSlot(
+                                POSITION_CONST.POSITION_BODY
+                              )
+                            : ""
+                        }}</v-toolbar-title
+                      >
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
-                        @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_BODY)"
+                        @click.native="
+                          showEquipmentSelectDialog(
+                            POSITION_CONST.POSITION_BODY
+                          )
+                        "
                         :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile
-                        v-for="(equipment, index)  in this.machine.equipments[POSITION_CONST.POSITION_BODY]"
+                        v-for="(equipment, index) in this.machine.equipments[
+                          POSITION_CONST.POSITION_BODY
+                        ]"
                         :key="index"
                       >
                         <v-list-tile-content></v-list-tile-content>
-                        <v-list-tile-content class="subheaders">{{equipment.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          equipment.name
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="showEquipmentViewDialog(POSITION_CONST.POSITION_BODY,equipment)"
+                            @click.native="
+                              showEquipmentViewDialog(
+                                POSITION_CONST.POSITION_BODY,
+                                equipment
+                              )
+                            "
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -336,7 +368,12 @@
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="deleteEquipment(POSITION_CONST.POSITION_BODY,equipment)"
+                            @click.native="
+                              deleteEquipment(
+                                POSITION_CONST.POSITION_BODY,
+                                equipment
+                              )
+                            "
                             :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
@@ -345,40 +382,51 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex
-                    md6
-                    xs12
-                  >
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
-                      <v-toolbar-title>右腕／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_RIGHTARM) : ""}}</v-toolbar-title>
+                  <v-flex md6 xs12>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >右腕／SLOT:{{
+                          machine.machineType !== null
+                            ? machine.machineType.getSlot(
+                                POSITION_CONST.POSITION_RIGHTARM
+                              )
+                            : ""
+                        }}</v-toolbar-title
+                      >
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
-                        @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_RIGHTARM)"
+                        @click.native="
+                          showEquipmentSelectDialog(
+                            POSITION_CONST.POSITION_RIGHTARM
+                          )
+                        "
                         :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile
-                        v-for="(equipment, index)  in this.machine.equipments[POSITION_CONST.POSITION_RIGHTARM]"
+                        v-for="(equipment, index) in this.machine.equipments[
+                          POSITION_CONST.POSITION_RIGHTARM
+                        ]"
                         :key="index"
                       >
                         <v-list-tile-content></v-list-tile-content>
-                        <v-list-tile-content class="subheaders">{{equipment.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          equipment.name
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="showEquipmentViewDialog(POSITION_CONST.POSITION_RIGHTARM,equipment)"
+                            @click.native="
+                              showEquipmentViewDialog(
+                                POSITION_CONST.POSITION_RIGHTARM,
+                                equipment
+                              )
+                            "
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -387,7 +435,12 @@
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="deleteEquipment(POSITION_CONST.POSITION_RIGHTARM,equipment)"
+                            @click.native="
+                              deleteEquipment(
+                                POSITION_CONST.POSITION_RIGHTARM,
+                                equipment
+                              )
+                            "
                             :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
@@ -396,40 +449,51 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex
-                    md6
-                    xs12
-                  >
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
-                      <v-toolbar-title>左腕／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_LEFTARM) : ""}}</v-toolbar-title>
+                  <v-flex md6 xs12>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >左腕／SLOT:{{
+                          machine.machineType !== null
+                            ? machine.machineType.getSlot(
+                                POSITION_CONST.POSITION_LEFTARM
+                              )
+                            : ""
+                        }}</v-toolbar-title
+                      >
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
-                        @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_LEFTARM)"
+                        @click.native="
+                          showEquipmentSelectDialog(
+                            POSITION_CONST.POSITION_LEFTARM
+                          )
+                        "
                         :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile
-                        v-for="(equipment, index)  in this.machine.equipments[POSITION_CONST.POSITION_LEFTARM]"
+                        v-for="(equipment, index) in this.machine.equipments[
+                          POSITION_CONST.POSITION_LEFTARM
+                        ]"
                         :key="index"
                       >
                         <v-list-tile-content></v-list-tile-content>
-                        <v-list-tile-content class="subheaders">{{equipment.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          equipment.name
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="showEquipmentViewDialog(POSITION_CONST.POSITION_LEFTARM,equipment)"
+                            @click.native="
+                              showEquipmentViewDialog(
+                                POSITION_CONST.POSITION_LEFTARM,
+                                equipment
+                              )
+                            "
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -438,7 +502,12 @@
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="deleteEquipment(POSITION_CONST.POSITION_LEFTARM,equipment)"
+                            @click.native="
+                              deleteEquipment(
+                                POSITION_CONST.POSITION_LEFTARM,
+                                equipment
+                              )
+                            "
                             :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
@@ -448,40 +517,51 @@
                       <v-divider />
                     </v-list>
                   </v-flex>
-                  <v-flex
-                    md6
-                    xs12
-                  >
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
-                      <v-toolbar-title>右脚／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_RIGHTLEG) : ""}}</v-toolbar-title>
+                  <v-flex md6 xs12>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >右脚／SLOT:{{
+                          machine.machineType !== null
+                            ? machine.machineType.getSlot(
+                                POSITION_CONST.POSITION_RIGHTLEG
+                              )
+                            : ""
+                        }}</v-toolbar-title
+                      >
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
-                        @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_RIGHTLEG)"
+                        @click.native="
+                          showEquipmentSelectDialog(
+                            POSITION_CONST.POSITION_RIGHTLEG
+                          )
+                        "
                         :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile
-                        v-for="(equipment, index)  in this.machine.equipments[POSITION_CONST.POSITION_RIGHTLEG]"
+                        v-for="(equipment, index) in this.machine.equipments[
+                          POSITION_CONST.POSITION_RIGHTLEG
+                        ]"
                         :key="index"
                       >
                         <v-list-tile-content></v-list-tile-content>
-                        <v-list-tile-content class="subheaders">{{equipment.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          equipment.name
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="showEquipmentViewDialog(POSITION_CONST.POSITION_RIGHTLEG,equipment)"
+                            @click.native="
+                              showEquipmentViewDialog(
+                                POSITION_CONST.POSITION_RIGHTLEG,
+                                equipment
+                              )
+                            "
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -490,7 +570,12 @@
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="deleteEquipment(POSITION_CONST.POSITION_RIGHTLEG,equipment)"
+                            @click.native="
+                              deleteEquipment(
+                                POSITION_CONST.POSITION_RIGHTLEG,
+                                equipment
+                              )
+                            "
                             :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
@@ -499,40 +584,51 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex
-                    md6
-                    xs12
-                  >
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
-                      <v-toolbar-title>左脚／SLOT:{{machine.machineType !== null ? machine.machineType.getSlot(POSITION_CONST.POSITION_LEFTLEG) : ""}}</v-toolbar-title>
+                  <v-flex md6 xs12>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >左脚／SLOT:{{
+                          machine.machineType !== null
+                            ? machine.machineType.getSlot(
+                                POSITION_CONST.POSITION_LEFTLEG
+                              )
+                            : ""
+                        }}</v-toolbar-title
+                      >
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
-                        @click.native="showEquipmentSelectDialog(POSITION_CONST.POSITION_LEFTLEG)"
+                        @click.native="
+                          showEquipmentSelectDialog(
+                            POSITION_CONST.POSITION_LEFTLEG
+                          )
+                        "
                         :disabled="!editMode"
                       >
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list
-                      two-line
-                      subheader
-                    >
+                    <v-list two-line subheader>
                       <v-list-tile
-                        v-for="(equipment, index)  in this.machine.equipments[POSITION_CONST.POSITION_LEFTLEG]"
+                        v-for="(equipment, index) in this.machine.equipments[
+                          POSITION_CONST.POSITION_LEFTLEG
+                        ]"
                         :key="index"
                       >
                         <v-list-tile-content></v-list-tile-content>
-                        <v-list-tile-content class="subheaders">{{equipment.name}}</v-list-tile-content>
+                        <v-list-tile-content class="subheaders">{{
+                          equipment.name
+                        }}</v-list-tile-content>
                         <v-list-tile-action>
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="showEquipmentViewDialog(POSITION_CONST.POSITION_LEFTLEG,equipment)"
+                            @click.native="
+                              showEquipmentViewDialog(
+                                POSITION_CONST.POSITION_LEFTLEG,
+                                equipment
+                              )
+                            "
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -541,7 +637,12 @@
                           <v-btn
                             color="grey darken-4"
                             flat
-                            @click.native="deleteEquipment(POSITION_CONST.POSITION_LEFTLEG,equipment)"
+                            @click.native="
+                              deleteEquipment(
+                                POSITION_CONST.POSITION_LEFTLEG,
+                                equipment
+                              )
+                            "
                             :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
@@ -551,11 +652,7 @@
                     </v-list>
                   </v-flex>
                   <v-flex xs12>
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
+                    <v-toolbar color="grey darken-1" dark dense>
                       <v-toolbar-title>自由入力欄</v-toolbar-title>
                     </v-toolbar>
                     <v-textarea
@@ -567,11 +664,7 @@
                     ></v-textarea>
                   </v-flex>
                   <v-flex xs12>
-                    <v-toolbar
-                      color="grey darken-1"
-                      dark
-                      dense
-                    >
+                    <v-toolbar color="grey darken-1" dark dense>
                       <v-toolbar-title>機体画像</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <file-upload-icon
@@ -582,8 +675,8 @@
                       />
                     </v-toolbar>
                     <v-card-media
-                      :height=320
-                      :contain=true
+                      :height="320"
+                      :contain="true"
                       :src="this.file"
                     />
                   </v-flex>
@@ -639,8 +732,7 @@
   </div>
 </template>
 
-<style>
-</style>
+<style></style>
 
 <script>
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
@@ -656,6 +748,7 @@ import FileUploadIcon from "@/components/common/FileUploadIcon";
 import PdfMaker from "@/model/embriomachine/PdfMaker";
 import CardSimulationPanel from "@/components/embriomachine/CardSimulationPanel";
 import DamageRangeAnalizePanel from "@/components/embriomachine/DamageRangeAnalizePanel";
+import FileDownloadIcon from "@/components/common/FileDownloadIcon";
 
 export default {
   name: "MachineConstructPanel",
@@ -666,7 +759,8 @@ export default {
     DamageRangeAnalizePanel: DamageRangeAnalizePanel,
     OkNgDialog: OkNgDialog,
     MessgeDialog: MessgeDialog,
-    FileUploadIcon: FileUploadIcon
+    FileUploadIcon: FileUploadIcon,
+    FileDownloadIcon: FileDownloadIcon
   },
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -784,6 +878,10 @@ export default {
   },
 
   methods: {
+    exportTextData() {
+      return this.machine.toText();
+    },
+
     showMachineTypeDialog() {
       let machineType = this.machine.machineType;
       //初期値としては「軽・SS」を選択する。

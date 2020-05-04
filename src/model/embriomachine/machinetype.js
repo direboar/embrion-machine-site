@@ -165,6 +165,11 @@ export default class MachineType {
     }
   }
 
+  //突撃の数
+  get chargeCount(){
+    return this.size === "LL" ? 2 :1
+  }
+
   static getDefaultMachineType(){
     return MachineType.getMachineTypes()[0];
   }

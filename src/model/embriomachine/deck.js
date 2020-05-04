@@ -37,6 +37,7 @@ export default class Deck {
   }
 
   setSize(size) {
+    //TODO machineType.chargeCountを使うように修正
     this.addCard(new Card("突撃"));
     if (size === "LL") {
       this.addCard(new Card("突撃"));
