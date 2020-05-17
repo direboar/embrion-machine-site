@@ -104,7 +104,6 @@
                     slot="activator"
                     icon
                     ripple
-                    :disabed="!loggedIn"
                     @click="showMachine(item)"
                   >
                     <v-icon color="green lighten-1">zoom_in</v-icon>
@@ -260,6 +259,9 @@ export default {
     },
 
     isEditable(machine) {
+      if (!this.loggedIn) {
+        return false;
+      }
       if (machine.userId === undefined || machine.userId === "anonymous") {
         return true;
       }
