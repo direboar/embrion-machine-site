@@ -51,11 +51,12 @@
               <v-btn
                 slot="activator"
                 icon
+                :disabled="!loggedIn"
                 @click.native="addMachine()"
               >
                 <v-icon>add</v-icon>
               </v-btn>
-              <span>機体を追加します。</span>
+              <span>機体を追加します(twitter認証が必須です)。</span>
             </v-tooltip>
             <v-tooltip>
               <v-btn
@@ -96,13 +97,14 @@
                   >
                     <v-icon color="green lighten-1">edit</v-icon>
                   </v-btn>
-                  <span>機体を編集します。</span>
+                  <span>機体を編集します(twitter認証が必須です)。</span>
                 </v-tooltip>
                 <v-tooltip top>
                   <v-btn
                     slot="activator"
                     icon
                     ripple
+                    :disabed="!loggedIn"
                     @click="showMachine(item)"
                   >
                     <v-icon color="green lighten-1">zoom_in</v-icon>
@@ -227,7 +229,11 @@ export default {
     };
   },
   watch: {},
-  computed: {},
+  computed: {
+    loggedIn() {
+      return this.user;
+    }
+  },
   methods: {
     search() {
       this.showFilterConditionDialog = true;
