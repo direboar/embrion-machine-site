@@ -114,17 +114,6 @@
                       <v-btn
                         slot="activator"
                         icon
-                        @click.native="downloadUdonariumDeck"
-                        :disabled="!editMode"
-                      >
-                        <v-icon>delete</v-icon>
-                      </v-btn>
-                      <span>ユドナリウムのデッキをダウンロードします。</span>
-                    </v-tooltip>
-                    <v-tooltip>
-                      <v-btn
-                        slot="activator"
-                        icon
                         @click.native="back"
                       >
                         <v-icon>fas fa-backward</v-icon>
