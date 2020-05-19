@@ -18,6 +18,7 @@
               </v-btn>
               <span>ログインします。</span>
             </v-tooltip>
+            <h3>機体の作成・編集を行う場合は、twitterログインを行ってください（ログインを行わないと、作成・編集できません）</h3>
             <v-tooltip>
               <v-btn
                 v-if="user !=null"
