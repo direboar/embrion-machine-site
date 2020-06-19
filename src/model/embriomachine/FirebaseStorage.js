@@ -246,59 +246,61 @@ export default class FirebaseStorage {
   //同期処理とする必要はないので、非同期とする。
   //id: machineのid,file:アップロードするBLOB Data
   uploadFile(id, file, contentType,callback, error) {
-    let storageRef = firebase.storage().ref();
-    let imageRef = storageRef.child(this.fileUploadDir + "/" + id);
+    console.log("111")
+    error("ファイルのアップロードのサポートを停止しました")
+    // let storageRef = firebase.storage().ref();
+    // let imageRef = storageRef.child(this.fileUploadDir + "/" + id);
 
-    //JavaScriptのbase64表現のヘッダを削除する。
-    //https://qiita.com/weal/items/1a2af81138cd8f49937d 「data:mime/type;base64,...Base64String...という形式なのでカンマ以降を抜き出せばよい。」
-    let base64 = file.replace(/data:.*\/*;base64,/, "");
-    imageRef.putString(base64, "base64").then(() => {
-      let newMetadata = {
-        contentType: contentType,
-        cacheControl: 'public,max-age=300',
-      };
-      imageRef.updateMetadata(newMetadata).catch((e)=>{alert(e)});
-      callback()
-    }).catch((e) => {
-      error(e)
-    })
+    // //JavaScriptのbase64表現のヘッダを削除する。
+    // //https://qiita.com/weal/items/1a2af81138cd8f49937d 「data:mime/type;base64,...Base64String...という形式なのでカンマ以降を抜き出せばよい。」
+    // let base64 = file.replace(/data:.*\/*;base64,/, "");
+    // imageRef.putString(base64, "base64").then(() => {
+    //   let newMetadata = {
+    //     contentType: contentType,
+    //     cacheControl: 'public,max-age=300',
+    //   };
+    //   imageRef.updateMetadata(newMetadata).catch((e)=>{alert(e)});
+    //   callback()
+    // }).catch((e) => {
+    //   error(e)
+    // })
 
   }
 
   //同期処理とする必要はないので、非同期とする。
   readFile(id, callback, error) {
-    let storage = firebase.storage();
-    let pathReference = storage.ref(this.fileUploadDir + "/" + id);
-    pathReference
-      .getDownloadURL()
-      .then(url => {
-        //Axiosを使いたかったが以下のIssueにハマったのでやめる。
-        //https://github.com/axios/axios/issues/1392
+    // let storage = firebase.storage();
+    // let pathReference = storage.ref(this.fileUploadDir + "/" + id);
+    // pathReference
+    //   .getDownloadURL()
+    //   .then(url => {
+    //     //Axiosを使いたかったが以下のIssueにハマったのでやめる。
+    //     //https://github.com/axios/axios/issues/1392
 
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = "blob";
-        xhr.onload = () => {
-          let fileReader = new FileReader();
-          fileReader.onload = data => {
-            // //発生しないはずだが念のため。
-            // if (xhr.status === 200) {
-              let file = data.target.result;
-              callback(file);
-            // }
-          };
-          fileReader.readAsDataURL(xhr.response);
-        };
-        xhr.open("GET", url);
-        xhr.send();
-      })
-      .catch(function (e) {
-        if (e.code_ === "storage/object-not-found") {
-          //status400の場合。
-          //登録されていないだけなので無視
-        } else {
-          error(e);
-        }
-      });
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.responseType = "blob";
+    //     xhr.onload = () => {
+    //       let fileReader = new FileReader();
+    //       fileReader.onload = data => {
+    //         // //発生しないはずだが念のため。
+    //         // if (xhr.status === 200) {
+    //           let file = data.target.result;
+    //           callback(file);
+    //         // }
+    //       };
+    //       fileReader.readAsDataURL(xhr.response);
+    //     };
+    //     xhr.open("GET", url);
+    //     xhr.send();
+    //   })
+    //   .catch(function (e) {
+    //     if (e.code_ === "storage/object-not-found") {
+    //       //status400の場合。
+    //       //登録されていないだけなので無視
+    //     } else {
+    //       error(e);
+    //     }
+    //   });
   }
 
 }

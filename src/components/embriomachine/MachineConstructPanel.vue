@@ -1040,7 +1040,7 @@ export default {
           }
 
           if (this.fileUpdated && this.file !== "") {
-            this.storage.uploadFile(
+            await this.storage.uploadFile(
               updated.id,
               this.file,
               this.contentType,
