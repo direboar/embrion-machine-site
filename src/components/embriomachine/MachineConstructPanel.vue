@@ -755,7 +755,7 @@
                       dark
                       dense
                     >
-                      <v-toolbar-title>機体画像</v-toolbar-title>
+                      <v-toolbar-title>機体画像　画像ファイルのアップロード機能は現在使用できません。</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <file-upload-icon
                         tooltip="画像をアップロードします。"
