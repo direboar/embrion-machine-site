@@ -8,23 +8,10 @@
     >
       <v-layout row>
         <v-card>
-          <v-container
-            fruid
-            grid-list-md
-          >
-            <v-layout
-              row
-              wrap
-              justify-center
-            >
-              <v-flex
-                sm1
-                xs1
-              />
-              <v-flex
-                sm2
-                xs3
-              >
+          <v-container fruid grid-list-md>
+            <v-layout row wrap justify-center>
+              <v-flex sm1 xs1 />
+              <v-flex sm2 xs3>
                 <v-select
                   dense
                   label="Select"
@@ -37,10 +24,7 @@
                   :disabled="!editMode"
                 ></v-select>
               </v-flex>
-              <v-flex
-                sm2
-                xs3
-              >
+              <v-flex sm2 xs3>
                 <v-select
                   dense
                   label="Select"
@@ -53,10 +37,7 @@
                   :disabled="!editMode"
                 ></v-select>
               </v-flex>
-              <v-flex
-                sm2
-                xs4
-              >
+              <v-flex sm2 xs4>
                 <v-select
                   dense
                   label="Select"
@@ -71,7 +52,7 @@
               </v-flex>
               <v-flex sm3>
                 <v-text-field
-                  v-if="editMode&&!isXs"
+                  v-if="editMode && !isXs"
                   v-model="searchEquipmentName"
                   label="装備名（絞り込み用）"
                   item-value="text"
@@ -80,19 +61,15 @@
               </v-flex>
               <v-flex sm1>
                 <v-btn
-                  v-if="editMode&&!isXs"
+                  v-if="editMode && !isXs"
                   label="装備名（入力した名称で絞り込みます）"
                   :disabled="!editMode"
                   @click.native="selectAll"
-                >{{buttonLabel}}
+                  >{{ buttonLabel }}
                 </v-btn>
               </v-flex>
               <!--FIXME コンポーネント化-->
-              <v-toolbar
-                floating
-                dense
-                v-if="isXs"
-              >
+              <v-toolbar floating dense v-if="isXs">
                 <v-select
                   :items="itemcounts"
                   v-model="itemcount"
@@ -112,11 +89,7 @@
                   <span>装備を選択します。</span>
                 </v-tooltip>
                 <v-tooltip>
-                  <v-btn
-                    slot="activator"
-                    icon
-                    @click.native="closeDialog"
-                  >
+                  <v-btn slot="activator" icon @click.native="closeDialog">
                     <v-icon>fas fa-backward</v-icon>
                   </v-btn>
                   <span>機体作成・編集画面に戻ります。</span>
@@ -126,14 +99,8 @@
                 sm9
                 xs6
               /> -->
-              <v-flex
-                sm4
-                xs5
-              >
-                <v-layout
-                  style="max-height: 600px"
-                  class="scroll-y"
-                >
+              <v-flex sm4 xs5>
+                <v-layout style="max-height: 600px" class="scroll-y">
                   <v-radio-group
                     label="装備"
                     v-model="selectedEquipmentName"
@@ -151,14 +118,8 @@
                   </v-radio-group>
                 </v-layout>
               </v-flex>
-              <v-flex
-                sm4
-                xs3
-              >
-                <v-list
-                  :dense="isXs"
-                  :two-line="isXs"
-                >
+              <v-flex sm4 xs3>
+                <v-list :dense="isXs" :two-line="isXs">
                   <v-list-tile v-if="!isXs">
                     <v-select
                       v-if="editMode"
@@ -169,39 +130,45 @@
                     ></v-select>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">種別／ランク</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >種別／ランク</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">射程</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >射程</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">ダメージ</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >ダメージ</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">搭載可能部位</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >搭載可能部位</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">最低枚数</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >最低枚数</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">上限枚数</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >上限枚数</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                 </v-list>
               </v-flex>
-              <v-flex
-                sm4
-                xs4
-              >
-                <v-list
-                  :dense="isXs"
-                  :two-line="isXs"
-                >
+              <v-flex sm4 xs4>
+                <v-list :dense="isXs" :two-line="isXs">
                   <v-list-tile v-if="!isXs">
                     <v-toolbar floating>
                       <v-tooltip>
@@ -228,27 +195,41 @@
                     </v-toolbar>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">{{equipment.type}}（{{equipment.rank}}）</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass"
+                      >{{ equipment.type }}（{{
+                        equipment.rank
+                      }}）</v-list-tile-content
+                    >
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">{{equipment.range}}</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass">{{
+                      equipment.range
+                    }}</v-list-tile-content>
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">{{formatDamage(equipment)}}</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass">{{
+                      formatDamage(equipment)
+                    }}</v-list-tile-content>
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">{{equipment.mountPosition}}</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass">{{
+                      equipment.mountPosition
+                    }}</v-list-tile-content>
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">{{equipment.formatMinLimit}}</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass">{{
+                      equipment.formatMinLimit
+                    }}</v-list-tile-content>
                   </v-list-tile>
                   <v-divider />
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass">{{equipment.maxLimit}}</v-list-tile-content>
+                    <v-list-tile-content :class="contentClass">{{
+                      equipment.maxLimit
+                    }}</v-list-tile-content>
                   </v-list-tile>
                   <v-divider />
                 </v-list>
@@ -280,6 +261,9 @@
 
 <script>
 import Equipment from "@/model/embriomachine/equipment";
+import PremiumUser from "@/model/embriomachine/premiumUser";
+
+const premiumUser = new PremiumUser();
 
 export default {
   name: "EquipmentSeletorDialog",
@@ -324,7 +308,7 @@ export default {
       selectedRanks: ["B"],
       itemcounts: [1, 2, 3, 4],
       itemcount: 1,
-      editions: ["基本", "玉座"],
+      editions: premiumUser.isPremiumUser() ? ["基本", "玉座"] : ["基本"],
       selectedEditions: ["基本"],
       searchEquipmentName: "",
       buttonLabel: "全選択"

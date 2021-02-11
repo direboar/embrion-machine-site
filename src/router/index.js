@@ -5,6 +5,7 @@ import EquipmentSeletorTester from '@/components/embriomachine/EquipmentSeletorT
 import MachineConstructPanel from '@/components/embriomachine/MachineConstructPanel'
 import MachineList from '@/components/embriomachine/MachineList'
 import EquipmentFilterConditionDialog from '@/components/embriomachine/EquipmentFilterConditionDialog'
+import PremiumUserAuthrozationPage from '@/components/embriomachine/PremiumUserAuthorizationPage'
 
 import CardSimulationPanel from '@/components/embriomachine/CardSimulationPanel'
 
@@ -76,6 +77,11 @@ export default new Router({
       name: 'createMachine',
       component: MachineConstructPanel,
       props: { editMode: true }
+    },
+    { 
+      path: '/embrioMachine/premium', 
+      name: 'premiumUserAuthrozation',
+      component: PremiumUserAuthrozationPage
     },
 
     //for test.

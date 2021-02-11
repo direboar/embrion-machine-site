@@ -1,20 +1,11 @@
 <template>
   <div>
-    <v-dialog
-      v-model="showDialog"
-      max-width="700"
-      :persistent="true"
-    >
+    <v-dialog v-model="showDialog" max-width="700" :persistent="true">
       <v-card>
-        <v-layout
-          row
-          wrap
-        >
+        <v-layout row wrap>
           <v-flex xs12>
-            <v-alert
-              :value="validateerror!=null"
-              type="error"
-            >{{validateerror}}
+            <v-alert :value="validateerror != null" type="error"
+              >{{ validateerror }}
             </v-alert>
           </v-flex>
           <v-flex xs12>
@@ -48,14 +39,13 @@
               flat
               @click.native="select"
               :disabled="this.validateerror != null"
-            >選択する</v-btn>
+              >選択する</v-btn
+            >
           </v-flex>
           <v-flex xs3>
-            <v-btn
-              color="green darken-1"
-              flat
-              @click.native="clear"
-            >クリア</v-btn>
+            <v-btn color="green darken-1" flat @click.native="clear"
+              >クリア</v-btn
+            >
           </v-flex>
         </v-layout>
       </v-card>
@@ -63,8 +53,7 @@
   </div>
 </template>
 
-<style>
-</style>
+<style></style>
 
 <script>
 export default {

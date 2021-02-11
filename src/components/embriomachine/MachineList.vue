@@ -6,44 +6,33 @@
           <v-toolbar>
             <v-tooltip top>
               <v-btn
-                v-if="user ==null"
+                v-if="user == null"
                 slot="activator"
                 dark
                 @click.native="login()"
               >
-                login<v-icon
-                  right
-                  dark
-                >fab fa-twitter-square</v-icon>
+                login<v-icon right dark>fab fa-twitter-square</v-icon>
               </v-btn>
               <span>ログインします。</span>
             </v-tooltip>
             <v-tooltip>
               <v-btn
-                v-if="user !=null"
+                v-if="user != null"
                 slot="activator"
                 dark
                 @click.native="logout()"
               >
-                logout<v-icon
-                  right
-                  dark
-                >fab fas fa-sign-out-alt</v-icon>
+                logout<v-icon right dark>fab fas fa-sign-out-alt</v-icon>
               </v-btn>
               <span>ログアウトします。</span>
             </v-tooltip>
-            <img
-              v-if="user != null"
-              :src="user.photoURL"
-            />
-            <h5 v-if="!isMobile">機体の作成・編集を行う場合は、twitterログインを行ってください</h5>
+            <img v-if="user != null" :src="user.photoURL" />
+            <h5 v-if="!isMobile">
+              機体の作成・編集を行う場合は、twitterログインを行ってください
+            </h5>
             <v-spacer></v-spacer>
             <v-tooltip>
-              <v-btn
-                slot="activator"
-                icon
-                @click.native="search()"
-              >
+              <v-btn slot="activator" icon @click.native="search()">
                 <v-icon>search</v-icon>
               </v-btn>
               <span>機体の絞り込み条件を入力します</span>
@@ -70,22 +59,19 @@
               <span>ヘルプを表示します。</span>
             </v-tooltip>
           </v-toolbar>
-          <v-list
-            two-line
-            subheader
-          >
-            <v-list-tile
-              avatar
-              v-for="(item,index) in machines"
-              :key="index"
-            >
+          <v-list two-line subheader>
+            <v-list-tile avatar v-for="(item, index) in machines" :key="index">
               <v-list-tile-avatar>
                 <v-icon class="grey lighten-1 white--text">folder</v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                <v-list-tile-sub-title>作成者：{{item.userName}}</v-list-tile-sub-title>
-                <v-list-tile-sub-title>最終更新日時: {{ item.lastUpdateTime }} </v-list-tile-sub-title>
+                <v-list-tile-sub-title
+                  >作成者：{{ item.userName }}</v-list-tile-sub-title
+                >
+                <v-list-tile-sub-title
+                  >最終更新日時: {{ item.lastUpdateTime }}
+                </v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <v-tooltip top>
@@ -125,7 +111,7 @@
               :disabled="!hasNextPage"
             >
               <v-icon>fas fa-angle-double-down</v-icon>
-              　もっと見る
+              もっと見る
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -154,12 +140,10 @@
         />
       </v-flex>
     </v-layout>
-
   </div>
 </template>
 
-<style>
-</style>
+<style></style>
 
 <script>
 import EquipmentFilterConditionDialog from "@/components/embriomachine/EquipmentFilterConditionDialog";
