@@ -529,7 +529,6 @@ export default class Machine {
             );
           }
         }
-　
         //頭１ or 胴１ おそらく実装不要
         // if (equipment.mountPosition === MountPosition.HEAD_ONE_OR_BODY_ONE) {
         //   //FIXME 未実装
@@ -544,7 +543,8 @@ export default class Machine {
 
         //軽装甲×＆胴１のみ
         if (
-          equipment.mountPosition === MountPosition.HEAD_ONE_AND_BODY_ONE_ONLY
+          equipment.mountPosition ===
+          MountPosition.MIDDLE_OR_HEAVEY_AND_BODY_ONE_ONLY
         ) {
           if (this.machineType !== null && this.machineType.weight === "軽") {
             errors.push(equipment.name + "は軽装甲の機体では装備できません。");
@@ -699,7 +699,7 @@ export default class Machine {
   //指定したポジションのスロット上限チェックを行います。
   validateSlotSize(machineTypePosition, errors) {
     let alreadyEquipmentCount = this.getEquipmentCountOf([machineTypePosition]);
-    if (alreadyEquipmentCount > this.machineType.getSlot(machineTypePosition)) {
+    if (alreadyEquipmentCount > this.getSlot(machineTypePosition)) {
       errors.push(machineTypePosition + "のスロット合計以上装備しています。");
     }
   }
@@ -802,6 +802,74 @@ export default class Machine {
     return total;
   }
 
+  
+  isEquipDoubleBinder() {
+    const equipDoubleBinder = this.getAllEquipment().filter(
+      equipment => equipment.name === "ダブルバインダー"
+    ).length;
+    return equipDoubleBinder > 0;
+  }
+
+  getSlot(position) {
+    if (position === MachineType.POSITION_BODY) {
+      if (this.isEquipDoubleBinder()) {
+        return this.machineType.getSlot(position,2);
+      } else {
+        return this.machineType.getSlot(position);
+      }
+    }else{
+      return this.machineType.getSlot(position);
+    }
+  }
+
+  //ArmorPointへの補正値を指定可能。
+  get armorPoint(){
+    if (this.isEquipDoubleBinder()) {
+      return this.machineType.getArmorPoint(-2);
+    } else {
+      return this.machineType.getArmorPoint();
+    }
+  }
+
+  //ArmorPointへの補正値を指定可能。
+  get constitution(){
+    if (this.isEquipDoubleBinder()) {
+      return this.machineType.getConstitution(-2,2);
+    } else {
+      return this.machineType.getConstitution();
+    }
+  }
+
+  //突撃ダメージ
+  get chargeDamage(){
+    if (this.isEquipDoubleBinder()) {
+      return this.machineType.getChargeDamage(-2);
+    } else {
+      return this.machineType.getChargeDamage();
+    }
+  }
+  
+  //非突撃ダメージ
+  get coveredChargeDamage(){
+    if (this.isEquipDoubleBinder()) {
+      return this.machineType.getCoveredChargeDamage(-2);
+    } else {
+      return this.machineType.getCoveredChargeDamage();
+    }
+  }
+
+
+  // get bodySlot(){
+  //   const equipDoubleBinder = this.getAllEquipment().filter(
+  //     equipment => equipment.name === "ダブルバインダー"
+  //   ).length;
+  //   if(equipDoubleBinder > 0){
+  //     return this.machineType.bodySlot + 2
+  //   }else{
+  //     return this.machineType.bodySlot
+  //   }
+  // }
+
   //指定した装備個所（配列指定）の装備数を取得する。
   //第一引数：装備個所
   //第二引数：装備（指定なしの場合は、装備かかわらずカウントする）
@@ -829,7 +897,7 @@ export default class Machine {
       this.machineType.movility
     } 
 回避値：${this.machineType.evadeRate} 装甲値：${
-      this.machineType.armorPoint
+      this.armorPoint
     } 耐久値：${this.machineType.constitution}
 イニシアチブ：${this.machineType.initiative} 突撃値：${
       this.machineType.chargeDamage
@@ -837,17 +905,17 @@ export default class Machine {
 
 デッキ
 突撃：${this.machineType.chargeCount}  照準：１
-頭（スロット${this.machineType.getSlot(MachineType.POSITION_HEAD)}）
+頭（スロット${this.getSlot(MachineType.POSITION_HEAD)}）
 ${this.getEquepmentTextOf(MachineType.POSITION_HEAD)}
-胴（スロット${this.machineType.getSlot(MachineType.POSITION_BODY)}）
+胴（スロット${this.getSlot(MachineType.POSITION_BODY)}）
 ${this.getEquepmentTextOf(MachineType.POSITION_BODY)}
-右腕（スロット${this.machineType.getSlot(MachineType.POSITION_RIGHTARM)}）
+右腕（スロット${this.getSlot(MachineType.POSITION_RIGHTARM)}）
 ${this.getEquepmentTextOf(MachineType.POSITION_RIGHTARM)}
-左腕（スロット${this.machineType.getSlot(MachineType.POSITION_LEFTARM)}）
+左腕（スロット${this.getSlot(MachineType.POSITION_LEFTARM)}）
 ${this.getEquepmentTextOf(MachineType.POSITION_LEFTARM)}
-右脚（スロット${this.machineType.getSlot(MachineType.POSITION_RIGHTLEG)}）
+右脚（スロット${this.getSlot(MachineType.POSITION_RIGHTLEG)}）
 ${this.getEquepmentTextOf(MachineType.POSITION_RIGHTLEG)}
-左脚（スロット${this.machineType.getSlot(MachineType.POSITION_LEFTLEG)}）
+左脚（スロット${this.getSlot(MachineType.POSITION_LEFTLEG)}）
 ${this.getEquepmentTextOf(MachineType.POSITION_LEFTLEG)}
 `;
     return text;

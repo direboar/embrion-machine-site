@@ -88,7 +88,7 @@ export default class MountPosition {
   static get SINGLE_SEAT_ONLY_BODY() {
     return "複座ｘ＆胴";
   }
-  static get HEAD_ONE_AND_BODY_ONE_ONLY() {
+  static get MIDDLE_OR_HEAVEY_AND_BODY_ONE_ONLY() {
     return "軽装甲×＆胴１のみ";
   }
 
@@ -175,8 +175,8 @@ export default class MountPosition {
     if (mountPosition === MountPosition.SINGLE_SEAT_ONLY_BODY) {
       return MountPosition.toMachineEquipmentPosition(MountPosition.BODY);
     }
-    if (mountPosition === MountPosition.HEAD_ONE_AND_BODY_ONE_ONLY) {
-      return [MachineType.POSITION_HEAD, MachineType.POSITION_BODY];
+    if (mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_BODY_ONE_ONLY) {
+      return MountPosition.toMachineEquipmentPosition(MountPosition.BODY);
     }
   
     return [];

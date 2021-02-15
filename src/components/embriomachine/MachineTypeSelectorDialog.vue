@@ -7,19 +7,10 @@
       max-width="600"
     >
       <v-card>
-        <v-layout
-          row
-          wrap
-        >
+        <v-layout row wrap>
           <v-flex xs12>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                sm4
-                xs6
-              >
+            <v-layout row wrap>
+              <v-flex sm4 xs6>
                 <v-radio-group
                   label="種類"
                   v-model="seatType"
@@ -34,10 +25,7 @@
                     color="brown lighten-2"
                   ></v-radio>
                 </v-radio-group>
-                <v-radio-group
-                  v-model="weightAndSize"
-                  :mandatory="false"
-                >
+                <v-radio-group v-model="weightAndSize" :mandatory="false">
                   <v-radio
                     v-for="aAeightAndSize in weightAndSizes"
                     :label="getNameOf(aAeightAndSize)"
@@ -46,26 +34,13 @@
                   ></v-radio>
                 </v-radio-group>
               </v-flex>
-              <v-flex
-                sm8
-                xs6
-              >
-                <v-layout
-                  row
-                  wrap
-                >
+              <v-flex sm8 xs6>
+                <v-layout row wrap>
                   <v-flex xs12>
                     <!--FIXME コンポーネント化-->
-                    <v-toolbar
-                      floating
-                      dense
-                    >
+                    <v-toolbar floating dense>
                       <v-tooltip>
-                        <v-btn
-                          slot="activator"
-                          icon
-                          @click.native="select"
-                        >
+                        <v-btn slot="activator" icon @click.native="select">
                           <v-icon>fas fa-hand-pointer</v-icon>
                         </v-btn>
                         <span>装甲・サイズを選択します。</span>
@@ -85,51 +60,39 @@
                   <v-flex xs6>
                     <v-list dense>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">名称</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >名称</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">移動力</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >移動力</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">回避値</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >回避値</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">装甲値</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >装甲値</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">耐久値</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >耐久値</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">イニシアチブ</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >イニシアチブ</v-list-tile-content
+                        >
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">突撃／被突撃Ⅾ</v-list-tile-content>
-                      </v-list-tile>
-                    </v-list>
-                    <v-divider />
-                  </v-flex>
-                  <v-flex xs6>
-                    <v-list dense>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.name}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.movility}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.evadeRate}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.armorPoint}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.constitution}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.initiative}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.chargeDamage}}／{{machineType.coveredChargeDamage}}</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >突撃／被突撃Ⅾ</v-list-tile-content
+                        >
                       </v-list-tile>
                     </v-list>
                     <v-divider />
@@ -137,49 +100,116 @@
                   <v-flex xs6>
                     <v-list dense>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">スロット</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.name
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">頭</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.movility
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">胴</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.evadeRate
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">右腕</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.armorPoint
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">左腕</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.constitution
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">右脚</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.initiative
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">左脚</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass"
+                          >{{ machineType.chargeDamage }}／{{
+                            machineType.coveredChargeDamage
+                          }}</v-list-tile-content
+                        >
+                      </v-list-tile>
+                    </v-list>
+                    <v-divider />
+                  </v-flex>
+                  <v-flex xs6>
+                    <v-list dense>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >スロット</v-list-tile-content
+                        >
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >頭</v-list-tile-content
+                        >
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >胴</v-list-tile-content
+                        >
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >右腕</v-list-tile-content
+                        >
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >左腕</v-list-tile-content
+                        >
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >右脚</v-list-tile-content
+                        >
+                      </v-list-tile>
+                      <v-list-tile>
+                        <v-list-tile-content :class="contentClass"
+                          >左脚</v-list-tile-content
+                        >
                       </v-list-tile>
                     </v-list>
                   </v-flex>
                   <v-flex xs6>
                     <v-list dense>
+                      <v-list-tile> </v-list-tile>
                       <v-list-tile>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.headSlot
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.headSlot}}</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.bodySlot
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.bodySlot}}</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.rightArmSlot
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.rightArmSlot}}</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.leftArmSlot
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.leftArmSlot}}</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.rightLegSlot
+                        }}</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.rightLegSlot}}</v-list-tile-content>
-                      </v-list-tile>
-                      <v-list-tile>
-                        <v-list-tile-content :class="contentClass">{{machineType.leftLegSlot}}</v-list-tile-content>
+                        <v-list-tile-content :class="contentClass">{{
+                          machineType.leftLegSlot
+                        }}</v-list-tile-content>
                       </v-list-tile>
                     </v-list>
                   </v-flex>
