@@ -2108,6 +2108,23 @@ export default class Equipment {
         "maxLimit": 2,
         "edition" : "玉座"
       },
+      {
+        "name": "サブマシンガン", 
+        "rank": "B",
+        "type": "射撃",
+        "range": "1～3",
+        "minRange": "1",
+        "maxRange": "3",
+        "rangeType": "A",
+        "damage": "3",
+        "damageType": "白兵・実弾(💣）",
+        "mountPosition": "全部位",
+        "minLimit": 2,
+        "equipSamePosition": true,
+        "effect": "",
+        "maxLimit": 2,
+        "edition" : "Gifted"
+      },
     ]
   }
 }
