@@ -2120,7 +2120,7 @@ export default class Equipment {
         "damageType": "射撃",
         "mountPosition": "全部位",
         "minLimit": 2,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2137,7 +2137,7 @@ export default class Equipment {
         "damageType": "射撃",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2154,7 +2154,7 @@ export default class Equipment {
         "damageType": "白兵・実弾（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2171,7 +2171,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2188,7 +2188,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "頭",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2205,7 +2205,7 @@ export default class Equipment {
         "damageType": "実弾（💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2222,7 +2222,7 @@ export default class Equipment {
         "damageType": "射撃・実弾(💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2239,7 +2239,7 @@ export default class Equipment {
         "damageType": "射撃・実弾(💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2256,7 +2256,7 @@ export default class Equipment {
         "damageType": "射撃",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2273,7 +2273,7 @@ export default class Equipment {
         "damageType": "白兵・レーザー",
         "mountPosition": "全部位",
         "minLimit": 2,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2290,7 +2290,7 @@ export default class Equipment {
         "damageType": "射撃・レーザー",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2306,8 +2306,8 @@ export default class Equipment {
         "damage": "2",
         "damageType": "射撃・実弾(💣）",
         "mountPosition": "腕各１まで",
-        "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "minLimit": 2,
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2324,7 +2324,7 @@ export default class Equipment {
         "damageType": "射撃・実弾(💣）",
         "mountPosition": "腕",
         "minLimit": 2,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2333,7 +2333,7 @@ export default class Equipment {
         "name": "熱感知ミサイル",
         "rank": "A",
         "type": "射撃",
-        "range": "❺～❻",
+        "range": "❺～❻ ",
         "minRange": "5",
         "maxRange": "6",
         "rangeType": "B",
@@ -2341,7 +2341,7 @@ export default class Equipment {
         "damageType": "射撃・実弾(💣💣）",
         "mountPosition": "実弾(💣）",
         "minLimit": 2,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2358,7 +2358,7 @@ export default class Equipment {
         "damageType": "射撃",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2375,7 +2375,7 @@ export default class Equipment {
         "damageType": "射撃",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2392,7 +2392,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2409,7 +2409,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2426,7 +2426,7 @@ export default class Equipment {
         "damageType": "白兵・レーザー",
         "mountPosition": "腕",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2441,9 +2441,9 @@ export default class Equipment {
         "rangeType": "N",
         "damage": "2",
         "damageType": "白兵",
-        "mountPosition": "腕各１まで ",
-        "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "mountPosition": "腕各１まで",
+        "minLimit": 2,
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2460,7 +2460,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2477,7 +2477,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "腕",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2494,7 +2494,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "腕",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2511,7 +2511,7 @@ export default class Equipment {
         "damageType": "実弾(💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "搭載している名称に1つ以上の💣マークの付いた射撃武装のうち1枚」と入れ替えてその部位スロットに搭載します。",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2528,7 +2528,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2545,7 +2545,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "頭１＆胴２",
         "minLimit": 3,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2562,7 +2562,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "全部位",
         "minLimit": 2,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2579,7 +2579,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2596,7 +2596,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "脚各１",
         "minLimit": 2,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2613,7 +2613,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "頭１ or 胴１",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2630,7 +2630,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "頭１ or 胴１",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2647,7 +2647,7 @@ export default class Equipment {
         "damageType": "機雷・実弾(💣💣）",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2656,7 +2656,7 @@ export default class Equipment {
         "name": "セレクトマシンガン",
         "rank": "A",
         "type": "射撃",
-        "range": "②～⓸",
+        "range": "②～④",
         "minRange": "2",
         "maxRange": "4",
         "rangeType": "A",
@@ -2664,7 +2664,7 @@ export default class Equipment {
         "damageType": "射撃・実弾(💣）",
         "mountPosition": "全部位",
         "minLimit": 2,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2681,7 +2681,7 @@ export default class Equipment {
         "damageType": "射撃・実弾(💣）",
         "mountPosition": "複座ｘ＆胴",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2698,7 +2698,7 @@ export default class Equipment {
         "damageType": "射撃・レーザー",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2715,7 +2715,7 @@ export default class Equipment {
         "damageType": "射撃・レーザー",
         "mountPosition": "全部位",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2732,7 +2732,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "脚",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2749,7 +2749,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "胴２ or 脚各１ ",
         "minLimit": 2,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2766,7 +2766,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "胴１＋全部位",
         "minLimit": 2,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2783,7 +2783,7 @@ export default class Equipment {
         "damageType": "-",
         "mountPosition": "軽装甲×＆胴１のみ",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2800,7 +2800,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "全部位",
         "minLimit": 2,
-        "equipSamePosition": "FALSE",
+        "equipSamePosition": false,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"
@@ -2817,7 +2817,7 @@ export default class Equipment {
         "damageType": "白兵",
         "mountPosition": "腕",
         "minLimit": 1,
-        "equipSamePosition": "TRUE",
+        "equipSamePosition": true,
         "effect": "",
         "maxLimit": 99,
         "edition": "Gifted"

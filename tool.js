@@ -21,7 +21,7 @@ text.split("\r\n").forEach(line=>{
     damageType: splitted[count++], 
     mountPosition: splitted[count++], 
     minLimit: parseInt(splitted[count++]), 
-    equipSamePosition: splitted[count++], 
+    equipSamePosition: toBoolean(splitted[count++]), 
     effect: splitted[count++],
     maxLimit: parseInt(splitted[count++]), 
     edition : splitted[count++], 
@@ -33,4 +33,7 @@ text.split("\r\n").forEach(line=>{
 const output = JSON.stringify(retVal,null,"\t")
 fs.writeFileSync("./a.json",output,"utf-8");
 
+function toBoolean(booleanStr) {
+  return booleanStr.toLowerCase() === "true";
+}
 //constructor(name,movility,evadeRate,armorPoint,constitution,initiative,headSlot,bodySlot,leftArmSlot,rightArmSlot,leftLegSlot,rightLegSlot) {

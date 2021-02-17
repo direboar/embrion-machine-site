@@ -8,16 +8,16 @@
 ビックパトローネ	B	射撃	1～4	1	4	N	3	射撃・実弾(💣）	全部位	1	TRUE		99	Gifted
 アシッドショット	B	射撃	2～4	2	4	N	2	射撃	全部位	1	TRUE		99	Gifted
 ヒートアクス	B	白兵	2	2	2	N	4	白兵・レーザー	全部位	2	FALSE		99	Gifted
-チャージガン	A	射撃／補助	⓹	5	5	A	4	射撃・レーザー	全部位	1	TRUE		99	Gifted
-ダブルガン	A	射撃／補助	③～⓸	3	4	A	2	射撃・実弾(💣）	腕各１まで 	1	TRUE		99	Gifted
+チャージガン	A	射撃／補助	⑤	5	5	A	4	射撃・レーザー	全部位	1	TRUE		99	Gifted
+ダブルガン	A	射撃／補助	③～④	3	4	A	2	射撃・実弾(💣）	腕各１まで	2	FALSE		99	Gifted
 ハンドランチャー	A	射撃	1～5	1	5	N	3	射撃・実弾(💣）	腕	2	TRUE		99	Gifted
-熱感知ミサイル	A	射撃	❺～➏	5	6	B	3	射撃・実弾(💣💣）	実弾(💣）	2	TRUE		99	Gifted
+熱感知ミサイル	A	射撃	❺～❻ 	5	6	B	3	射撃・実弾(💣💣）	実弾(💣）	2	TRUE		99	Gifted
 バーストネット	A	射撃	2～4	2	4	N	0	射撃	全部位	1	TRUE		99	Gifted
 パワーアンカー	A	射撃	2～4	2	4	N	0	射撃	全部位	1	TRUE		99	Gifted
 ワイヤブレード	A	白兵	1～2	1	2	N	3	白兵	全部位	1	TRUE		99	Gifted
 ウォーターカッター	A	白兵	②～③	2	3	A	3	白兵	全部位	1	TRUE		99	Gifted
 チャージレイピア	A	白兵／補助	1～2	1	2	N	4	白兵・レーザー	腕	1	TRUE		99	Gifted
-ダブルダガー	A	白兵／補助	1	1	1	N	2	白兵	腕各１まで 	1	TRUE		99	Gifted
+ダブルダガー	A	白兵／補助	1	1	1	N	2	白兵	腕各１まで	2	FALSE		99	Gifted
 バレットブレード	A	白兵	1～2	1	2	N	3	白兵	全部位	1	TRUE		99	Gifted
 トンファー	A	白兵	1	1	1	N	4	白兵	腕	1	TRUE		99	Gifted
 モンスターピック	A	白兵／機雷	1	1	1	N	4	白兵	腕	1	TRUE		99	Gifted
@@ -30,13 +30,13 @@
 姿勢制御チップ	A	補助	- 	0	0	-	-	-	頭１ or 胴１	1	TRUE		99	Gifted
 マーシャルチップ	A	補助／白兵	1	1	1	N	3	白兵	頭１ or 胴１	1	TRUE		99	Gifted
 スイッチ機雷	A	機雷	- 	0	0	-	3	機雷・実弾(💣💣）	全部位	1	TRUE		99	Gifted
-セレクトマシンガン	A	射撃	②～⓸	2	4	A	3	射撃・実弾(💣）	全部位	2	TRUE		99	Gifted
+セレクトマシンガン	A	射撃	②～④	2	4	A	3	射撃・実弾(💣）	全部位	2	TRUE		99	Gifted
 バックミサイル	A	射撃	❺～❼	5	7	B	3	射撃・実弾(💣）	複座ｘ＆胴	1	TRUE		99	Gifted
 ソーラーレーザー	A	射撃	④～⑤	4	5	A	5	射撃・レーザー	全部位	1	TRUE		99	Gifted
 ストーキングビット	A	その他	7～9	7	9	N	2	射撃・レーザー	全部位	1	TRUE		99	Gifted
 レッグカッター	A	白兵	1	1	1		4	白兵	脚	1	TRUE		99	Gifted
 ジャンピングバーニア	A	補助	- 	0	0	-	-	-	胴２ or 脚各１ 	2	FALSE		99	Gifted
 ヒートエンジン	A	補助	- 	0	0	-	-	-	胴１＋全部位	2	FALSE		99	Gifted
-ダブルバインダー	A	補助	- 	0	0	-	-	-	軽装甲×＆胴１のみ	1	TRUE		99	Gifted
+ダブルバインダー	A	補助	-	0	0	-	-	-	軽装甲×＆胴１のみ	1	TRUE		99	Gifted
 ハックワイヤ	S	白兵	1～2	1	2	N	1	白兵	全部位	2	FALSE		99	Gifted
 シャムガルランス	S	白兵	1～10	1	10	N	7	白兵	腕	1	TRUE		99	Gifted

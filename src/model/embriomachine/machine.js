@@ -509,9 +509,22 @@ export default class Machine {
         }
 
         //腕各１まで おそらく実装不要
-        // if (equipment.mountPosition === MountPosition.ARM_EACH_ONE_OR_ZERO) {
-        //   //FIXME 未実装
-        // }
+        if (equipment.mountPosition === MountPosition.ARM_EACH_ONE_OR_ZERO) {
+          let rightArmCount = this.getEquipmentCountOf(
+            [MachineType.POSITION_RIGHTARM],
+            equipment
+          );
+          let leftArmCount = this.getEquipmentCountOf(
+            [MachineType.POSITION_LEFTARM],
+            equipment
+          );
+          if (rightArmCount > 1 || leftArmCount > 1) {
+            errors.push(
+              equipment.name +
+                "は、右腕・左腕に最大で1つまでしか装備できません"
+            );
+          }
+        }
 
         //頭１＆胴２
         if (equipment.mountPosition === MountPosition.HEAD_ONE_AND_BODY_TWO) {
