@@ -5,8 +5,12 @@
         <v-flex xs12>
           <v-layout row wrap>
             <v-flex xs12>
-              <v-alert :value="validateerror.length > 0" type="error">
+              <v-alert :value="fatalerror.length > 0" type="error">
+                <p v-html="formatErrorMessage(fatalerror)"></p>
+              </v-alert>
+              <v-alert :value="validateerror.length > 0" type="warning">
                 <p v-html="formatErrorMessage(validateerror)"></p>
+                （弾薬を装備している場合、弾薬と入れ替えた装備のチェックは正しく行われないことに注意してください。）
               </v-alert>
             </v-flex>
             <v-flex xl3 md4 sm6 xs12>
@@ -20,7 +24,7 @@
                         slot="activator"
                         icon
                         @click.native="saveMachine"
-                        :disabled="!editMode"
+                        :disabled="!editMode || fatalerror.length > 0"
                       >
                         <v-icon>save</v-icon>
                       </v-btn>
@@ -834,9 +838,19 @@ export default {
   watch: {},
 
   computed: {
-    validateerror() {
+    fatalerror() {
       if (this.machine.machineType === null) {
         return ["機体の装甲・サイズが未選択です"];
+      } else if (!this.machine.name) {
+        return ["機体の名前は必須です"];
+      } else {
+        return [];
+      }
+    },
+    validateerror() {
+      console.log(this.fatalerror);
+      if (this.fatalerror.length !== 0) {
+        return [];
       } else {
         return this.machine.validate();
       }
