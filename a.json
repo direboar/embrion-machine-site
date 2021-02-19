@@ -13,7 +13,7 @@
 		"minLimit": 2,
 		"equipSamePosition": true,
 		"effect": "",
-		"maxLimit": 99,
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -29,8 +29,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "目標が森に存在する場合、ダメージ＋2する。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -46,8 +46,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "命中した場合、この武装を破壊することでダメージ＋２できる。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -63,8 +63,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "突撃時に使用できる。 突撃移動の後、正面に隣接する機体だけでなく左右に隣接する機体1体を対象にできる。正面以外の機体を対象にした場合、自機の突撃ダメージがー２、受ける非突撃ダメージが―1される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -80,8 +80,8 @@
 		"mountPosition": "頭",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "射撃時に森によるダメージへのマイナス修正を受けなくなる。 森によるダメージ修正を受けない射撃武装の場合、森への射撃時にダメージを＋１する。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -97,8 +97,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "破壊札エリアを探し🐀のついた射撃武器があれば、そのうち1枚を捨て札エリアに置く。使用後この武装は破壊される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -114,8 +114,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 2,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "命中した場合、対象の手札（即座に公開）、補助、山札（非公開のまま）、プロットエリアの中からダメージの対象となるカードを選択する。種別「装甲」のカードがプロットされていた場合、対象はその使用を宣言できる。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -131,8 +131,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "森によるダメージへの修正を受けない。 機体ではなくマスが対象となる。対象のマスから2マス以内に存在するすべての機体にダメージを与える。 使用後この武装は破壊される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -148,8 +148,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "（ダメージ適用前）対象の手札または補助、プロットエリアに種別「装甲」のカードがある場合、対象はそのうち2枚選択し、破壊する。2枚に満たなければ、対象は不足分を山札と捨札から探し破壊する。その後、山札をシャッフルする。命中した場合、この武装は破壊される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -165,8 +165,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "（ダメージ適用後）対象は山札を2枚オープンし、誘爆チェックを行なう。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -182,8 +182,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "このカードをプロットした場合、射撃タイミングで攻撃せずにこのカードを補助エリアに置く。 このカードが補助エリアに存在する場合、好きな射撃タイミングの開始時に、そのセグメントにプロットしている未使用のカードを捨て札にする。代わりにその射撃タイミングにこの武装で射撃攻撃できる。 攻撃したら捨て札にする。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -199,8 +199,8 @@
 		"mountPosition": "腕各１まで",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "ダブルガンが補助エリアに存在しなければ、射撃攻撃せずにこのカードを補助エリアにおいてもよい。このカード以外のダブルガンが補助エリアに存在する場合、二度続けてこの武装による射撃攻撃を行う。二度目の射撃の直前に機体の向きを変更できる。二度目の攻撃は同じ対象でなくてもよい。 補助エリアのダブルガンは任意のセグメント終了時に、捨て札にできる。この武装は1枚だけ搭載してもよい。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -216,8 +216,8 @@
 		"mountPosition": "腕",
 		"minLimit": 2,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "森によるダメージへの修正を受けない。 対象の機体とそれに隣接する4マスに存在する機体にダメージを与える。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -233,8 +233,8 @@
 		"mountPosition": "実弾(💣）",
 		"minLimit": 2,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "射線が通っていなくても攻撃できる。 対象が個のセグメントに移動していた場合、射程が４～７となり対象が機体後方に存在しても命中する。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -250,8 +250,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "命中した場合、この武装は破壊される。森によるダメージへの修正を受けない。 対象に「バーストネット」チットを渡す。このチットを持つ機体は回避値が2になる。「バーストネット」チットを持つ機体が移動した場合、白兵ダメージ３を受け、「バーストネット」チットを取り除く。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -267,8 +267,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "射撃の直前に機体の向きを変更できる。森によるダメージへの修正を受けない。 対象を自機の正面に強制移動させる。その際、対象の向きは変わらない。対象が自機に隣接した場合、対象の「自機の突撃ダメージ」点、自機に「対象の非突撃ダメージ」点の白兵ダメージを与える。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -284,8 +284,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "射程を３にできる。その場合、ダメージを＋２し、使用後この武装は破壊される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -301,8 +301,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "自機が水地に存在する場合、ダメージが＋２される。 この武装を白兵として使用後、補助エリアに置く。 この武装が補助エリアに存在する場合、いずれかのタイミング終了時に機体が水地に存在するなら、このカードを捨て札にする。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -318,8 +318,8 @@
 		"mountPosition": "腕",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "このカードをプロットした場合、白兵タイミングで攻撃せずにこのカードを補助エリアに置く。 このカードが補助エリアに存在する場合、好きなタイミングの開始時に、そのセグメントにプロットしている未使用のカードを捨て札にする。代わりに白兵タイミングにこの武装で白兵攻撃できる。 攻撃したら捨て札にする。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -335,8 +335,8 @@
 		"mountPosition": "腕各１まで",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "ダブルダガーが補助エリアに存在しなければ、白兵攻撃せずにこのカードを補助エリアにおいてもよい。 このカード以外のダブルダガーが補助エリアに存在する場合、二度続けてこの武装による白兵攻撃を行う。二度目の攻撃は同じ対象でなくてもよい。 白兵移動可能な補助武器があれば、二度目の攻撃の前にも使用できる。 補助エリアのダブルダガーは任意のセグメント終了時に、捨て札にできる。この武装は1枚だけ搭載してもよい。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -352,8 +352,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "この武装を搭載する場合、その搭載条件にかかわらず💣付きの弾薬を搭載可能。 命中した場合、💣つき弾薬をいくつでも使用可能。それらの効果は累積する。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -369,8 +369,8 @@
 		"mountPosition": "腕",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "補助エリアに「マーシャルチップ」があれば、ダメージ＋１。 補助エリアに「姿勢制御チップ」があれば、白兵移動が可能なら白兵移動力＋１。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -386,8 +386,8 @@
 		"mountPosition": "腕",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "白兵タイミングでオープンする。 白兵として使用しなかった場合、機雷タイミングで使用し、自機の周囲8マスに落し穴トークン1枚とダミートークン3枚を重ならないように設置する。 各タイミングの終了時に機体がトークン上に存在するか否かを確認する。存在する場合、そのトークンをオープンする。落とし穴だった場合は白兵ダメージ２を与え、そのマスを「瓦礫ー２」に変更し、トークンを取り除く。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -403,8 +403,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "搭載している名称に1つ以上の💣マークの付いた射撃武装のうち1枚」と入れ替えてその部位スロットに搭載します。",
-		"maxLimit": 99,
+		"effect": "💣のある射撃武装の攻撃が命中した場合使用できる（他弾薬使用不可）。 使用した場合、その射撃武器ではダメージや対象に命中したことによる効果を与えない。代わりに対象に「マーキング」チットを渡す「マーキング」チットを持つ対象への時期の射撃や白兵が命中した場合、そのダメージを＋１する。 ダメージによりこの武装が破壊された場合、自機が「マーキング」ちっちを受取る。使用した場合、この武装は破壊される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -420,8 +420,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "⚡のある射撃や白兵武装の攻撃が命中した場合使用できる。 その射撃や白兵ダメージを＋２し、「（ダメージ適用後）対象は山札を3枚めくり、誘爆チェックを行う。」の効果を追加する。 この効果は累積する。使用した場合、この武装は破壊される。この武装がダメージにより破壊された場合。自機に白兵ダメージ２．",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -437,8 +437,8 @@
 		"mountPosition": "頭１＆胴２",
 		"minLimit": 3,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "移動：ｘ、突撃：ｘ、白兵：〇。 移動した場合、移動力１or2で白兵移動する。 1枚不可。同じスート（♡）を持つ補助武器との同時使用不可。",
+		"maxLimit": 3,
 		"edition": "Gifted"
 	},
 	{
@@ -454,8 +454,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "セグメントの開始時に使用を宣言でき、そのセグメント中効果がある。他の機体が白兵移動や突撃移動を行うとき、自機から3マス以内の地形の追加移動力が＋１される。この増加分は補助武装による追加移動力軽減効果を受けない。トルネードウォールの効果は累積しない。1枚不可。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -471,8 +471,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "突撃攻撃を行う。正面に隣接する機体を対象とし、「自機に突撃ダメージ＋１」展、自機に「対象の非突撃ダメージー１」点の白兵ダメージを与える。 手札にこのカードがある場合、破壊することで射撃ダメージを3点まで防げる。 この武装がプロットエリアにある場合、たとえ突撃に使用した後であっても、すべての種類のダメージを3点まで防げる。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -488,8 +488,8 @@
 		"mountPosition": "脚各１",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "移動：〇、突撃：〇、白兵：ｘ。 使用した場合、移動力を＋３する。また、他の機体の効果によっても、その移動中に方向転換したり、移動後に機体の向きを変えることもできない。移動した場合、移動力１or2で白兵移動する。 1枚不可。同じスート（♠）を持つ補助武器との同時使用不可。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -505,8 +505,8 @@
 		"mountPosition": "頭１ or 胴１",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "この武装が補助エリアに存在する場合、回避値＋１。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -522,8 +522,8 @@
 		"mountPosition": "頭１ or 胴１",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "腕or脚に搭載の武装をプロットした場合、その武装の種別にかかわらず、その武装のタイミングではなく白兵タイミングでオープンし、その武装を破壊することで、マーシャルチップの効果（射程１、ダメージ３）で白兵攻撃できる。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -539,8 +539,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "自機に隣接するようにスイッチ機雷トークンを1枚配置する。機体シート状にまだなければ、スイッチ機雷チットを受取る。 スイッチ機雷トークンは、機体にダメージを与える効果を受け、また対象にできる。ダメージを受けた場合、直ちに効果を適用しトークンを取り除く。このトークンハマスを占めず、トークンと同じマスに機体が存在しても何も起こらない。 スイッチ機雷チットをもっているなら、特殊タイミング（機雷）ですべてのスイッチ機雷トークンを作動させることができる。その場合、スイッチ機雷トークンから2マス以内の機体にダメージを適用する。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -556,8 +556,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 2,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "セレクトマシンガンを同じラウンドの第１、第２セグメントにプロットした場合、第１セグメントの射撃タイミングで第二セグメントのカードもオープンする。この場合このカードのダメージが、第１セグメントなら＋２、第２セグメントなら＋１される。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -573,8 +573,8 @@
 		"mountPosition": "複座ｘ＆胴",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "通常の機体前方には攻撃できず、自機の真横を含む後方にのみ攻撃可能。射線が通っていなくても攻撃できる。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -590,8 +590,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "自機が森や水地に存在するときには使用できない。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -607,8 +607,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "命中した場合、対象の機体シートに「ストーキング」チットを置くことができる。対象の機体シートに「ストーキング」チットがあり、対象がマップ上に存在する場合、射程や射線、機体の向きと関係なくこの攻撃は命中する。その場合、対象が射程内に存在するかの湯にダメージを与える。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -624,8 +624,8 @@
 		"mountPosition": "脚",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "対象の部位：右脚や左脚に搭載している武装へ先にダメージを与える。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -641,8 +641,8 @@
 		"mountPosition": "胴２ or 脚各１ ",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "この武装使用時は、白兵移動不可。また照準後の射撃攻撃は不可。現在の高度が2高いものとして射線を判定する。1枚不可。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -658,8 +658,8 @@
 		"mountPosition": "胴１＋全部位",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "白兵タイミングで使用する。 使用した場合、白兵移動＋１、白兵ダメージ＋２．また、自機の次のセグメントのプロットをキャンセルする。1枚不可。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -675,8 +675,8 @@
 		"mountPosition": "軽装甲×＆胴１のみ",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "この武装を搭載する場合、装甲値ー２、胴スロット＋２． このカードが破壊札エリアに置かれたら、追加されたスロットに搭載された武器は破壊される。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	},
 	{
@@ -692,8 +692,8 @@
 		"mountPosition": "全部位",
 		"minLimit": 2,
 		"equipSamePosition": false,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "次のラウンドのドローフェイズ開始時に対象の山札の上から2枚のカードを確認し、どちらか1枚を対象の第一セグメントのプロットエリアにプロットし、もう1枚を捨て札にする。対処はプロッティングフェイズが終了するまで、そのプロットされたカードを確認できない。",
+		"maxLimit": 2,
 		"edition": "Gifted"
 	},
 	{
@@ -709,8 +709,8 @@
 		"mountPosition": "腕",
 		"minLimit": 1,
 		"equipSamePosition": true,
-		"effect": "",
-		"maxLimit": 99,
+		"effect": "1ラウンド目には使用できない。白兵移動時、横方向へは移動力1余分に必要。 自機の正面咆哮１～10マス、幅1マスの直線状に存在するすべての機体を対象とし、命中する。その範囲内の地形は高度0の平地となり、そのもっとも遠いマスに「シャムガル」マーカーを置く。使用後この武装は破壊される。 各セグメント終了時に、自機が「シャムガル」マーカーと同じマスに存在する場合、それを取り除き、この武装を破壊札エリアから探し捨て札エリアに置く。",
+		"maxLimit": 1,
 		"edition": "Gifted"
 	}
 ]

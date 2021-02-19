@@ -563,6 +563,21 @@ export default class Machine {
             errors.push(equipment.name + "は軽装甲の機体では装備できません。");
           }
         }
+
+        //腕＋全部位
+        if (
+          equipment.mountPosition ===
+          MountPosition.ARM_AND_ALL
+        ) {
+          let armCount = this.getEquipmentCountOf(
+            [MachineType.POSITION_RIGHTARM,MachineType.POSITION_LEFTARM],
+            equipment
+          );
+          console.log(armCount)          
+          if (armCount === 0) {
+            errors.push(equipment.name + "は腕に装備する必要があります。");
+          }
+        }
       });
     }
 

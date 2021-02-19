@@ -91,6 +91,9 @@ export default class MountPosition {
   static get MIDDLE_OR_HEAVEY_AND_BODY_ONE_ONLY() {
     return "軽装甲×＆胴１のみ";
   }
+  static get ARM_AND_ALL() {
+    return "腕＋全部位";
+  }
 
   //マシンの装備可能位置リストに変換する。
   static toMachineEquipmentPosition(mountPosition) {
@@ -178,7 +181,10 @@ export default class MountPosition {
     if (mountPosition === MountPosition.MIDDLE_OR_HEAVEY_AND_BODY_ONE_ONLY) {
       return MountPosition.toMachineEquipmentPosition(MountPosition.BODY);
     }
-  
+    if (mountPosition === MountPosition.ARM_AND_ALL) {
+      return MountPosition.toMachineEquipmentPosition(MountPosition.ALL);
+    }
+      
     return [];
   }
 }
