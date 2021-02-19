@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - "12.16.3"
+  - "12"
 before_install:
-  - npm i -g npm@4.0.5
+  - npm i -g npm@6.14.4
 cache: npm
 script:
 # マスターブランチ以外の場合、接続先DBをステージング環境用に切り替える。（フラグを参照し、prod.dev.jsで分岐している）
