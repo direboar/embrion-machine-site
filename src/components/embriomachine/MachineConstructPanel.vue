@@ -868,7 +868,7 @@ export default {
     },
 
     canPrint() {
-      if (this.validateerror.length > 0) {
+      if (this.fatalerror.length > 0) {
         return false;
       }
       return true;
