@@ -1,8 +1,8 @@
 import CharcactersheetJpegBase64 from "@/model/embriomachine/CharcactersheetJpegBase64";
-import MachineType from '@/model/embriomachine/machinetype'
+import MachineType from "@/model/embriomachine/machinetype";
+import Equipment from "./equipment";
 
 export default class PdfMaker {
-
   printPdf(machine, file) {
     let imageSize = null;
     if (file != "") {
@@ -41,8 +41,8 @@ export default class PdfMaker {
             fontSize: 20
           },
           absolutePosition: {
-            x: 100,
-            y: 45
+            x: 95,
+            y: 40
           }
         },
         //移動値
@@ -53,7 +53,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 190,
-            y: 45
+            y: 40
           }
         },
         //回避値
@@ -64,19 +64,19 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 340,
-            y: 45
+            y: 40
           }
         },
         //名前
         {
-         text: this.splitMachineName(machine.name),
-         style: {
-           fontSize: machine.name.length > 15 ? 13 : 15
-         },
-         absolutePosition: {
-           x: 530,
-           y: 35
-         }
+          text: this.splitMachineName(machine.name),
+          style: {
+            fontSize: machine.name.length > 15 ? 11 : 15
+          },
+          absolutePosition: {
+            x: 505,
+            y: 30
+          }
         },
         //装甲値
         {
@@ -86,7 +86,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 150,
-            y: 100
+            y: 95
           }
         },
         //スロット
@@ -97,7 +97,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 150,
-            y: 135
+            y: 130
           }
         },
         //耐久値
@@ -108,7 +108,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 150,
-            y: 170
+            y: 165
           }
         },
         //突撃
@@ -119,7 +119,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 255,
-            y: 100
+            y: 95
           }
         },
         //被突撃
@@ -130,7 +130,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 255,
-            y: 135
+            y: 130
           }
         },
         //サイズ
@@ -141,7 +141,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 95,
-            y: 205
+            y: 200
           }
         },
         //重量
@@ -152,7 +152,7 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 145,
-            y: 205
+            y: 200
           }
         },
         //Aランク数
@@ -163,204 +163,218 @@ export default class PdfMaker {
           },
           absolutePosition: {
             x: 95,
-            y: 240
+            y: 235
           }
         },
         //単座・複座
         {
           text: machineType.hasDoubleSeat ? "複座" : "単座",
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
             x: 145,
-            y: 240
+            y: 235
           }
         },
         //頭１
         {
           text: machine.getEquipment(MachineType.POSITION_HEAD, 0).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
             x: 350,
-            y: 115
+            y: 110
           }
         },
         //頭2
         {
           text: machine.getEquipment(MachineType.POSITION_HEAD, 1).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
             x: 350,
-            y: 150
+            y: 145
           }
         },
         //頭3
         {
           text: machine.getEquipment(MachineType.POSITION_HEAD, 2).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
             x: 350,
-            y: 185
+            y: 180
           }
         },
         //胴１
         {
-          text: machine.getEquipment(MachineType.POSITION_BODY, 0).name,
+          text: this.getBodyEquipment(machine, 0).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 595,
-            y: 195
+            x: 600,
+            y: 210
           }
         },
         //胴2
         {
-          text: machine.getEquipment(MachineType.POSITION_BODY, 1).name,
+          text: this.getBodyEquipment(machine, 1).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 595,
-            y: 230
+            x: 600,
+            y: 245
           }
         },
         //胴3
         {
-          text: machine.getEquipment(MachineType.POSITION_BODY, 2).name,
+          text: this.getBodyEquipment(machine, 2).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 595,
-            y: 265
+            x: 600,
+            y: 280
           }
         },
-        //右腕1
+
+        //ダブルバインダー用追加スロット1
         {
-          text: machine.getEquipment(MachineType.POSITION_RIGHTARM, 0)
-            .name,
+          text: this.getDoubleBinderEquipment(machine,0).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 105,
-            y: 320
+            x: 540,
+            y: 120
+          }
+        },
+        //ダブルバインダー用追加スロット2
+        {
+          text: this.getDoubleBinderEquipment(machine,1).name,
+          style: {
+            fontSize: 14
+          },
+          absolutePosition: {
+            x: 540,
+            y: 155
+          }
+        },
+
+        //右腕1
+        {
+          text: machine.getEquipment(MachineType.POSITION_RIGHTARM, 0).name,
+          style: {
+            fontSize: 14
+          },
+          absolutePosition: {
+            x: 100,
+            y: 335
           }
         },
         //右腕2
         {
-          text: machine.getEquipment(MachineType.POSITION_RIGHTARM, 1)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_RIGHTARM, 1).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 105,
-            y: 355
+            x: 100,
+            y: 370
           }
         },
         //右腕3
         {
-          text: machine.getEquipment(MachineType.POSITION_RIGHTARM, 2)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_RIGHTARM, 2).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 105,
-            y: 390
+            x: 100,
+            y: 405
           }
         },
         //左腕1
         {
-          text: machine.getEquipment(MachineType.POSITION_LEFTARM, 0)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_LEFTARM, 0).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 595,
-            y: 320
+            x: 600,
+            y: 335
           }
         },
         //左腕2
         {
-          text: machine.getEquipment(MachineType.POSITION_LEFTARM, 1)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_LEFTARM, 1).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 595,
-            y: 355
+            x: 600,
+            y: 370
           }
         },
         //左腕3
         {
-          text: machine.getEquipment(MachineType.POSITION_LEFTARM, 2)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_LEFTARM, 2).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 595,
-            y: 390
+            x: 600,
+            y: 405
           }
         },
         //右脚1
         {
-          text: machine.getEquipment(MachineType.POSITION_RIGHTLEG, 0)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_RIGHTLEG, 0).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
             x: 125,
-            y: 450
+            y: 460
           }
         },
         //右脚2
         {
-          text: machine.getEquipment(MachineType.POSITION_RIGHTLEG, 1)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_RIGHTLEG, 1).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
             x: 125,
-            y: 485
+            y: 495
           }
         },
         //左脚1
         {
-          text: machine.getEquipment(MachineType.POSITION_LEFTLEG, 0)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_LEFTLEG, 0).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 570,
-            y: 450
+            x: 580,
+            y: 460
           }
         },
         //左脚2
         {
-          text: machine.getEquipment(MachineType.POSITION_LEFTLEG, 1)
-            .name,
+          text: machine.getEquipment(MachineType.POSITION_LEFTLEG, 1).name,
           style: {
-            fontSize: 15
+            fontSize: 14
           },
           absolutePosition: {
-            x: 570,
-            y: 485
+            x: 580,
+            y: 495
           }
         }
       ],
@@ -418,11 +432,36 @@ export default class PdfMaker {
     return retVal;
   }
 
-  splitMachineName(machineName){
-    if(machineName.length <= 15){
-      return machineName
+  splitMachineName(machineName) {
+    if (machineName.length <= 15) {
+      return machineName;
     } else {
-      return [machineName.slice(0,15)+"\r\n",machineName.slice(15)]
+      return [machineName.slice(0, 15) + "\r\n", machineName.slice(15)];
+    }
+  }
+
+  getBodyEquipment(machine, index) {
+    if (!machine.isEquipDoubleBinder()) {
+      return machine.getEquipment(MachineType.POSITION_BODY, index);
+    } else {
+      let equipmentLength =
+        machine.equipments[MachineType.POSITION_BODY].length;
+      let maxIndex = equipmentLength - 2;
+      if (index < maxIndex) {
+        return machine.getEquipment(MachineType.POSITION_BODY, index);
+      } else {
+        return new Equipment("");
+      }
+    }
+  }
+
+  getDoubleBinderEquipment(machine, index) {
+    if (!machine.isEquipDoubleBinder()) {
+      return new Equipment("");
+    } else {
+      let equipmentLength =
+        machine.equipments[MachineType.POSITION_BODY].length;
+      return machine.getEquipment(MachineType.POSITION_BODY, equipmentLength - 2 + index);
     }
   }
 }
