@@ -641,6 +641,150 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
+                  <v-flex xs6>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >パイロット１／LV :
+                        {{ pilots[0].level }}</v-toolbar-title
+                      >
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        icon
+                        :disabled="!editMode"
+                        @click.native="showSkillSelectDialog(pilots[0])"
+                      >
+                        <v-icon>add</v-icon>
+                      </v-btn>
+                    </v-toolbar>
+                    <v-layout>
+                      <v-flex xs4>
+                        <v-list two-line subheader>
+                          <v-list-tile>
+                            <v-list-tile-content class="subheaders">
+                              名前
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                      </v-flex>
+                      <v-flex xs8>
+                        <v-list two-line subheader>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-text-field
+                                type="text"
+                                v-model="pilots[0].name"
+                                required
+                                :readonly="!editMode"
+                                maxlength="30"
+                              />
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                      </v-flex>
+                    </v-layout>
+                    <v-divider />
+                    <v-list two-line subheader>
+                      <v-list-tile
+                        v-for="(skill, index) in this.pilots[0].skills"
+                        :key="index"
+                      >
+                        <v-list-tile-content></v-list-tile-content>
+                        <v-list-tile-content class="subheaders">
+                          {{ skill.name }}
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                          <v-btn
+                            color="grey darken-4"
+                            flat
+                            @click.native="showSkillViewDialog(skill)"
+                          >
+                            <v-icon>zoom_in</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                        <v-list-tile-action>
+                          <v-btn
+                            color="grey darken-4"
+                            flat
+                            @click.native="deleteSkill(pilots[0], skill)"
+                          >
+                            <v-icon>delete</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                      </v-list-tile>
+                    </v-list>
+                  </v-flex>
+                  <v-flex xs6>
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title
+                        >パイロット２／LV :
+                        {{ pilots[1].level }}</v-toolbar-title
+                      >
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        icon
+                        :disabled="!editMode"
+                        @click.native="showSkillSelectDialog(pilots[1])"
+                      >
+                        <v-icon>add</v-icon>
+                      </v-btn>
+                    </v-toolbar>
+                    <v-layout>
+                      <v-flex xs4>
+                        <v-list two-line subheader>
+                          <v-list-tile>
+                            <v-list-tile-content class="subheaders">
+                              名前
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                      </v-flex>
+                      <v-flex xs8>
+                        <v-list two-line subheader>
+                          <v-list-tile>
+                            <v-list-tile-content>
+                              <v-text-field
+                                type="text"
+                                v-model="pilots[1].name"
+                                required
+                                :readonly="!editMode"
+                                maxlength="30"
+                              />
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                      </v-flex>
+                    </v-layout>
+                    <v-divider />
+                    <v-list two-line subheader>
+                      <v-list-tile
+                        v-for="(skill, index) in this.pilots[1].skills"
+                        :key="index"
+                      >
+                        <v-list-tile-content></v-list-tile-content>
+                        <v-list-tile-content class="subheaders">
+                          {{ skill.name }}
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                          <v-btn
+                            color="grey darken-4"
+                            @click.native="showSkillViewDialog(skill)"
+                            flat
+                          >
+                            <v-icon>zoom_in</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                        <v-list-tile-action>
+                          <v-btn
+                            color="grey darken-4"
+                            flat
+                            @click.native="deleteSkill(pilots[1], skill)"
+                          >
+                            <v-icon>delete</v-icon>
+                          </v-btn>
+                        </v-list-tile-action>
+                      </v-list-tile>
+                    </v-list>
+                  </v-flex>
                   <v-flex xs12>
                     <v-toolbar color="grey darken-1" dark dense>
                       <v-toolbar-title>自由入力欄</v-toolbar-title>
@@ -702,6 +846,13 @@
       @select="acceptSelectedEquipment"
       @cancel="cancel"
     />
+    <skill-selector-dialog
+      :show-dialog.sync="showSkill"
+      :targetSkill="dialogSkill"
+      :editMode.sync="skillDialogEditMode"
+      @select="acceptSelectedSkill"
+      @cancel="cancelSkill"
+    />
     <ok-ng-dialog
       :show-dialog.sync="showDeleteConfirmDialog"
       :dialogSize="350"
@@ -729,11 +880,14 @@
 <script>
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
 import MachineTypeSelectorDialog from "@/components/embriomachine/MachineTypeSelectorDialog";
+import SkillSelectorDialog from "@/components/embriomachine/SkillSelectorDialog";
 import OkNgDialog from "@/components/common/OkNgDialog";
 import Machine from "@/model/embriomachine/machine";
 import MachineType from "@/model/embriomachine/machinetype";
 import Equipment from "@/model/embriomachine/equipment";
 import FirebaseStorage from "@/model/embriomachine/FirebaseStorage";
+import Pilot from "@/model/embriomachine/pilot";
+import Skill from "@/model/embriomachine/skill";
 import firebase from "firebase";
 import MessgeDialog from "@/components/common/MessgeDialog";
 import FileUploadIcon from "@/components/common/FileUploadIcon";
@@ -747,6 +901,7 @@ export default {
   components: {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
+    SkillSelectorDialog: SkillSelectorDialog,
     CardSimulationPanel: CardSimulationPanel,
     DamageRangeAnalizePanel: DamageRangeAnalizePanel,
     OkNgDialog: OkNgDialog,
@@ -799,7 +954,13 @@ export default {
       file: "",
       contentType: "",
       //ファイルが更新されたかどうかのフラグ。ONの場合だけ更新する。
-      fileUpdated: false
+      fileUpdated: false,
+
+      //skill
+      targetPilot: false,
+      showSkill: false,
+      dialogSkill: {},
+      skillDialogEditMode: false
     };
   },
 
@@ -876,6 +1037,28 @@ export default {
     //FIXME mixin?
     isXs() {
       return this.$vuetify.breakpoint.name === "xs";
+    },
+    pilots() {
+      const retVal = [];
+      console.log(retVal);
+      if (
+        this.machine === null ||
+        this.machine.machineType === null ||
+        this.machine.pilots.length === 0
+      ) {
+        retVal.push(new Pilot("1", "", "", ""));
+        retVal.push(new Pilot("2", "", "", ""));
+        console.log(retVal);
+      } else {
+        if (this.machine.pilots.length === 1) {
+          retVal.push(this.machine.pilots[0]);
+          retVal.push(new Pilot("2", "", "", ""));
+        } else {
+          retVal.push(this.machine.pilots[0]);
+          retVal.push(this.machine.pilots[1]);
+        }
+      }
+      return retVal;
     }
   },
 
@@ -910,6 +1093,20 @@ export default {
       this.equipmentDialogEditMode = false;
       this.showEquipment = true;
     },
+
+    //Skill選択
+    showSkillSelectDialog(targetPilot) {
+      this.targetPilot = targetPilot;
+      this.dialogSkill = new Skill();
+      this.skillDialogEditMode = true;
+      this.showSkill = true;
+    },
+    //Skill表示
+    showSkillViewDialog(skill) {
+      this.dialogSkill = skill;
+      this.skillDialogEditMode = false;
+      this.showSkill = true;
+    },
     acceptMachineType(machineType) {
       this.machine.machineType = machineType;
       this.dialogMachineType = new MachineType();
@@ -920,8 +1117,18 @@ export default {
       }
       this.dialogEquipment = {};
     },
+    acceptSelectedSkill(skill) {
+      // this.machine.machineType = machineType;
+      this.targetPilot.skills.push(skill);
+      //FIXME
+      console.log(skill);
+      this.dialogSkill = new Skill();
+    },
     deleteEquipment(position, equipment) {
       this.machine.deleteEquipment(position, equipment);
+    },
+    deleteSkill(pilot, skill) {
+      pilot.deleteSkill(skill);
     },
     formatErrorMessage(messages) {
       let ret = "";
@@ -937,6 +1144,11 @@ export default {
       //ダイアログ選択内容の初期化
       this.dialogEquipment = {};
       this.dialogMachineType = new MachineType();
+    },
+    cancelSkill() {
+      this.dialogSkill = {};
+      this.skillDialogEditMode = false;
+      this.targetPilot = null;
     },
     saveMachine() {
       (async () => {

@@ -1,6 +1,7 @@
 import MachineType from "@/model/embriomachine/machinetype";
 import MountPosition from "@/model/embriomachine/mountposition";
 import Equipment from "@/model/embriomachine/equipment";
+import Pilot from "@/model/embriomachine/pilot";
 
 export default class Machine {
   constructor(name, machineType) {
@@ -23,6 +24,9 @@ export default class Machine {
 
     //自由記入欄
     this.memo = "";
+
+    //パイロット
+    this.pilots = [];
   }
 
   setLastUpdateTime(lastUpdateTime) {
@@ -215,6 +219,16 @@ export default class Machine {
       memo = "";
     }
     machine.setMemo(memo);
+
+    let pilots = detail.pilots;
+    if(!pilots){
+      machine.pilots = [];
+      machine.pilots.push(new Pilot())
+      machine.pilots.push(new Pilot())
+    }else{
+      //TODO 
+      throw new Error("パイロットの復元機能は未実装")
+    }
     return machine;
   }
 
