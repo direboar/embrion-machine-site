@@ -45,11 +45,13 @@ export default class Pilot {
 
     const map = {}
     this.skills.forEach(skill=>{
-      const skillNameForDuplicateCheck = skill.skillNameForDuplicateCheck
-      if(!map[skillNameForDuplicateCheck]){
-        map[skillNameForDuplicateCheck] = 1
-      }else{
-        map[skillNameForDuplicateCheck] ++
+      if(skill){
+        const skillNameForDuplicateCheck = skill.skillNameForDuplicateCheck
+        if(!map[skillNameForDuplicateCheck]){
+          map[skillNameForDuplicateCheck] = 1
+        }else{
+          map[skillNameForDuplicateCheck] ++
+        }
       }
     })
 
