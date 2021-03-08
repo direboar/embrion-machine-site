@@ -237,6 +237,11 @@ export default class MachineType {
   //           map(machine => machine.name);
   // }
 
+  //パイロット搭載数を取得する。
+　getPilotCapacity(){
+    return this.hasDoubleSeat ? 2 : 1
+  }
+
   get name() {
     let name = MachineType.getNameOf(this);
     if (this.hasDoubleSeat) {

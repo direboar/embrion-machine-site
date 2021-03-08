@@ -1,6 +1,8 @@
 import MachineType from "@/model/embriomachine/machinetype";
 import MountPosition from "@/model/embriomachine/mountposition";
 import Equipment from "@/model/embriomachine/equipment";
+import Pilot from "@/model/embriomachine/pilot";
+import Skill from "@/model/embriomachine/skill";
 
 export default class Machine {
   constructor(name, machineType) {
@@ -23,6 +25,11 @@ export default class Machine {
 
     //自由記入欄
     this.memo = "";
+
+    //パイロット
+    this.pilots = [];
+    this.pilots.push(new Pilot())
+    this.pilots.push(new Pilot())
   }
 
   setLastUpdateTime(lastUpdateTime) {
@@ -159,12 +166,16 @@ export default class Machine {
       equipments,
       MachineType.POSITION_LEFTLEG
     );
+    const fbPilots = this.pilots.map(pilot=>{
+      return this.pilotToRealtimeDatabaseObject(pilot)
+    })
 
     return {
       machineType: this.machineType !== null ? this.machineType.name : null,
       equipments: equipments,
       id: this.id, //headerのID。（detailからヘッダを検索する際に使用数r）,
-      memo: this.memo
+      memo: this.memo,
+      pilots : fbPilots
     };
   }
 
@@ -215,6 +226,17 @@ export default class Machine {
       memo = "";
     }
     machine.setMemo(memo);
+
+    let pilots = detail.pilots;
+    machine.pilots = machine.pilotsFromRealtimeDatabaseObject(pilots)
+    // if(!pilots){
+    //   machine.pilots = [];
+    //   machine.pilots.push(new Pilot())
+    //   machine.pilots.push(new Pilot())
+    // }else{
+    //   //todo
+    // }
+    console.log(machine)      
     return machine;
   }
 
@@ -253,10 +275,48 @@ export default class Machine {
     this.equipments[positon] = array;
   }
 
+  pilotsFromRealtimeDatabaseObject(fbPilots) {
+    if(!fbPilots){
+      const retVal = [];
+      retVal.push(new Pilot())
+      retVal.push(new Pilot())
+      return retVal;
+    }else{
+      const retVal = fbPilots.map(pilot=>{
+        let skills = []
+        if(pilot.skills){
+          skills = pilot.skills.map(skillName=>{
+            const found = Skill.getSkills().find(item => {
+              // console.log(`${item.name === skillName}`)
+              return item.name === skillName;
+            });
+            return found;
+          })
+        }else{
+          skills = []
+        }
+
+        return new Pilot(pilot.name,skills);
+      })
+      console.log(retVal)
+      return retVal;
+    }
+  }
+
   equipmentToRealtimeDatabaseObject(equipments, positon) {
     this.equipments[positon].forEach(item => {
       equipments[positon].push(item.name);
     });
+  }
+
+  pilotToRealtimeDatabaseObject(pilot) {
+    const skills = pilot.skills.map((skill=>{
+      return skill.name
+    }))
+    return {
+      name : pilot.name,
+      skills : skills
+    }
   }
 
   //  get orderBy(){
@@ -581,6 +641,9 @@ export default class Machine {
       });
     }
 
+    //3.pilotのチェック
+    this.validatePilot(errors);
+
     //弾薬を、ロケットやミサイルと交換で装備しなかった場合を検出する。
     //弾薬が二重計上されていないかをチェックする。
     // this.validateAmmunition("ドリルミサイル弾薬","ミサイル",errors);
@@ -589,6 +652,13 @@ export default class Machine {
     //メッセージの重複を削除して返却
     //see https://qiita.com/cocottejs/items/7afe6d5f27ee7c36c61f
     return errors.filter((elem, index, array) => array.indexOf(elem) === index);
+  }
+
+  validatePilot(errors){
+    this.pilots[0].validate(errors,"パイロット１")
+    if(this.machineType && this.machineType.hasDoubleSeat){
+      this.pilots[1].validate(errors,"パイロット２")
+    }
   }
 
   /**
@@ -670,6 +740,15 @@ export default class Machine {
     //複座とする場合は、Aランク装備数２とカウントする。
     if (this.machineType != null && this.machineType.hasDoubleSeat) {
       total += 2;
+    }
+
+    //パイロットのランクを計算する
+    if(this.machineType && this.machineType.hasDoubleSeat){
+      this.pilots.forEach(pilot=>{
+        total += pilot.getARankEquipmentCount();
+      })
+    }else{
+      total += this.pilots[0].getARankEquipmentCount();
     }
     return total;
   }

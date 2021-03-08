@@ -1,28 +1,26 @@
 <template>
   <div>
-    {{equipmentName}} / {{machineTypeName}}
+    {{ equipmentName }} / {{ machineTypeName }}
     <v-layout row>
       <v-flex xs12>
-        <v-btn
-          color="green darken-1"
-          flat
-          @click.native="showEquipmentDialog"
-        >装備選択ダイアログ表示</v-btn>
-        <v-btn
-          color="green darken-1"
-          flat
-          @click.native="showMachineTypeDialog"
-        >装甲・サイズ選択ダイアログ表示</v-btn>
-        <v-btn
-          color="green darken-1"
-          flat
-          @click.native="showSimulation = true;"
-        >シミュレーションダイアログ表示</v-btn>
+        <v-btn color="green darken-1" flat @click.native="showEquipmentDialog"
+          >装備選択ダイアログ表示</v-btn
+        >
+        <v-btn color="green darken-1" flat @click.native="showMachineTypeDialog"
+          >装甲・サイズ選択ダイアログ表示</v-btn
+        >
+        <v-btn color="green darken-1" flat @click.native="showSimulation = true"
+          >シミュレーションダイアログ表示</v-btn
+        >
         <v-btn
           color="green darken-1"
           flat
           @click.native="showDamageRangeAnalize"
-        >ダメージ分析ダイアログ表示</v-btn>
+          >ダメージ分析ダイアログ表示</v-btn
+        >
+        <v-btn color="green darken-1" flat @click.native="showSkillDialog"
+          >スキル選択ダイアログ表示</v-btn
+        >
       </v-flex>
     </v-layout>
     <equipment-seletor-dialog
@@ -43,17 +41,23 @@
       :show-dialog.sync="showDamageRangeAnalizePanel"
       :machine="machine"
     />
+    <skill-selector-dialog
+      :show-dialog.sync="showSkill"
+      :targetSkill.sync="dialogSkill"
+      @select="acceptSelectSkill"
+      @cancel="cancel"
+    />
   </div>
 </template>
 
-<style>
-</style>
+<style></style>
 
 <script>
 import EquipmentSeletorDialog from "@/components/embriomachine/EquipmentSeletorDialog";
 import MachineTypeSelectorDialog from "@/components/embriomachine/MachineTypeSelectorDialog";
 import CardSimulationPanel from "@/components/embriomachine/CardSimulationPanel";
 import DamageRangeAnalizePanel from "@/components/embriomachine/DamageRangeAnalizePanel";
+import SkillSelectorDialog from "@/components/embriomachine/SkillSelectorDialog";
 import Machine from "@/model/embriomachine/machine";
 import MachineType from "@/model/embriomachine/machinetype";
 import Equipment from "@/model/embriomachine/equipment";
@@ -64,7 +68,8 @@ export default {
     EquipmentSeletorDialog: EquipmentSeletorDialog,
     MachineTypeSelectorDialog: MachineTypeSelectorDialog,
     CardSimulationPanel: CardSimulationPanel,
-    DamageRangeAnalizePanel: DamageRangeAnalizePanel
+    DamageRangeAnalizePanel: DamageRangeAnalizePanel,
+    SkillSelectorDialog: SkillSelectorDialog
   },
 
   data() {
@@ -73,12 +78,15 @@ export default {
       showMachineType: false,
       showSimulation: false,
       showDamageRangeAnalizePanel: false,
+      showSkill: false,
       equipment: {},
       dialogEquipment: {},
       machineType: {},
       dialogMachineType: {},
+      skill: {},
       targetPosition: "胴",
-      machine: null
+      machine: null,
+      dialogSkill: {}
     };
   },
 
@@ -104,6 +112,11 @@ export default {
       this.dialogEquipment = this.equipment;
       this.showEquipment = true;
     },
+    showSkillDialog() {
+      alert("xxx");
+      this.dialogSkill = this.skill;
+      this.showSkill = true;
+    },
     showMachineTypeDialog() {
       this.dialogMachineType = this.machineType;
       this.showMachineType = true;
@@ -113,6 +126,9 @@ export default {
     },
     acceptMachineType() {
       this.machineType = this.dialogMachineType;
+    },
+    acceptSelectSkill(select) {
+      this.skill = select;
     },
     showDamageRangeAnalize() {
       let testMachineType = new MachineType(
