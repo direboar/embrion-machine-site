@@ -87,7 +87,7 @@
                 </v-tooltip>
               </v-toolbar>
               <v-flex sm4 xs5>
-                <v-layout style="max-height: 600px" class="scroll-y">
+                <v-layout style="max-height: 300px" class="scroll-y">
                   <v-radio-group
                     label="スキル"
                     v-model="selectedSkillName"
@@ -110,7 +110,19 @@
                   <v-list-tile v-if="!isXs" />
                   <v-list-tile>
                     <v-list-tile-content :class="contentClass"
-                      >種別／ランク</v-list-tile-content
+                      >種別</v-list-tile-content
+                    >
+                  </v-list-tile>
+                  <v-divider />
+                  <v-list-tile>
+                    <v-list-tile-content :class="contentClass"
+                      >タイプ</v-list-tile-content
+                    >
+                  </v-list-tile>
+                  <v-divider />
+                  <v-list-tile>
+                    <v-list-tile-content :class="contentClass"
+                      >ランク</v-list-tile-content
                     >
                   </v-list-tile>
                   <v-divider />
@@ -144,9 +156,21 @@
                     </v-toolbar>
                   </v-list-tile>
                   <v-list-tile>
-                    <v-list-tile-content :class="contentClass"
-                      >{{ skill.type }}（{{ skill.rank }}）</v-list-tile-content
-                    >
+                    <v-list-tile-content :class="contentClass">{{
+                      skill.classification
+                    }}</v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider />
+                  <v-list-tile>
+                    <v-list-tile-content :class="contentClass">{{
+                      skill.type
+                    }}</v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider />
+                  <v-list-tile>
+                    <v-list-tile-content :class="contentClass">{{
+                      skill.rank
+                    }}</v-list-tile-content>
                   </v-list-tile>
                   <v-divider />
                 </v-list>
@@ -209,7 +233,7 @@ export default {
       ],
       selectedClassifications: [Skill.CLASSIFICATION_CONTROL],
       types: [Skill.TYPE_TYPE_CONTINUOUS, Skill.TYPE_COMSUME],
-      selectedTypes: [Skill.TYPE_TYPE_CONTINUOUS],
+      selectedTypes: [Skill.TYPE_COMSUME],
       ranks: ["S", "A", "B"],
       selectedRanks: ["B"],
       searchSkillName: "",
@@ -311,7 +335,7 @@ export default {
       } else {
         this.selectedClassifications = [Skill.CLASSIFICATION_CONTROL];
         this.selectedRanks = ["B"];
-        this.selectedEditions = [Skill.TYPE_TYPE_CONTINUOU];
+        this.selectedTypes = [Skill.TYPE_COMSUME];
         this.buttonLabel = "全選択";
       }
     },

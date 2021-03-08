@@ -706,6 +706,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteSkill(pilots[0], skill)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
@@ -713,7 +714,7 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex xs6>
+                  <v-flex xs6 v-if="isDoubleSeat">
                     <v-toolbar color="grey darken-1" dark dense>
                       <v-toolbar-title
                         >パイロット２／LV :
@@ -769,6 +770,7 @@
                             color="grey darken-4"
                             @click.native="showSkillViewDialog(skill)"
                             flat
+                            :disabled="!editMode"
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -784,6 +786,11 @@
                         </v-list-tile-action>
                       </v-list-tile>
                     </v-list>
+                  </v-flex>
+                  <v-flex xs6 v-if="!isDoubleSeat">
+                    <v-toolbar color="grey darken-1" dark dense>
+                      <v-toolbar-title />
+                    </v-toolbar>
                   </v-flex>
                   <v-flex xs12>
                     <v-toolbar color="grey darken-1" dark dense>
@@ -1040,25 +1047,25 @@ export default {
     },
     pilots() {
       const retVal = [];
-      console.log(retVal);
-      if (
-        this.machine === null ||
-        this.machine.machineType === null ||
-        this.machine.pilots.length === 0
-      ) {
-        retVal.push(new Pilot("1", "", "", ""));
-        retVal.push(new Pilot("2", "", "", ""));
-        console.log(retVal);
-      } else {
-        if (this.machine.pilots.length === 1) {
-          retVal.push(this.machine.pilots[0]);
-          retVal.push(new Pilot("2", "", "", ""));
-        } else {
-          retVal.push(this.machine.pilots[0]);
-          retVal.push(this.machine.pilots[1]);
-        }
-      }
+      // if (
+      //   this.machine === null ||
+      //   this.machine.machineType === null ||
+      //   this.machine.pilots.length === 0
+      // ) {
+      //   retVal.push(new Pilot());
+      //   retVal.push(new Pilot());
+      // } else {
+      retVal.push(this.machine.pilots[0]);
+      retVal.push(this.machine.pilots[1]);
+      // }
       return retVal;
+    },
+    isDoubleSeat() {
+      return (
+        this.machine !== null &&
+        this.machine.machineType !== null &&
+        this.machine.machineType.hasDoubleSeat
+      );
     }
   },
 
@@ -1118,10 +1125,9 @@ export default {
       this.dialogEquipment = {};
     },
     acceptSelectedSkill(skill) {
-      // this.machine.machineType = machineType;
-      this.targetPilot.skills.push(skill);
-      //FIXME
-      console.log(skill);
+      if (skill && skill.name !== "") {
+        this.targetPilot.skills.push(skill);
+      }
       this.dialogSkill = new Skill();
     },
     deleteEquipment(position, equipment) {
