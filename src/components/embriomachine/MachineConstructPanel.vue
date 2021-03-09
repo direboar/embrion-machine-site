@@ -770,7 +770,6 @@
                             color="grey darken-4"
                             @click.native="showSkillViewDialog(skill)"
                             flat
-                            :disabled="!editMode"
                           >
                             <v-icon>zoom_in</v-icon>
                           </v-btn>
@@ -780,6 +779,7 @@
                             color="grey darken-4"
                             flat
                             @click.native="deleteSkill(pilots[1], skill)"
+                            :disabled="!editMode"
                           >
                             <v-icon>delete</v-icon>
                           </v-btn>
