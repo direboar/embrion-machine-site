@@ -2154,7 +2154,7 @@ export default class Equipment {
         maxRange: "3",
         rangeType: "A",
         damage: "3",
-        damageType: "射撃",
+        damageType: "射撃・実弾(💣）",
         mountPosition: "全部位",
         minLimit: 2,
         equipSamePosition: true,
