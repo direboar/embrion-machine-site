@@ -80,7 +80,7 @@ export default class PdfMaker {
         },
         //装甲値
         {
-          text: machineType.armorPoint,
+          text: machine.armorPoint,
           style: {
             fontSize: 15
           },
@@ -102,7 +102,7 @@ export default class PdfMaker {
         },
         //耐久値
         {
-          text: machineType.constitution,
+          text: machine.constitution,
           style: {
             fontSize: 15
           },
