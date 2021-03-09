@@ -164,7 +164,7 @@ export default {
         this.deck.setMovility(this.machine.machineType.movility);
         this.deck.setArmor(this.machine.armorPoint);
         this.deck.setSize(this.machine.machineType.size);
-        this.deck.setEvadeRate(this.machine.machineType.evadeRate);
+        this.deck.setEvadeRate(this.machine.evadeRate);
       }
     }
   },

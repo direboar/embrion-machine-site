@@ -2651,7 +2651,7 @@ export default class Equipment {
         mountPosition: "頭１ or 胴１",
         minLimit: 1,
         equipSamePosition: true,
-        effect: "この武装が補助エリアに存在する場合、回避値＋１。",
+        effect: "この武装が補助エリアに存在する場合、回避値＋１。<br/><br>注：キャラクターデータの回避値に＋１を加算します。二重に加算しないように注意してください。</br>",
         maxLimit: 1,
         edition: "Gifted"
       },

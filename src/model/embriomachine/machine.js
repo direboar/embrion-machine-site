@@ -28,8 +28,8 @@ export default class Machine {
 
     //パイロット
     this.pilots = [];
-    this.pilots.push(new Pilot())
-    this.pilots.push(new Pilot())
+    this.pilots.push(new Pilot());
+    this.pilots.push(new Pilot());
   }
 
   setLastUpdateTime(lastUpdateTime) {
@@ -166,16 +166,16 @@ export default class Machine {
       equipments,
       MachineType.POSITION_LEFTLEG
     );
-    const fbPilots = this.pilots.map(pilot=>{
-      return this.pilotToRealtimeDatabaseObject(pilot)
-    })
+    const fbPilots = this.pilots.map(pilot => {
+      return this.pilotToRealtimeDatabaseObject(pilot);
+    });
 
     return {
       machineType: this.machineType !== null ? this.machineType.name : null,
       equipments: equipments,
       id: this.id, //headerのID。（detailからヘッダを検索する際に使用数r）,
       memo: this.memo,
-      pilots : fbPilots
+      pilots: fbPilots
     };
   }
 
@@ -228,7 +228,7 @@ export default class Machine {
     machine.setMemo(memo);
 
     let pilots = detail.pilots;
-    machine.pilots = machine.pilotsFromRealtimeDatabaseObject(pilots)
+    machine.pilots = machine.pilotsFromRealtimeDatabaseObject(pilots);
     // if(!pilots){
     //   machine.pilots = [];
     //   machine.pilots.push(new Pilot())
@@ -236,7 +236,7 @@ export default class Machine {
     // }else{
     //   //todo
     // }
-    console.log(machine)      
+    console.log(machine);
     return machine;
   }
 
@@ -276,29 +276,29 @@ export default class Machine {
   }
 
   pilotsFromRealtimeDatabaseObject(fbPilots) {
-    if(!fbPilots){
+    if (!fbPilots) {
       const retVal = [];
-      retVal.push(new Pilot())
-      retVal.push(new Pilot())
+      retVal.push(new Pilot());
+      retVal.push(new Pilot());
       return retVal;
-    }else{
-      const retVal = fbPilots.map(pilot=>{
-        let skills = []
-        if(pilot.skills){
-          skills = pilot.skills.map(skillName=>{
+    } else {
+      const retVal = fbPilots.map(pilot => {
+        let skills = [];
+        if (pilot.skills) {
+          skills = pilot.skills.map(skillName => {
             const found = Skill.getSkills().find(item => {
               // console.log(`${item.name === skillName}`)
               return item.name === skillName;
             });
             return found;
-          })
-        }else{
-          skills = []
+          });
+        } else {
+          skills = [];
         }
 
-        return new Pilot(pilot.name,skills);
-      })
-      console.log(retVal)
+        return new Pilot(pilot.name, skills);
+      });
+      console.log(retVal);
       return retVal;
     }
   }
@@ -310,13 +310,13 @@ export default class Machine {
   }
 
   pilotToRealtimeDatabaseObject(pilot) {
-    const skills = pilot.skills.map((skill=>{
-      return skill.name
-    }))
+    const skills = pilot.skills.map(skill => {
+      return skill.name;
+    });
     return {
-      name : pilot.name,
-      skills : skills
-    }
+      name: pilot.name,
+      skills: skills
+    };
   }
 
   //  get orderBy(){
@@ -580,8 +580,7 @@ export default class Machine {
           );
           if (rightArmCount > 1 || leftArmCount > 1) {
             errors.push(
-              equipment.name +
-                "は、右腕・左腕に最大で1つまでしか装備できません"
+              equipment.name + "は、右腕・左腕に最大で1つまでしか装備できません"
             );
           }
         }
@@ -625,15 +624,12 @@ export default class Machine {
         }
 
         //腕＋全部位
-        if (
-          equipment.mountPosition ===
-          MountPosition.ARM_AND_ALL
-        ) {
+        if (equipment.mountPosition === MountPosition.ARM_AND_ALL) {
           let armCount = this.getEquipmentCountOf(
-            [MachineType.POSITION_RIGHTARM,MachineType.POSITION_LEFTARM],
+            [MachineType.POSITION_RIGHTARM, MachineType.POSITION_LEFTARM],
             equipment
           );
-          console.log(armCount)          
+          console.log(armCount);
           if (armCount === 0) {
             errors.push(equipment.name + "は腕に装備する必要があります。");
           }
@@ -654,10 +650,10 @@ export default class Machine {
     return errors.filter((elem, index, array) => array.indexOf(elem) === index);
   }
 
-  validatePilot(errors){
-    this.pilots[0].validate(errors,"パイロット１")
-    if(this.machineType && this.machineType.hasDoubleSeat){
-      this.pilots[1].validate(errors,"パイロット２")
+  validatePilot(errors) {
+    this.pilots[0].validate(errors, "パイロット１");
+    if (this.machineType && this.machineType.hasDoubleSeat) {
+      this.pilots[1].validate(errors, "パイロット２");
     }
   }
 
@@ -710,7 +706,6 @@ export default class Machine {
     }
   }
 
-
   //指定したポジションのスロット上限チェックを行います。
   validateSlotSize(machineTypePosition, errors) {
     let alreadyEquipmentCount = this.getEquipmentCountOf([machineTypePosition]);
@@ -743,11 +738,11 @@ export default class Machine {
     }
 
     //パイロットのランクを計算する
-    if(this.machineType && this.machineType.hasDoubleSeat){
-      this.pilots.forEach(pilot=>{
+    if (this.machineType && this.machineType.hasDoubleSeat) {
+      this.pilots.forEach(pilot => {
         total += pilot.getARankEquipmentCount();
-      })
-    }else{
+      });
+    } else {
       total += this.pilots[0].getARankEquipmentCount();
     }
     return total;
@@ -801,7 +796,6 @@ export default class Machine {
     return total;
   }
 
-  
   isEquipDoubleBinder() {
     const equipDoubleBinder = this.getAllEquipment().filter(
       equipment => equipment.name === "ダブルバインダー"
@@ -812,17 +806,17 @@ export default class Machine {
   getSlot(position) {
     if (position === MachineType.POSITION_BODY) {
       if (this.isEquipDoubleBinder()) {
-        return this.machineType.getSlot(position,2);
+        return this.machineType.getSlot(position, 2);
       } else {
         return this.machineType.getSlot(position);
       }
-    }else{
+    } else {
       return this.machineType.getSlot(position);
     }
   }
 
   //ArmorPointへの補正値を指定可能。
-  get armorPoint(){
+  get armorPoint() {
     if (this.isEquipDoubleBinder()) {
       return this.machineType.getArmorPoint(-2);
     } else {
@@ -831,32 +825,44 @@ export default class Machine {
   }
 
   //ArmorPointへの補正値を指定可能。
-  get constitution(){
+  get constitution() {
     if (this.isEquipDoubleBinder()) {
-      return this.machineType.getConstitution(-2,2);
+      return this.machineType.getConstitution(-2, 2);
     } else {
       return this.machineType.getConstitution();
     }
   }
 
+  //回避値への補正値を指定可能。
+  get evadeRate() {
+    let retVal = this.machineType.evadeRate;
+    const equipChip = this.getAllEquipment().filter(
+      equipment => equipment.name === "姿勢制御チップ"
+    ).length;
+
+    if (equipChip > 0) {
+      retVal++;
+    }
+    return retVal;
+  }
+
   //突撃ダメージ
-  get chargeDamage(){
+  get chargeDamage() {
     if (this.isEquipDoubleBinder()) {
       return this.machineType.getChargeDamage(-2);
     } else {
       return this.machineType.getChargeDamage();
     }
   }
-  
+
   //非突撃ダメージ
-  get coveredChargeDamage(){
+  get coveredChargeDamage() {
     if (this.isEquipDoubleBinder()) {
       return this.machineType.getCoveredChargeDamage(-2);
     } else {
       return this.machineType.getCoveredChargeDamage();
     }
   }
-
 
   // get bodySlot(){
   //   const equipDoubleBinder = this.getAllEquipment().filter(
@@ -895,9 +901,10 @@ export default class Machine {
     } ${this.machineType.hasDoubleSeat ? "複座" : "単座"} 移動値：${
       this.machineType.movility
     } 
-回避値：${this.machineType.evadeRate} 装甲値：${
-      this.armorPoint
-    } 耐久値：${this.machineType.constitution}
+回t
+val retVal = this.machineType.evadeRate;
+return retValhis.machineType.evadeRate} 
+装甲値：${this.armorPoint} 耐久値：${this.machineType.constitution}
 イニシアチブ：${this.machineType.initiative} 突撃値：${
       this.machineType.chargeDamage
     } 被突撃値：${this.machineType.coveredChargeDamage}

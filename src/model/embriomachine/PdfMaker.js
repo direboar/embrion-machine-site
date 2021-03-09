@@ -58,7 +58,7 @@ export default class PdfMaker {
         },
         //回避値
         {
-          text: machineType.evadeRate,
+          text: machine.evadeRate,
           style: {
             fontSize: 20
           },

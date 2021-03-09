@@ -194,9 +194,7 @@
                       <v-divider />
                       <v-list-tile>
                         <v-list-tile-content class="subheaders">{{
-                          machine.machineType !== null
-                            ? machine.machineType.evadeRate
-                            : ""
+                          machine.machineType !== null ? machine.evadeRate : ""
                         }}</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
