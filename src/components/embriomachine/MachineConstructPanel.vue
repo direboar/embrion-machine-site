@@ -1,24 +1,48 @@
 <template>
   <div>
     <v-card>
-      <v-layout row wrap>
+      <v-layout
+        row
+        wrap
+      >
         <v-flex xs12>
-          <v-layout row wrap>
+          <v-layout
+            row
+            wrap
+          >
             <v-flex xs12>
-              <v-alert :value="fatalerror.length > 0" type="error">
+              <v-alert
+                :value="fatalerror.length > 0"
+                type="error"
+              >
                 <p v-html="formatErrorMessage(fatalerror)"></p>
               </v-alert>
-              <v-alert :value="validateerror.length > 0" type="warning">
+              <v-alert
+                :value="validateerror.length > 0"
+                type="warning"
+              >
                 <p v-html="formatErrorMessage(validateerror)"></p>
                 （弾薬を装備している場合、弾薬と入れ替えた装備のチェックは正しく行われないことに注意してください。）
               </v-alert>
             </v-flex>
-            <v-flex xl3 md4 sm6 xs12>
+            <v-flex
+              xl3
+              md4
+              sm6
+              xs12
+            >
               <v-card>
-                <v-toolbar color="grey darken-1" dark dense>
+                <v-toolbar
+                  color="grey darken-1"
+                  dark
+                  dense
+                >
                   <v-toolbar-title>基本データ</v-toolbar-title>
                   <v-spacer></v-spacer>
-                  <v-toolbar floating dense>
+                  <v-toolbar
+                    floating
+                    dense
+                  >
                     <v-tooltip>
                       <v-btn
                         slot="activator"
@@ -80,9 +104,7 @@
                       >
                         <v-icon>fas fa-copy</v-icon>
                       </v-btn>
-                      <span
-                        >機体をコピーして作成画面に移動します（保存しないとコピーは失われます）。</span
-                      >
+                      <span>機体をコピーして作成画面に移動します（保存しないとコピーは失われます）。</span>
                     </v-tooltip>
                     <v-tooltip>
                       <v-btn
@@ -96,17 +118,30 @@
                       <span>機体を削除します。</span>
                     </v-tooltip>
                     <v-tooltip>
-                      <v-btn slot="activator" icon @click.native="back">
+                      <v-btn
+                        slot="activator"
+                        icon
+                        @click.native="back"
+                      >
                         <v-icon>fas fa-backward</v-icon>
                       </v-btn>
                       <span>一覧画面に戻ります。</span>
                     </v-tooltip>
                   </v-toolbar>
                 </v-toolbar>
-                <v-layout row wrap>
+                <v-layout
+                  row
+                  wrap
+                >
                   <v-flex xs4>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-divider />
+                      <v-list-tile>
+                        <v-list-tile-content>ユーザー名</v-list-tile-content>
+                      </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-content>名前</v-list-tile-content>
                       </v-list-tile>
@@ -135,25 +170,33 @@
                         <v-list-tile-content>イニシアチブ</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content
-                          >突撃／被突撃ダメージ</v-list-tile-content
-                        >
+                        <v-list-tile-content>突撃／被突撃ダメージ</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content
-                          >Aランク武装の数</v-list-tile-content
-                        >
+                        <v-list-tile-content>Aランク武装の数</v-list-tile-content>
                       </v-list-tile>
                       <v-list-tile>
-                        <v-list-tile-content
-                          >機体へのリンク</v-list-tile-content
-                        >
+                        <v-list-tile-content>機体へのリンク</v-list-tile-content>
                       </v-list-tile>
                       <v-divider />
                     </v-list>
                   </v-flex>
                   <v-flex xs8>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
+                      <v-list-tile>
+                        <v-list-tile-content>
+                          <v-text-field
+                            type="text"
+                            v-model="username"
+                            required
+                            :readonly="!editMode"
+                            maxlength="30"
+                          />
+                        </v-list-tile-content>
+                      </v-list-tile>
                       <v-list-tile>
                         <v-list-tile-content>
                           <v-text-field
@@ -245,18 +288,31 @@
                 </v-layout>
               </v-card>
             </v-flex>
-            <v-flex xl9 md8 sm6 xs12>
+            <v-flex
+              xl9
+              md8
+              sm6
+              xs12
+            >
               <v-card>
-                <v-layout row wrap>
-                  <v-flex md6 xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >頭／SLOT:{{
+                <v-layout
+                  row
+                  wrap
+                >
+                  <v-flex
+                    md6
+                    xs12
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>頭／SLOT:{{
                           machine.machineType !== null
                             ? machine.getSlot(POSITION_CONST.POSITION_HEAD)
                             : ""
-                        }}</v-toolbar-title
-                      >
+                        }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -270,7 +326,10 @@
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(equipment, index) in this.machine.equipments[
                           POSITION_CONST.POSITION_HEAD
@@ -313,15 +372,20 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex md6 xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >胴／SLOT:{{
+                  <v-flex
+                    md6
+                    xs12
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>胴／SLOT:{{
                           machine.machineType !== null
                             ? machine.getSlot(POSITION_CONST.POSITION_BODY)
                             : ""
-                        }}</v-toolbar-title
-                      >
+                        }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -335,7 +399,10 @@
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(equipment, index) in this.machine.equipments[
                           POSITION_CONST.POSITION_BODY
@@ -378,15 +445,20 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex md6 xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >右腕／SLOT:{{
+                  <v-flex
+                    md6
+                    xs12
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>右腕／SLOT:{{
                           machine.machineType !== null
                             ? machine.getSlot(POSITION_CONST.POSITION_RIGHTARM)
                             : ""
-                        }}</v-toolbar-title
-                      >
+                        }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -400,7 +472,10 @@
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(equipment, index) in this.machine.equipments[
                           POSITION_CONST.POSITION_RIGHTARM
@@ -443,15 +518,20 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex md6 xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >左腕／SLOT:{{
+                  <v-flex
+                    md6
+                    xs12
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>左腕／SLOT:{{
                           machine.machineType !== null
                             ? machine.getSlot(POSITION_CONST.POSITION_LEFTARM)
                             : ""
-                        }}</v-toolbar-title
-                      >
+                        }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -465,7 +545,10 @@
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(equipment, index) in this.machine.equipments[
                           POSITION_CONST.POSITION_LEFTARM
@@ -509,15 +592,20 @@
                       <v-divider />
                     </v-list>
                   </v-flex>
-                  <v-flex md6 xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >右脚／SLOT:{{
+                  <v-flex
+                    md6
+                    xs12
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>右脚／SLOT:{{
                           machine.machineType !== null
                             ? machine.getSlot(POSITION_CONST.POSITION_RIGHTLEG)
                             : ""
-                        }}</v-toolbar-title
-                      >
+                        }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -531,7 +619,10 @@
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(equipment, index) in this.machine.equipments[
                           POSITION_CONST.POSITION_RIGHTLEG
@@ -574,15 +665,20 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex md6 xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >左脚／SLOT:{{
+                  <v-flex
+                    md6
+                    xs12
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>左脚／SLOT:{{
                           machine.machineType !== null
                             ? machine.getSlot(POSITION_CONST.POSITION_LEFTLEG)
                             : ""
-                        }}</v-toolbar-title
-                      >
+                        }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -596,7 +692,10 @@
                         <v-icon>add</v-icon>
                       </v-btn>
                     </v-toolbar>
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(equipment, index) in this.machine.equipments[
                           POSITION_CONST.POSITION_LEFTLEG
@@ -640,11 +739,13 @@
                     </v-list>
                   </v-flex>
                   <v-flex xs6>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >パイロット１／LV :
-                        {{ pilots[0].level }}</v-toolbar-title
-                      >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>パイロット１／LV :
+                        {{ pilots[0].level }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -656,7 +757,10 @@
                     </v-toolbar>
                     <v-layout>
                       <v-flex xs4>
-                        <v-list two-line subheader>
+                        <v-list
+                          two-line
+                          subheader
+                        >
                           <v-list-tile>
                             <v-list-tile-content class="subheaders">
                               名前
@@ -665,7 +769,10 @@
                         </v-list>
                       </v-flex>
                       <v-flex xs8>
-                        <v-list two-line subheader>
+                        <v-list
+                          two-line
+                          subheader
+                        >
                           <v-list-tile>
                             <v-list-tile-content>
                               <v-text-field
@@ -681,7 +788,10 @@
                       </v-flex>
                     </v-layout>
                     <v-divider />
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(skill, index) in this.pilots[0].skills"
                         :key="index"
@@ -712,12 +822,17 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex xs6 v-if="isDoubleSeat">
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >パイロット２／LV :
-                        {{ pilots[1].level }}</v-toolbar-title
-                      >
+                  <v-flex
+                    xs6
+                    v-if="isDoubleSeat"
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>パイロット２／LV :
+                        {{ pilots[1].level }}</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <v-btn
                         icon
@@ -729,7 +844,10 @@
                     </v-toolbar>
                     <v-layout>
                       <v-flex xs4>
-                        <v-list two-line subheader>
+                        <v-list
+                          two-line
+                          subheader
+                        >
                           <v-list-tile>
                             <v-list-tile-content class="subheaders">
                               名前
@@ -738,7 +856,10 @@
                         </v-list>
                       </v-flex>
                       <v-flex xs8>
-                        <v-list two-line subheader>
+                        <v-list
+                          two-line
+                          subheader
+                        >
                           <v-list-tile>
                             <v-list-tile-content>
                               <v-text-field
@@ -754,7 +875,10 @@
                       </v-flex>
                     </v-layout>
                     <v-divider />
-                    <v-list two-line subheader>
+                    <v-list
+                      two-line
+                      subheader
+                    >
                       <v-list-tile
                         v-for="(skill, index) in this.pilots[1].skills"
                         :key="index"
@@ -785,13 +909,24 @@
                       </v-list-tile>
                     </v-list>
                   </v-flex>
-                  <v-flex xs6 v-if="!isDoubleSeat">
-                    <v-toolbar color="grey darken-1" dark dense>
+                  <v-flex
+                    xs6
+                    v-if="!isDoubleSeat"
+                  >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
                       <v-toolbar-title />
                     </v-toolbar>
                   </v-flex>
                   <v-flex xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
                       <v-toolbar-title>自由入力欄</v-toolbar-title>
                     </v-toolbar>
                     <v-textarea
@@ -803,10 +938,12 @@
                     ></v-textarea>
                   </v-flex>
                   <v-flex xs12>
-                    <v-toolbar color="grey darken-1" dark dense>
-                      <v-toolbar-title
-                        >機体画像　画像ファイルのアップロード機能は現在使用できません。</v-toolbar-title
-                      >
+                    <v-toolbar
+                      color="grey darken-1"
+                      dark
+                      dense
+                    >
+                      <v-toolbar-title>機体画像　画像ファイルのアップロード機能は現在使用できません。</v-toolbar-title>
                       <v-spacer></v-spacer>
                       <file-upload-icon
                         tooltip="画像をアップロードします。"
@@ -912,7 +1049,7 @@ export default {
     OkNgDialog: OkNgDialog,
     MessgeDialog: MessgeDialog,
     FileUploadIcon: FileUploadIcon,
-    FileDownloadIcon: FileDownloadIcon
+    FileDownloadIcon: FileDownloadIcon,
   },
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -921,11 +1058,12 @@ export default {
     //編集モードかどうかの指定。
     editMode: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
+      username: null,
       id: this.$route.params["id"],
       machine: new Machine(),
       showEquipment: false,
@@ -965,7 +1103,7 @@ export default {
       targetPilot: false,
       showSkill: false,
       dialogSkill: {},
-      skillDialogEditMode: false
+      skillDialogEditMode: false,
     };
   },
 
@@ -975,30 +1113,31 @@ export default {
     if (this.id !== undefined && this.id !== null && this.id !== "") {
       this.storage.getMachineHeaderAndDetail(
         this.id,
-        machine => {
+        (machine) => {
           this.machine = machine;
+          this.username = machine.userName;
           //download image file.
           //取得は非同期でよい。
           this.storage.readFile(
             this.machine.id,
-            file => {
+            (file) => {
               this.file = file;
             },
-            e => this.showErrorMessageDialog(e)
+            (e) => this.showErrorMessageDialog(e)
           );
         },
-        e => {
+        (e) => {
           this.showErrorMessageDialog(e);
         }
       );
     }
 
     //3.認証状態のフックを設定
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.user = user;
-      }
-    });
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.user = user;
+    //   }
+    // });
   },
 
   watch: {},
@@ -1064,7 +1203,7 @@ export default {
         this.machine.machineType !== null &&
         this.machine.machineType.hasDoubleSeat
       );
-    }
+    },
   },
 
   methods: {
@@ -1136,7 +1275,7 @@ export default {
     },
     formatErrorMessage(messages) {
       let ret = "";
-      messages.forEach(message => {
+      messages.forEach((message) => {
         ret += message + "<br/>";
       });
       return ret;
@@ -1161,7 +1300,8 @@ export default {
           if (this.machine.id === null || this.machine.id === undefined) {
             updated = await this.storage.saveToFirebase(
               this.machine,
-              this.user
+              // this.user,
+              this.username
             );
           } else {
             updated = await this.storage.updateToFirebase(this.machine);
@@ -1197,7 +1337,7 @@ export default {
           this.dialogMachine = new Machine("");
           this.$router.push({ name: "MachineList" });
         },
-        errormsg => {
+        (errormsg) => {
           this.showErrorMessageDialog(errormsg);
         }
       );
@@ -1222,7 +1362,7 @@ export default {
     onFileRead(files) {
       for (const file of files) {
         let fileReader = new FileReader();
-        fileReader.onload = data => {
+        fileReader.onload = (data) => {
           let file = data.target.result;
 
           //mime-typeを取得
@@ -1254,7 +1394,7 @@ export default {
     },
     analizeDamageRange() {
       this.showDamageRangeAnalizeDialog = true;
-    }
-  }
+    },
+  },
 };
 </script>

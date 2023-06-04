@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-card>
           <v-toolbar>
-            <v-tooltip top>
+            <!-- <v-tooltip top>
               <v-btn
                 v-if="user ==null"
                 slot="activator"
@@ -36,7 +36,7 @@
               v-if="user != null"
               :src="user.photoURL"
             />
-            <h5 v-if="!isMobile">機体の作成・編集を行う場合は、twitterログインを行ってください</h5>
+            <h5 v-if="!isMobile">機体の作成・編集を行う場合は、twitterログインを行ってください</h5> -->
             <v-spacer></v-spacer>
             <v-tooltip>
               <v-btn
@@ -144,9 +144,17 @@
           :userName.sync="filterCondition.userName"
           :machineName.sync="filterCondition.machineName"
           :showOwner.sync="filterCondition.showOwner"
-          :showOwnerEnabled.sync="this.user !== null"
+          showOwnerEnabled=false,
           @select="searchConditionSelected"
         />
+        <!-- <equipment-filter-condition-dialog
+          :show-dialog.sync="showFilterConditionDialog"
+          :userName.sync="filterCondition.userName"
+          :machineName.sync="filterCondition.machineName"
+          :showOwner.sync="filterCondition.showOwner"
+          :showOwnerEnabled.sync="this.user !== null"
+          @select="searchConditionSelected"
+        /> -->
         <help-dialog :showDialog.sync="showHelpDialog" />
         <messge-dialog
           :showDialog.sync="showErrorMessage"
@@ -175,7 +183,7 @@ export default {
     MachineConstructPanel,
     EquipmentFilterConditionDialog,
     HelpDialog: HelpDialog,
-    MessgeDialog: MessgeDialog
+    MessgeDialog: MessgeDialog,
   },
   created() {
     //1.検索条件をセッションストレージから復元。（一覧画面に戻ってきた際のため。将来的にはvuex+session storageの連携に変えたい）
@@ -188,18 +196,19 @@ export default {
     }
   },
   mounted() {
-    let user = firebase.auth().currentUser;
-    //1/認証していない場合はこの時点で、firebaseのデータを読み込む
-    if (user === null) {
-      this.load();
-    }
-    //2.認証状態のフックを設定。状態が変わったら再度読み込む。
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.user = user;
-        this.load();
-      }
-    });
+    this.load();
+    // let user = firebase.auth().currentUser;
+    // //1/認証していない場合はこの時点で、firebaseのデータを読み込む
+    // if (user === null) {
+    //   this.load();
+    // }
+    // //2.認証状態のフックを設定。状態が変わったら再度読み込む。
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.user = user;
+    //     this.load();
+    //   }
+    // });
     //3.google adsenceのサイズ調整
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   },
@@ -210,7 +219,7 @@ export default {
       filterCondition: {
         userName: "",
         machineName: "",
-        showOwner: false
+        showOwner: false,
       },
       hasNextPage: false,
 
@@ -225,18 +234,19 @@ export default {
 
       //error
       showErrorMessage: false,
-      errorMessage: ""
+      errorMessage: "",
     };
   },
   watch: {},
   computed: {
     loggedIn() {
-      return this.user;
+      // return this.user;
+      return true;
     },
     isMobile() {
       const breakPoint = this.$vuetify.breakpoint.name;
       return breakPoint === "xs" || breakPoint === "sm";
-    }
+    },
   },
   methods: {
     search() {
@@ -264,17 +274,18 @@ export default {
     },
 
     isEditable(machine) {
-      if (!this.loggedIn) {
-        return false;
-      }
-      if (machine.userId === undefined || machine.userId === "anonymous") {
-        return true;
-      }
-      if (this.user === null) {
-        return false;
-      } else {
-        return this.user.uid === machine.userId;
-      }
+      return true;
+      // if (!this.loggedIn) {
+      //   return false;
+      // }
+      // if (machine.userId === undefined || machine.userId === "anonymous") {
+      //   return true;
+      // }
+      // if (this.user === null) {
+      //   return false;
+      // } else {
+      //   return this.user.uid === machine.userId;
+      // }
     },
 
     showNextPage() {
@@ -287,27 +298,25 @@ export default {
     },
 
     login() {
-      var provider = new firebase.auth.TwitterAuthProvider();
-      firebase.auth().languageCode = "jp";
-      firebase.auth().signInWithRedirect(provider);
+      // var provider = new firebase.auth.TwitterAuthProvider();
+      // firebase.auth().languageCode = "jp";
+      // firebase.auth().signInWithRedirect(provider);
     },
 
     logout() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.user = null;
-
-          //絞込条件を初期化する
-          this.userName = "";
-          this.machineName = "";
-          this.showOwner = false;
-
-          //再検索
-          //this.find = "load";
-          this.load();
-        });
+      // firebase
+      //   .auth()
+      //   .signOut()
+      //   .then(() => {
+      //     this.user = null;
+      //     //絞込条件を初期化する
+      //     this.userName = "";
+      //     this.machineName = "";
+      //     this.showOwner = false;
+      //     //再検索
+      //     //this.find = "load";
+      //     this.load();
+      //   });
     },
 
     async fetch() {
@@ -319,7 +328,7 @@ export default {
           this.filterCondition.showOwner,
           this.user
         );
-        retVal.machines.forEach(item => {
+        retVal.machines.forEach((item) => {
           this.machines.push(item);
         });
         this.hasNextPage = retVal.hasNextPage;
@@ -334,14 +343,15 @@ export default {
 
     async load() {
       try {
-        let retVal = await this.storage.loadFromFirebase(
-          this.filterCondition.userName,
-          this.filterCondition.machineName,
-          this.filterCondition.showOwner,
-          this.user
-        );
+        let retVal = await this.storage.loadFromFirebase("", "", false, null);
+        // let retVal = await this.storage.loadFromFirebase(
+        //   this.filterCondition.userName,
+        //   this.filterCondition.machineName,
+        //   this.filterCondition.showOwner,
+        //   this.user
+        // );
         this.machines = [];
-        retVal.machines.forEach(item => {
+        retVal.machines.forEach((item) => {
           this.machines.push(item);
         });
         this.hasNextPage = retVal.hasNextPage;
@@ -351,7 +361,7 @@ export default {
           "通信エラーが発生しました。" + JSON.stringify(e)
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>

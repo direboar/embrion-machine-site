@@ -64,14 +64,14 @@ export default class FirebaseStorage {
     }
   }
 
-  async loadFromFirebase(userName, machineName, showOwner, user) {
+  async loadFromFirebase(userName, machineName) {
     var query = firebase.database().ref(this.headerdb);
     if (userName !== "") {
       query = query.orderByChild("userName").equalTo(userName);
     } else if (machineName !== "") {
       query = query.orderByChild("name").equalTo(machineName);
-    } else if (showOwner && user != null) {
-      query = query.orderByChild("userId").equalTo(user.uid);
+      // } else if (showOwner && user != null) {
+      //   query = query.orderByChild("userId").equalTo(user.uid);
     } else {
       query = query.orderByChild("orderBy");
     }
@@ -97,7 +97,7 @@ export default class FirebaseStorage {
     };
   }
 
-  async fetchNextPageFromFirebase(lastSearchedMachineHeader, userName, machineName, showOwner, user) {
+  async fetchNextPageFromFirebase(lastSearchedMachineHeader, userName, machineName) {
     var query = firebase.database().ref(this.headerdb);
     if (userName !== "") {
       query = query
@@ -110,11 +110,11 @@ export default class FirebaseStorage {
         .orderByChild("name")
         .startAt(machineName, lastSearchedMachineHeader.id + "\uf8ff")
         .endAt(machineName);
-    } else if (showOwner && user != null) {
-      query = query
-        .orderByChild("userId")
-        .startAt(user.uid, lastSearchedMachineHeader.id + "\uf8ff")
-        .endAt(user.uid);
+      // } else if (showOwner && user != null) {
+      //   query = query
+      //     .orderByChild("userId")
+      //     .startAt(user.uid, lastSearchedMachineHeader.id + "\uf8ff")
+      //     .endAt(user.uid);
     } else {
       query = query
         .orderByChild("orderBy")
@@ -141,11 +141,12 @@ export default class FirebaseStorage {
 
   }
 
-  async saveToFirebase(machine, user) {
-    let userId = user === null ? "anonymous" : user.uid;
-    let userName = user === null ? "anonymous" : user.displayName;
+  async saveToFirebase(machine, userName) {
+    if (userName === null) userName = "anonimous";
+    // let userId = user === null ? "anonymous" : user.uid;
+    // let userName = user === null ? "anonymous" : user.displayName;
 
-    machine.setUserIdAndUserName(userId, userName);
+    machine.setUserIdAndUserName(userName, userName);
     machine.setLastUpdateTime(firebase.database.ServerValue.TIMESTAMP);
 
     //1.ヘッダをINSERT(Push)
@@ -181,8 +182,8 @@ export default class FirebaseStorage {
 
     let headerRef =
       await firebase
-      .database()
-      .ref(this.headerdb + "/" + id);
+        .database()
+        .ref(this.headerdb + "/" + id);
 
     //1.headerを更新
     await headerRef.set(machine.toRealtimeDatabaseHeaderObject());
@@ -214,11 +215,11 @@ export default class FirebaseStorage {
     let detailId = machine.getDetailId()
 
     //削除時に、idがnullであるとrootのノードが削除される可能性があるので、念のためチェックする。
-    if(!id){
+    if (!id) {
       error("削除対象のIDが取得できませんでした。削除を中断します。");
       return;
     }
-    if(!detailId){
+    if (!detailId) {
       error("削除対象のdetailIdが取得できませんでした。削除を中断します。");
       return;
     }
@@ -245,7 +246,7 @@ export default class FirebaseStorage {
 
   //同期処理とする必要はないので、非同期とする。
   //id: machineのid,file:アップロードするBLOB Data
-  uploadFile(id, file, contentType,callback, error) {
+  uploadFile(id, file, contentType, callback, error) {
     console.log("111")
     error("ファイルのアップロードのサポートを停止しました")
     // let storageRef = firebase.storage().ref();
